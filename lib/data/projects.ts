@@ -100,6 +100,20 @@ export const projects: Project[] = [
     description:
       'Development of autonomous underwater glider platforms for long-endurance ocean monitoring, environmental data collection, and subsea sensing. Focuses on energy-efficient propulsion, navigation in dynamic underwater environments, and real-time data transmission.',
   },
+  {
+    id: 'prj-005',
+    slug: 'warehouse-automation',
+    title: 'Warehouse Automation & Order Picking',
+    subtitle: 'Reinforcement learning and swarm optimization for multi-agent order picking',
+    status: 'in-development',
+    tags: ['Reinforcement Learning', 'PPO', 'DQN', 'Ant Colony Optimization', 'Path Planning'],
+    category: 'ai-ml',
+    coverImage: '/images/projects/warehouse-automation.jpg',
+    coverImageAlt:
+      'Algorithm selection interface showing ACO, RL and PPO options in the warehouse simulation platform',
+    description:
+      'Order picking optimization for steel warehouses, combining deep reinforcement learning agents with swarm-based path planning. Multiple picking vehicles are coordinated across a grid warehouse model to minimize total order completion time while avoiding collisions in shared aisles.',
+  },
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

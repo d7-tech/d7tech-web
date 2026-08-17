@@ -33,6 +33,7 @@ export default function Footer() {
     { labelKey: 'projectLinks.advisorAsv' as const, href: '/projects/advisor' },
     { labelKey: 'projectLinks.multiStaticRadar' as const, href: '/projects/multistatic' },
     { labelKey: 'projectLinks.underwaterGliders' as const, href: '/projects/underwater-gliders' },
+    { labelKey: 'projectLinks.warehouseAutomation' as const, href: '/projects/warehouse-automation' },
   ];
 
   const socialLinks = [

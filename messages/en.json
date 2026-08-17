@@ -41,7 +41,8 @@
       "wearableSensors": "Wearable Sensors",
       "advisorAsv": "ADVISOR ASV",
       "multiStaticRadar": "Multi-Static Radar",
-      "underwaterGliders": "Underwater Gliders"
+      "underwaterGliders": "Underwater Gliders",
+      "warehouseAutomation": "Warehouse Automation"
     }
   },
   "Hero": {
@@ -122,6 +123,10 @@
     "underwater-gliders": {
       "title": "Autonomous Underwater Gliders",
       "subtitle": "Long-endurance autonomous platforms for underwater exploration and sensing"
+    },
+    "warehouse-automation": {
+      "title": "Warehouse Automation & Order Picking",
+      "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking"
     }
   },
   "HomePage": {
@@ -151,10 +156,22 @@
     "valuesLabel": "// VALUES",
     "valuesTitle": "What We Stand For",
     "values": {
-      "innovation": { "title": "Innovation", "desc": "Pushing boundaries in sensing and autonomy through rigorous R&D and novel algorithmic approaches." },
-      "rigor": { "title": "Rigor", "desc": "Rigorous standards in research methodology — from mathematical modeling to empirical field validation." },
-      "impact": { "title": "Real-World Impact", "desc": "Every project targets practical deployment — we build things that work outside the lab." },
-      "openScience": { "title": "Open Science", "desc": "Contributing to the global research community through peer-reviewed publications and open collaboration." }
+      "innovation": {
+        "title": "Innovation",
+        "desc": "Pushing boundaries in sensing and autonomy through rigorous R&D and novel algorithmic approaches."
+      },
+      "rigor": {
+        "title": "Rigor",
+        "desc": "Rigorous standards in research methodology — from mathematical modeling to empirical field validation."
+      },
+      "impact": {
+        "title": "Real-World Impact",
+        "desc": "Every project targets practical deployment — we build things that work outside the lab."
+      },
+      "openScience": {
+        "title": "Open Science",
+        "desc": "Contributing to the global research community through peer-reviewed publications and open collaboration."
+      }
     },
     "timeline": {
       "year2025Label": "2025",
@@ -167,12 +184,30 @@
       "year2026e2": "Ongoing R&D across sensing, autonomous systems, and AI/ML"
     },
     "team": {
-      "ahmet": { "name": "Ahmet Güneş", "role": "Founder & Principal Engineer" },
-      "bilal": { "name": "Bilal Bayram", "role": "Electronics Engineer" },
-      "berkant": { "name": "Berkant Kırıkkant", "role": "Systems Engineer" },
-      "fehim": { "name": "Fehim Kuş", "role": "Mechatronics Engineer" },
-      "yigit": { "name": "Yiğit Tilaver", "role": "Software Engineer" },
-      "yusuf": { "name": "Yusuf Erkoç", "role": "Undergraduate Mechanical Engineer" }
+      "ahmet": {
+        "name": "Ahmet Güneş",
+        "role": "Founder & Principal Engineer"
+      },
+      "bilal": {
+        "name": "Bilal Bayram",
+        "role": "Electronics Engineer"
+      },
+      "berkant": {
+        "name": "Berkant Kırıkkant",
+        "role": "Systems Engineer"
+      },
+      "fehim": {
+        "name": "Fehim Kuş",
+        "role": "Mechatronics Engineer"
+      },
+      "yigit": {
+        "name": "Yiğit Tilaver",
+        "role": "Software Engineer"
+      },
+      "yusuf": {
+        "name": "Yusuf Erkoç",
+        "role": "Undergraduate Mechanical Engineer"
+      }
     }
   },
   "CareersPage": {
@@ -342,5 +377,34 @@
     "statusLabel": "// STATUS: IN DEVELOPMENT",
     "researchTitle": "Research In Progress",
     "updatesComingSoon": "Updates coming soon"
+  },
+  "WarehouseAutomationPage": {
+    "metadata": {
+      "title": "Warehouse Automation & Order Picking",
+      "description": "Reinforcement learning and swarm optimization for multi-agent order picking in steel warehouses — research and simulation platform by D7 Technology."
+    },
+    "title": "Warehouse Automation & Order Picking",
+    "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking",
+    "prjId": "PRJ-005",
+    "sectionLabel": "// AI & MACHINE LEARNING · LOGISTICS",
+    "overviewTitle": "Overview",
+    "overviewText": "Order picking is the single most time-consuming operation in warehouse logistics. This project treats it as a multi-agent sequential decision problem: given a warehouse layout, a product catalog and a set of customer orders, several picking vehicles must be routed to collect every item and return to the exit in the shortest total time, without colliding in shared aisles. The work targets steel warehouses, where products are long profiles stored across multiple slots and a single order may span dozens of locations.",
+    "approachTitle": "Learning and Optimization Approaches",
+    "approachText": "Two families of algorithms are implemented against a common simulation environment so their results can be compared directly on the same layouts and order sets. The first is swarm-based: a time-dependent Ant Colony Optimization planner that builds a pheromone matrix over the warehouse grid and resolves collisions by treating occupancy as a function of time rather than space alone. The second is deep reinforcement learning — DQN, Dueling DQN, Double Dueling DQN and PPO agents, implemented in PyTorch, which learn a picking policy through repeated episodes instead of planning each route from scratch.",
+    "environmentTitle": "Simulation Environment",
+    "environmentText": "Warehouses are described as JSON grid maps defining dimensions, aisles, loading zones, entrances, exits and item locations. The reference layout models a real steel warehouse: a 30 × 28 grid holding 289 distinct product types, each stored across several slots and linked to live order identifiers. A smaller 12 × 7 layout is used for rapid iteration during training. The environment exposes a standard step-and-reward interface, so agents and classical planners can be swapped without changing the warehouse model.",
+    "platformTitle": "Simulation Platform",
+    "platformText": "The research code is wrapped in a browser-based platform that makes experiments repeatable without touching Python. Operators upload a warehouse map, choose a planning algorithm, set training hyperparameters — episode count, learning rate, discount factor, epsilon schedule, batch size — and either train a fresh policy or run an existing one. Simulation runs are rendered back as video for inspection.",
+    "platformFigureAlt": "Warehouse automation platform: map selection table and algorithm choice between ACO, RL and PPO",
+    "platformFigureCaption": "Map selection and algorithm choice. Uploaded layouts are listed with their grid dimensions and product counts; ACO, RL and PPO can each be run against the same warehouse.",
+    "workflowTitle": "Two-Sided Workflow",
+    "workflowText": "The platform separates the people who define a warehouse from the people who order from it. On the operator side, warehouse maps and product catalogs are uploaded and managed directly or pulled from an existing endpoint. On the ordering side, a guided flow walks through selecting a warehouse, building an order from the catalog, choosing an algorithm and watching the resulting simulation.",
+    "workflowFigureAlt": "Operator panel listing uploaded warehouse maps with dimensions, product counts and status",
+    "workflowFigureCaption": "Operator panel. Warehouse layouts are uploaded as JSON and exposed to the ordering side, with product-type counts and last-updated timestamps.",
+    "catalogFigureAlt": "Product catalog view showing steel profile product codes with per-item order quantities",
+    "catalogFigureCaption": "Order construction against the 289-product steel catalog. Items carry their source order identifiers, and per-item quantities feed the picking problem handed to the planner.",
+    "statusTitle": "Current Status",
+    "statusText": "The ACO planner runs against production-scale layouts, and the reinforcement learning agents train and execute on the same environment. Work continues on comparative benchmarking across layouts and order profiles, and on packaging the platform for a public demonstration deployment.",
+    "demoNote": "A public demonstration of the simulation platform is being prepared."
   }
 }

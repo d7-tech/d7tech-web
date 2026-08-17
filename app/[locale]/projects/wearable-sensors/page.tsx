@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getAlternates } from '@/lib/metadata';
 import { Link } from '@/i18n/navigation';
@@ -9,6 +8,7 @@ import StatusBadge from '@/components/common/StatusBadge';
 import TechTag from '@/components/common/TechTag';
 import PublicationCard from '@/components/projects/PublicationCard';
 import ProjectCover from '@/components/projects/ProjectCover';
+import SectionFigure from '@/components/projects/SectionFigure';
 import { getProjectBySlug } from '@/lib/data/projects';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
@@ -19,18 +19,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     openGraph: { title: t('metadata.title'), description: t('metadata.description'), type: 'article' },
     alternates: getAlternates('/projects/wearable-sensors'),
   };
-}
-
-function SectionFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
-  return (
-    <figure className="m-0">
-      <div className="relative w-full aspect-video rounded-sm bg-[#0a0f1e] border border-[#1a2540] overflow-hidden">
-        <Image src={src} alt={alt} fill className="object-contain" sizes="(max-width: 896px) 100vw, 896px" />
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#020409]/50 via-transparent to-transparent" aria-hidden="true" />
-      </div>
-      <figcaption className="mt-3 text-xs text-slate-600 text-center sm:text-left">{caption}</figcaption>
-    </figure>
-  );
 }
 
 export default async function WearableSensorsPage({ params }: { params: { locale: string } }) {
