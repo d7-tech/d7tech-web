@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getAlternates } from '@/lib/metadata';
 import { Link } from '@/i18n/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { getDemoUrl } from '@/lib/demo';
 import SectionLabel from '@/components/common/SectionLabel';
 import StatusBadge from '@/components/common/StatusBadge';
 import TechTag from '@/components/common/TechTag';
@@ -25,6 +26,8 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
   const t = await getTranslations({ locale: params.locale, namespace: 'WarehouseAutomationPage' });
   const tCommon = await getTranslations({ locale: params.locale, namespace: 'Common' });
   const project = getProjectBySlug('warehouse-automation')!;
+  // null until NEXT_PUBLIC_WAREHOUSE_DEMO_URL is set on the AWS deploy
+  const demoUrl = getDemoUrl('warehouse-automation');
 
   return (
     <article className="min-h-screen bg-[#020409]">
@@ -108,10 +111,22 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
           <div className="h-px bg-[#1a2540] mb-8" aria-hidden="true" />
           <h2 id="status-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('statusTitle')}</h2>
           <p className="text-slate-400 leading-relaxed mb-6 text-sm sm:text-base">{t('statusText')}</p>
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-sky-500/50">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 pulse-dot" aria-hidden="true" />
-            {t('demoNote')}
-          </div>
+          {demoUrl ? (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm bg-sky-500 text-[#020409] text-sm font-semibold hover:bg-sky-400 transition-colors duration-200"
+            >
+              {t('demoCta')}
+              <ExternalLink size={14} aria-hidden="true" />
+            </a>
+          ) : (
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-sky-500/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 pulse-dot" aria-hidden="true" />
+              {t('demoNote')}
+            </div>
+          )}
         </section>
       </div>
     </article>

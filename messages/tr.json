@@ -405,6 +405,7 @@
     "catalogFigureCaption": "Order construction against the 289-product steel catalog. Items carry their source order identifiers, and per-item quantities feed the picking problem handed to the planner.",
     "statusTitle": "Current Status",
     "statusText": "The ACO planner runs against production-scale layouts, and the reinforcement learning agents train and execute on the same environment. Work continues on comparative benchmarking across layouts and order profiles, and on packaging the platform for a public demonstration deployment.",
-    "demoNote": "A public demonstration of the simulation platform is being prepared."
+    "demoNote": "A public demonstration of the simulation platform is being prepared.",
+    "demoCta": "Try the Live Demo"
   }
 }
