@@ -13,8 +13,14 @@
  * NEXT_PUBLIC_ vars are inlined at build time, so changing it needs a redeploy.
  */
 
+/** Live and TLS-verified since 2026-08-18. The env var overrides it, so the
+ *  URL can be changed or the button removed from the Vercel dashboard without
+ *  a code change — set NEXT_PUBLIC_WAREHOUSE_DEMO_URL to 'off' to hide it. */
+const WAREHOUSE_DEMO_DEFAULT = 'https://warehouse.d7tech.net';
+
 const DEMO_URLS: Record<string, string | undefined> = {
-  'warehouse-automation': process.env.NEXT_PUBLIC_WAREHOUSE_DEMO_URL,
+  'warehouse-automation':
+    process.env.NEXT_PUBLIC_WAREHOUSE_DEMO_URL ?? WAREHOUSE_DEMO_DEFAULT,
 };
 
 /** Returns a usable https URL for the project's live demo, or null. */
