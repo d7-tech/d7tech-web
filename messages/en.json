@@ -42,7 +42,8 @@
       "advisorAsv": "ADVISOR ASV",
       "multiStaticRadar": "Multi-Static Radar",
       "underwaterGliders": "Underwater Gliders",
-      "warehouseAutomation": "Warehouse Automation"
+      "warehouseAutomation": "Warehouse Automation",
+      "microClimate": "Micro-Climate Forecasting"
     }
   },
   "Hero": {
@@ -127,6 +128,10 @@
     "warehouse-automation": {
       "title": "Warehouse Automation & Order Picking",
       "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking"
+    },
+    "micro-climate": {
+      "title": "Micro-Climate Forecasting: Rain & Wind",
+      "subtitle": "A live weather station with Single, Hybrid and Online forecasts for 1, 6 and 24 hours"
     }
   },
   "HomePage": {
@@ -407,5 +412,131 @@
     "statusText": "The ACO planner runs against production-scale layouts, and the reinforcement learning agents train and execute on the same environment. Work continues on comparative benchmarking across layouts and order profiles, and on packaging the platform for a public demonstration deployment.",
     "demoNote": "A public demonstration of the simulation platform is being prepared.",
     "demoCta": "Try the Live Demo"
+  },
+  "MicroClimatePage": {
+    "metadata": {
+      "title": "Micro-Climate Forecasting: Rain & Wind",
+      "description": "Live weather station data and rain and wind forecasts for the next 1, 6 and 24 hours — Single, Hybrid and Online models compared side by side, by D7 Technology."
+    },
+    "prjId": "PRJ-006",
+    "sectionLabel": "// AI & MACHINE LEARNING · IOT SENSING",
+    "title": "Micro-Climate Forecasting: Rain & Wind",
+    "subtitle": "A live weather station at our office, with Single, Hybrid and Online forecasts for the next 1, 6 and 24 hours — each scored against what was then measured.",
+    "overviewTitle": "Overview",
+    "overviewText": "Weather services forecast for a grid cell several kilometres wide; this project forecasts for one exact spot. A weather station outside our office window measures wind speed, gusts, direction, rain, temperature, humidity and pressure. Every reading is signed on the station and stored on our server, which issues a new forecast every hour with several methods and keeps every forecast exactly as it was issued, so their accuracy can be compared honestly.",
+    "methodsTitle": "How the forecasts are made",
+    "methodsText": "All methods answer the same question — given everything measured up to now, what will wind and rain be in 1, 6 and 24 hours? — and differ in what they know and how they learn. Two reference forecasts are always shown: persistence (\"the next hours are like the last one\") and the raw external forecast (the mean of several global weather models). A method is only useful where it beats both.",
+    "methods": {
+      "single": {
+        "title": "Single",
+        "text": "Trained once a night on the station's own history only. Strong for the next hour, where what is happening now matters most; it cannot see weather that has not arrived yet.",
+        "variants": "LightGBM (gradient-boosted trees) · SARIMA (statistical time series with a 24-hour season)"
+      },
+      "hybrid": {
+        "title": "Hybrid",
+        "text": "Combines the external weather-model forecast with the station's measurements and learns how this exact spot differs from it — sheltering by the building, rain under-catch, timing errors. Usually the best at 6 to 24 hours.",
+        "variants": "LightGBM with weather-model inputs · SARIMAX (SARIMA with the weather model as an input)"
+      },
+      "online": {
+        "title": "Online",
+        "text": "Learns from every hour as soon as its outcome is measured, instead of being retrained from scratch. Works from the first day and adapts to seasons, sensor drift or a broken data feed.",
+        "variants": "River (incremental regression) · Blend (weights every method by its recent accuracy)"
+      }
+    },
+    "scoringTitle": "How they are scored",
+    "scoringText": "Every hour the server compares the forecasts that were valid for the hour that just ended with the measurement. Wind is scored by its mean absolute error in m/s, rain chance by the Brier score (0 is perfect). Skill is the improvement over persistence on exactly the same hours. Single and Hybrid need about a week of station data before their first forecast, and get better as more weeks and seasons are collected.",
+    "systemTitle": "The system",
+    "systemText": "The station runs on an ESP32 and signs every reading with a secret key before sending it, so the server rejects anything forged or altered. Readings travel over USB to a Raspberry Pi and on to our AWS server (a 2G cellular modem is the next step), which stores them in PostgreSQL, fetches the external weather-model forecasts every hour, trains the models and serves this page's data.",
+    "dashboard": {
+      "liveTitle": "Now at the station",
+      "loading": "loading…",
+      "noData": "no data yet",
+      "liveSince": "live · last reading {minutes} min ago",
+      "lastSeen": "offline · last reading {time}",
+      "tiles": {
+        "temp": "Temperature",
+        "humidity": "Humidity",
+        "pressure": "Pressure",
+        "wind": "Wind",
+        "gust": "Gust",
+        "direction": "Direction",
+        "rainToday": "Rain today",
+        "soil": "Soil moisture"
+      },
+      "historyTitle": "Measured",
+      "range": {
+        "24": "24 h",
+        "168": "7 days",
+        "720": "30 days"
+      },
+      "completeness": "{percent}% of the expected readings received in this period · gaps are shown as gaps",
+      "charts": {
+        "wind": "Wind and gusts (m/s)",
+        "temp": "Temperature (°C)",
+        "rain": "Rain (mm)"
+      },
+      "series": {
+        "gust": "Gust",
+        "wind": "Wind",
+        "temp": "Temperature",
+        "rain": "Rain",
+        "observed": "Measured"
+      },
+      "forecastTitle": "Forecasts",
+      "forecastIntro": "The measured last 24 hours and each method's latest forecast for the next 24 hours. Pick a variable and a method family; the two reference forecasts are drawn dashed.",
+      "variableLabel": "Variable",
+      "variables": {
+        "wind_ms": "Wind",
+        "gust_ms": "Gust",
+        "rain_mm": "Rain amount",
+        "rain_prob": "Rain chance",
+        "wind_dir_deg": "Direction"
+      },
+      "groupLabel": "Method family",
+      "groups": {
+        "single": "Single",
+        "hybrid": "Hybrid",
+        "online": "Online"
+      },
+      "methods": {
+        "persistence": "Persistence",
+        "nwp": "Weather model",
+        "single-lgbm": "Single · LightGBM",
+        "single-sarima": "Single · SARIMA",
+        "hybrid-lgbm": "Hybrid · LightGBM",
+        "hybrid-sarimax": "Hybrid · SARIMAX",
+        "online-river": "Online · River",
+        "online": "Online · Blend"
+      },
+      "methodInfo": {
+        "single-lgbm": "Gradient-boosted trees on the station's own recent measurements.",
+        "single-sarima": "Classical time-series model with a daily (24 h) cycle.",
+        "hybrid-lgbm": "Gradient-boosted trees that also see the weather-model forecast.",
+        "hybrid-sarimax": "SARIMA with the weather-model forecast as an extra input.",
+        "online-river": "Small models updated after every measured hour.",
+        "online": "Weighted mix of all methods, trusting whichever has been most accurate lately."
+      },
+      "now": "now",
+      "issuedAt": "issued {time}",
+      "noForecastYet": "no forecast yet",
+      "notForVariable": "not forecast for this variable (wind, gust and rain amount only)",
+      "ready": "forecasting",
+      "warmingUp": "learning — publishes after 48 measured hours",
+      "blendWaiting": "waiting for the other methods",
+      "training": "waiting for data: {note}",
+      "table": {
+        "method": "Method",
+        "in": "in {hours} h",
+        "at": "{hours} h ahead"
+      },
+      "accuracyTitle": "Accuracy so far",
+      "days": "{days} days",
+      "accuracyIntro": "Mean absolute error of the {variable} forecast (lower is better); the coloured number is the improvement over persistence.",
+      "accuracyIntroRain": "Brier score of the {variable} forecast (0 is perfect, lower is better); the coloured number is the improvement over persistence.",
+      "noScoresYet": "// Scores appear once forecasts have been checked against measurements (from the first day on).",
+      "weightsTitle": "Who the Online blend trusts now",
+      "weightsIntro": "The blend weights every method by how accurate it has been over the last days, separately for each forecast horizon.",
+      "noWeightsYet": "// The blend has no track record yet."
+    }
   }
 }

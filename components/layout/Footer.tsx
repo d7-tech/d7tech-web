@@ -34,6 +34,7 @@ export default function Footer() {
     { labelKey: 'projectLinks.multiStaticRadar' as const, href: '/projects/multistatic' },
     { labelKey: 'projectLinks.underwaterGliders' as const, href: '/projects/underwater-gliders' },
     { labelKey: 'projectLinks.warehouseAutomation' as const, href: '/projects/warehouse-automation' },
+    { labelKey: 'projectLinks.microClimate' as const, href: '/projects/micro-climate' },
   ];
 
   const socialLinks = [

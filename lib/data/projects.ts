@@ -114,6 +114,19 @@ export const projects: Project[] = [
     description:
       'Order picking optimization for steel warehouses, combining deep reinforcement learning agents with swarm-based path planning. Multiple picking vehicles are coordinated across a grid warehouse model to minimize total order completion time while avoiding collisions in shared aisles.',
   },
+  {
+    id: 'prj-006',
+    slug: 'micro-climate',
+    title: 'Micro-Climate Forecasting: Rain & Wind',
+    subtitle: 'A live weather station with Single, Hybrid and Online forecasts for 1, 6 and 24 hours',
+    status: 'active',
+    tags: ['IoT', 'Time Series', 'LightGBM', 'SARIMA', 'Online Learning', 'AWS'],
+    category: 'ai-ml',
+    coverImage: '/images/projects/micro-climate.svg',
+    coverImageAlt: 'Measured wind and several forecast lines branching from the present moment',
+    description:
+      'A weather station at our office measures wind, rain, temperature, humidity and pressure and sends signed readings to our AWS server, which forecasts rain and wind for the next 1, 6 and 24 hours with several methods and scores every forecast against what was then measured.',
+  },
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {
