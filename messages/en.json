@@ -540,7 +540,11 @@
         "freshBreeze": "Fresh wind",
         "strongBreeze": "Strong wind",
         "gale": "Gale"
-      }
+      },
+      "best": "most accurate",
+      "testedTitle": "How the models scored in testing",
+      "testedHint": "Before going live, both LightGBM models were tested on 6 months of data from nearby weather stations that they never saw in training. Bars show how much smaller their error was than “No change”.",
+      "testedNote": "Above 0 = better than assuming nothing changes. The raw weather service is far off at short range (bars cut at −60%) because it forecasts a grid cell, not the exact spot."
     }
   }
 }

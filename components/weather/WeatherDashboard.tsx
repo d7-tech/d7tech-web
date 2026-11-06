@@ -6,6 +6,8 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  ComposedChart,
+  LabelList,
   Line,
   LineChart,
   ReferenceLine,
@@ -14,6 +16,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { TEST_SCORES } from '@/lib/data/weatherTestScores';
 
 /**
  * Live data and forecasts from the LakeLink server (FastAPI, read-only, CORS-enabled for d7tech.net).
@@ -214,6 +217,7 @@ export default function WeatherDashboard() {
   const [weights, setWeights] = useState<Weight[]>([]);
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [source, setSource] = useState<string | null>(null);
+  const [testVar, setTestVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob' | 'rain_mm'>('wind_ms');
   const [now, setNow] = useState(() => Date.now());
 
   const timeFmt = useMemo(() => new Intl.DateTimeFormat(locale, { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }), [locale]);
@@ -423,6 +427,32 @@ export default function WeatherDashboard() {
         {strip.length === 0 ? (
           <p className="text-sm text-slate-500">{t('status.none')}</p>
         ) : (
+          <>
+          <div className={`${card} p-4 mb-3`}>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
+              <Legend color="#38bdf8" label={t('series.wind')} />
+              <Legend color="#38bdf8" label={t('series.gust')} dashed />
+              <span className="inline-flex items-center gap-1.5 text-slate-400">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: 'rgba(56,189,248,0.35)' }} aria-hidden="true" />
+                {t('rows.rainProb')}
+              </span>
+            </div>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={strip.map((r) => ({ t: r.at, wind: r.wind, gust: r.gust, rain: r.prob === null ? null : Math.round(r.prob * 100) }))}
+                  margin={{ top: 8, right: 0, bottom: 0, left: -16 }}>
+                  <CartesianGrid stroke="#1a2540" vertical={false} />
+                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => hourFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={24} />
+                  <YAxis yAxisId="w" stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={[0, 'auto']} unit="" />
+                  <YAxis yAxisId="r" orientation="right" stroke="#475569" fontSize={11} domain={[0, 100]} tickFormatter={(v) => `${v}%`} width={40} />
+                  <Tooltip content={<MeteoTip fmtTime={(v) => dayFmt.format(v)} names={{ wind: t('series.wind'), gust: t('series.gust'), rain: t('rows.rainProb') }} />} />
+                  <Bar yAxisId="r" dataKey="rain" fill="rgba(56,189,248,0.35)" isAnimationActive={false} />
+                  <Line yAxisId="w" dataKey="gust" stroke="#38bdf8" strokeDasharray="4 3" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+                  <Line yAxisId="w" dataKey="wind" stroke="#38bdf8" strokeWidth={2.5} dot={false} isAnimationActive={false} />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
           <div className={`${card} overflow-x-auto`}>
             <table className="text-xs tabular-nums border-collapse min-w-max w-full">
               <tbody>
@@ -454,6 +484,7 @@ export default function WeatherDashboard() {
               </tbody>
             </table>
           </div>
+          </>
         )}
         <p className="text-xs text-slate-500 mt-2">{src ? t('hourlyNote', { method: t(`methods.${src}` as any) }) : ''}</p>
       </section>
@@ -575,39 +606,45 @@ export default function WeatherDashboard() {
           {metrics.length === 0 ? (
             <p className="text-sm text-slate-500">{t('noScoresYet')}</p>
           ) : (
-            <div className={`${card} overflow-x-auto`}>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs text-slate-500 border-b border-[#1a2540]">
-                    <th className="p-3 font-normal" />
-                    {[1, 6, 24].map((h) => <th key={h} className="p-3 font-normal text-right">{t('ahead', { hours: h })}</th>)}
-                  </tr>
-                </thead>
-                <tbody>
-                  {ALL_METHODS.filter((m) => metrics.some((x) => x.method === m)).map((m) => (
-                    <tr key={m} className="border-b border-[#1a2540]/60 last:border-0">
-                      <td className="p-3 text-slate-300 whitespace-nowrap">
-                        <span className="inline-block w-2 h-2 rounded-full mr-2 align-middle" style={{ background: COLOR[m] }} aria-hidden="true" />
-                        {t(`methods.${m}` as any)}
-                      </td>
-                      {[1, 6, 24].map((h) => {
-                        const x = metricFor(m, h);
-                        const skill = x?.skill_vs_persistence;
-                        return (
-                          <td key={h} className="p-3 text-right tabular-nums" title={x ? t('checks', { n: x.n }) : undefined}>
-                            <span className="text-slate-200">{fmt(headline(x), variable === 'rain_prob' ? 3 : 2)}</span>
-                            {skill !== null && skill !== undefined && m !== 'persistence' && (
-                              <span className={`ml-2 text-xs ${skill > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                {skill > 0 ? '+' : ''}{Math.round(skill * 100)}%
-                              </span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {[1, 6, 24].map((h) => {
+                const rows = ALL_METHODS.map((m) => ({ m, x: metricFor(m, h) }))
+                  .filter((r) => r.x && headline(r.x) !== null && headline(r.x) !== undefined)
+                  .sort((p, q) => (headline(p.x) as number) - (headline(q.x) as number));
+                const max = Math.max(...rows.map((r) => headline(r.x) as number), 1e-9);
+                return (
+                  <div key={h} className={`${card} p-4`}>
+                    <div className="text-xs text-slate-500 mb-3">{t('ahead', { hours: h })}</div>
+                    {rows.length === 0 ? <p className="text-xs text-slate-600">–</p> : (
+                      <div className="space-y-2.5">
+                        {rows.map(({ m, x }, i) => {
+                          const v = headline(x) as number;
+                          const skill = x?.skill_vs_persistence;
+                          return (
+                            <div key={m} title={t('checks', { n: x!.n })}>
+                              <div className="flex items-baseline justify-between text-xs mb-1 gap-2">
+                                <span className={i === 0 ? 'text-slate-100 font-medium' : 'text-slate-400'}>
+                                  {i === 0 && <span className="text-amber-300 mr-1" aria-label={t('best')}>★</span>}
+                                  {t(`methods.${m}` as any)}
+                                </span>
+                                <span className="tabular-nums text-slate-300 whitespace-nowrap">
+                                  {fmt(v, variable === 'rain_prob' ? 3 : 2)}
+                                  {skill !== null && skill !== undefined && m !== 'persistence' && (
+                                    <span className={`ml-1.5 ${skill > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{skill > 0 ? '+' : ''}{Math.round(skill * 100)}%</span>
+                                  )}
+                                </span>
+                              </div>
+                              <div className="h-1.5 rounded-full bg-[#1a2540] overflow-hidden">
+                                <div className="h-full rounded-full" style={{ width: `${Math.max(3, (v / max) * 100)}%`, background: COLOR[m] }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -639,6 +676,46 @@ export default function WeatherDashboard() {
               })}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* ---------- how the pre-trained models scored in testing ---------- */}
+      <section aria-labelledby="tested-heading">
+        <h2 id="tested-heading" className={`${h2} mb-1`}>{t('testedTitle')}</h2>
+        <p className="text-xs text-slate-500 mb-3">{t('testedHint')}</p>
+        <div className="flex flex-wrap gap-2 mb-3" role="group">
+          {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
+            <button key={v} className={chip(testVar === v)} onClick={() => setTestVar(v)} aria-pressed={testVar === v}>
+              {t(`variables.${v}` as any)}
+            </button>
+          ))}
+        </div>
+        <div className={`${card} p-4`}>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
+            {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
+              <span key={m} className="inline-flex items-center gap-1.5 text-slate-400">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: COLOR[m] }} aria-hidden="true" />
+                {t(`methods.${m}` as any)}
+              </span>
+            ))}
+          </div>
+          <div className="h-[240px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={([1, 6, 24] as const).map((h) => ({ h: t('ahead', { hours: h }), ...TEST_SCORES[testVar][h] }))}
+                margin={{ top: 18, right: 8, bottom: 0, left: -12 }} barCategoryGap="22%">
+                <CartesianGrid stroke="#1a2540" vertical={false} />
+                <XAxis dataKey="h" stroke="#475569" fontSize={11} />
+                <YAxis stroke="#475569" fontSize={11} domain={[-60, 70]} allowDataOverflow tickFormatter={(v) => `${v}%`} ticks={[-60, -30, 0, 30, 60]} />
+                <ReferenceLine y={0} stroke="#64748b" />
+                {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
+                  <Bar key={m} dataKey={m} fill={COLOR[m]} isAnimationActive={false} radius={[2, 2, 0, 0]}>
+                    <LabelList dataKey={m} content={SkillLabel} />
+                  </Bar>
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-2">{t('testedNote')}</p>
         </div>
       </section>
     </div>
@@ -702,4 +779,34 @@ function Tip({ active, label, payload, fmtTime, unit, names }: TipProps) {
       ))}
     </div>
   );
+}
+
+function MeteoTip({ active, label, payload, fmtTime, names }: {
+  active?: boolean; label?: number; payload?: { dataKey: string; value: number | null }[];
+  fmtTime: (v: number) => string; names: Record<string, string>;
+}) {
+  if (!active || !payload?.length || label === undefined) return null;
+  return (
+    <div className="rounded-md border border-[#1a2540] bg-[#020409]/95 px-3 py-2 text-xs shadow-lg">
+      <div className="text-[10px] text-slate-500 mb-1">{fmtTime(label)}</div>
+      {payload.filter((p) => p.value !== null && p.value !== undefined).map((p) => (
+        <div key={p.dataKey} className="flex justify-between gap-4 text-slate-300">
+          <span>{names[p.dataKey] ?? p.dataKey}</span>
+          <span className="tabular-nums">{p.dataKey === 'rain' ? `${p.value}%` : `${Number(p.value).toFixed(1)} m/s`}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** % label on a test-score bar: above a positive bar, just under the zero line inside a negative one
+ * (negative bars can be cut off at the bottom of the axis, the label always shows the real value). */
+function SkillLabel(props: { x?: number | string; y?: number | string; width?: number | string; height?: number | string; value?: number | string }) {
+  const x = Number(props.x ?? 0), w = Number(props.width ?? 0), v = Number(props.value ?? 0);
+  const y = Math.min(Number(props.y ?? 0), Number(props.y ?? 0) + Number(props.height ?? 0)); // top edge of the bar
+  const text = `${v > 0 ? '+' : ''}${Math.round(v)}%`;
+  const hgt = Math.abs(Number(props.height ?? 0));
+  if (v >= 0) return <text x={x + w / 2} y={y - 5} textAnchor="middle" fontSize={10} fill="#cbd5e1">{text}</text>;
+  if (hgt < 18) return <text x={x + w / 2} y={y + hgt + 12} textAnchor="middle" fontSize={10} fill="#cbd5e1">{text}</text>;
+  return <text x={x + w / 2} y={y + 13} textAnchor="middle" fontSize={10} fontWeight={600} fill="#0b1220">{text}</text>;
 }

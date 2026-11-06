@@ -540,7 +540,11 @@
         "freshBreeze": "Sert esinti",
         "strongBreeze": "Kuvvetli rüzgâr",
         "gale": "Fırtına"
-      }
+      },
+      "best": "en isabetli",
+      "testedTitle": "Modeller testte nasıl puan aldı",
+      "testedHint": "Yayına almadan önce iki LightGBM modeli, eğitimde hiç görmedikleri yakındaki hava istasyonlarının 6 aylık verisiyle test edildi. Çubuklar, hatalarının “Değişim yok”a göre ne kadar küçük olduğunu gösterir.",
+      "testedNote": "0'ın üstü = hiçbir şeyin değişmeyeceğini varsaymaktan daha iyi. Ham hava servisi kısa vadede çok sapar (çubuklar −%60'ta kesildi), çünkü tam noktayı değil bir ızgara hücresini tahmin eder."
     }
   }
 }
