@@ -67,12 +67,13 @@ const GROUPS: Record<Group, string[]> = {
   hybrid: ['hybrid-lgbm', 'hybrid-sarimax'],
   online: ['online-river', 'online'],
 };
-const BASELINES = ['persistence', 'nwp'];
+const BASELINES = ['persistence', 'nwp', 'twc'];
 const ALL_METHODS = [...GROUPS.single, ...GROUPS.hybrid, ...GROUPS.online, ...BASELINES];
 const COLOR: Record<string, string> = {
   observed: '#e2e8f0',
   persistence: '#64748b',
   nwp: '#f59e0b',
+  twc: '#e879f9',
   'single-lgbm': '#38bdf8',
   'single-sarima': '#a78bfa',
   'hybrid-lgbm': '#34d399',
@@ -82,7 +83,7 @@ const COLOR: Record<string, string> = {
 };
 const SARIMA_VARS: Variable[] = ['wind_ms', 'gust_ms', 'rain_mm'];
 /** Forecast sources offered in the hourly strip, best first. */
-const SOURCES = ['online', 'hybrid-lgbm', 'single-lgbm', 'nwp'];
+const SOURCES = ['online', 'hybrid-lgbm', 'single-lgbm', 'nwp', 'twc'];
 
 async function getJson<T>(path: string): Promise<T | null> {
   try {

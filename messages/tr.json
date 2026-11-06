@@ -509,7 +509,8 @@
         "hybrid-lgbm": "Hibrit · LightGBM",
         "hybrid-sarimax": "Hibrit · SARIMAX",
         "online-river": "Çevrimiçi · River",
-        "online": "Çevrimiçi · Karışım"
+        "online": "Çevrimiçi · Karışım",
+        "twc": "Weather.com"
       },
       "now": "şimdi",
       "status": {

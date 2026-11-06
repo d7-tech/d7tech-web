@@ -509,7 +509,8 @@
         "hybrid-lgbm": "Hybrid · LightGBM",
         "hybrid-sarimax": "Hybrid · SARIMAX",
         "online-river": "Online · River",
-        "online": "Online · Blend"
+        "online": "Online · Blend",
+        "twc": "Weather.com"
       },
       "now": "now",
       "status": {
