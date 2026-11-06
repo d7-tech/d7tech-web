@@ -440,7 +440,7 @@
     "moreTitle": "Daha fazla ayrıntı",
     "moreScoring": "Her tahmin yayımlandığı haliyle saklanır ve saati geçince ölçümle karşılaştırılır. Rüzgâr m/s cinsinden ortalama hatayla, yağış olasılığı Brier skoruyla (0 = kusursuz) puanlanır. Yüzde, bir modelin “Değişim yok” varsayımından ne kadar iyi olduğunu gösterir.",
     "moreSystem": "İstasyon (rüzgâr, yağış, sıcaklık, nem ve basınç sensörlü ESP32) her ölçümü imzalar ve 5 dakikada bir Raspberry Pi üzerinden AWS sunucumuza gönderir; sunucu ayrıca her saat hava servisi tahminlerini indirir ve modelleri eğitir.",
-    "moreModels": "LightGBM modelleri yakındaki 13 istasyonun 11 yıllık verisiyle önceden eğitildi ve her gece bu istasyonla ince ayar yapılır; SARIMA/SARIMAX 7 günlük veriden sonra başlar.",
+    "moreModels": "LightGBM modelleri yakındaki 13 istasyonun 11 yıllık verisiyle önceden eğitildi ve her gece bu istasyonla ince ayar yapılır; SARIMA/SARIMAX 7 günlük veriden sonra başlar. Çevrimiçi karışım ayrıca Weather.com günlük tahminini (saatlere yayılmış 12 saatlik gündüz ve gece blokları) de değerlendirir.",
     "dashboard": {
       "nowTitle": "Şu an",
       "updated": "{minutes} dk önce güncellendi",

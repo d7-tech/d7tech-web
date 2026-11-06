@@ -440,7 +440,7 @@
     "moreTitle": "More details",
     "moreScoring": "Every forecast is kept as issued and checked against the measurement once its hour has passed. Wind is scored by average error in m/s, rain chance by the Brier score (0 = perfect). The percentage shows how much better a model is than simply assuming “No change”.",
     "moreSystem": "The station (ESP32 with wind, rain, temperature, humidity and pressure sensors) signs each reading, sends it every 5 minutes via a Raspberry Pi to our AWS server, which also downloads weather-service forecasts every hour and trains the models.",
-    "moreModels": "LightGBM models were pre-trained on 11 years from 13 nearby weather stations and are fine-tuned nightly on this station; SARIMA/SARIMAX start after 7 days of data.",
+    "moreModels": "LightGBM models were pre-trained on 11 years from 13 nearby weather stations and are fine-tuned nightly on this station; SARIMA/SARIMAX start after 7 days of data. The Online blend also weighs the Weather.com daily forecast (12-hour day and night blocks spread over the hours).",
     "dashboard": {
       "nowTitle": "Now",
       "updated": "updated {minutes} min ago",
