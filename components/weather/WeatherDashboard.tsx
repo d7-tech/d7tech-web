@@ -55,6 +55,7 @@ type Bin = {
 type Pred = { method: string; issued_at: string; valid_at: string; value: number; lo: number | null; hi: number | null };
 type Metric = { method: string; horizon_h: number; n: number; mae: number | null; brier: number | null; skill_vs_persistence: number | null };
 type Weight = { horizon_h: number; method: string; weight: number };
+type Verify = { horizon_h: number; observed: { valid_at: string; value: number }[]; forecasts: { method: string; valid_at: string; value: number }[] };
 type ModelStatus = { method: string; trained_at: string; ready: boolean; note: string | null };
 
 type Variable = 'wind_ms' | 'gust_ms' | 'rain_mm' | 'rain_prob' | 'wind_dir_deg';
@@ -218,6 +219,9 @@ export default function WeatherDashboard() {
   const [weights, setWeights] = useState<Weight[]>([]);
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [source, setSource] = useState<string | null>(null);
+  const [verifyVar, setVerifyVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob' | 'rain_mm'>('wind_ms');
+  const [verifyH, setVerifyH] = useState<1 | 6 | 24>(6);
+  const [verify, setVerify] = useState<Verify | null>(null);
   const [testVar, setTestVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob' | 'rain_mm'>('wind_ms');
   const [now, setNow] = useState(() => Date.now());
 
@@ -264,6 +268,13 @@ export default function WeatherDashboard() {
   useEffect(() => {
     loadWeights();
   }, [loadWeights]);
+  useEffect(() => {
+    let alive = true;
+    getJson<Verify>(`/verify?station=${STATION}&variable=${verifyVar}&horizon=${verifyH}&hours=48`).then((v) => alive && setVerify(v));
+    return () => {
+      alive = false;
+    };
+  }, [verifyVar, verifyH, now]);
   useEffect(() => {
     loadMetrics();
   }, [loadMetrics]);
@@ -348,6 +359,27 @@ export default function WeatherDashboard() {
     return t('status.none');
   };
 
+  const vScale = verifyVar === 'rain_prob' ? 100 : 1;
+  const verifyRows = useMemo(() => {
+    if (!verify) return [];
+    const rows = new Map<number, Record<string, number | null>>();
+    const nowH = Math.floor(now / HOUR) * HOUR;
+    for (let h = -48; h <= 0; h++) rows.set(nowH + h * HOUR, {});
+    for (const o of verify.observed) rows.get(Date.parse(o.valid_at)) && (rows.get(Date.parse(o.valid_at))!.observed = o.value * vScale);
+    for (const f of verify.forecasts) rows.get(Date.parse(f.valid_at)) && (rows.get(Date.parse(f.valid_at))![f.method] = f.value * vScale);
+    return Array.from(rows.entries()).sort((a, b) => a[0] - b[0]).map(([tt, r]) => ({ t: tt, ...r }));
+  }, [verify, vScale, now]);
+  const verifyMethods = ALL_METHODS.filter((m) => verify?.forecasts.some((f) => f.method === m));
+  const example = useMemo(() => {
+    if (!verify) return null;
+    const obs = new Map(verify.observed.map((o) => [o.valid_at, o.value]));
+    for (const m of ['online', 'hybrid-lgbm', 'single-lgbm', 'nwp']) {
+      const f = [...verify.forecasts].reverse().find((x) => x.method === m && obs.has(x.valid_at));
+      if (f) return { m, at: Date.parse(f.valid_at), pred: f.value * vScale, obs: obs.get(f.valid_at)! * vScale };
+    }
+    return null;
+  }, [verify, vScale]);
+
   const metricFor = (method: string, h: number) => metrics.find((m) => m.method === method && m.horizon_h === h);
   const headline = (m?: Metric) => (variable === 'rain_prob' ? m?.brier : m?.mae);
 
@@ -367,6 +399,19 @@ export default function WeatherDashboard() {
 
   return (
     <div className="space-y-10">
+      {/* ---------- how the page works, in three steps ---------- */}
+      <ol className="grid gap-3 sm:grid-cols-3" aria-label={t('stepsLabel')}>
+        {(['measure', 'forecast', 'check'] as const).map((k, i) => (
+          <li key={k} className={`${card} p-4 flex gap-3`}>
+            <span className="w-7 h-7 shrink-0 rounded-full bg-sky-400/10 border border-sky-400/40 text-sky-300 text-sm flex items-center justify-center">{i + 1}</span>
+            <div>
+              <div className="text-sm text-slate-100 font-medium">{t(`steps.${k}.title` as any)}</div>
+              <div className="text-xs text-slate-400 leading-relaxed mt-0.5">{t(`steps.${k}.text` as any)}</div>
+            </div>
+          </li>
+        ))}
+      </ol>
+
       {/* ---------- now ---------- */}
       <section aria-labelledby="now-heading" className={`${card} p-5 sm:p-6`}>
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
@@ -408,7 +453,7 @@ export default function WeatherDashboard() {
             ))}
           </dl>
         </div>
-        <p className="text-[11px] text-slate-600 mt-4">{t('rawNote')}</p>
+        <div className="mt-4"><Explain text={t('explain.now')} /></div>
       </section>
 
       {/* ---------- next 24 hours, hour by hour ---------- */}
@@ -425,6 +470,7 @@ export default function WeatherDashboard() {
             </div>
           )}
         </div>
+        <Explain text={t('explain.hourly')} />
         {strip.length === 0 ? (
           <p className="text-sm text-slate-500">{t('status.none')}</p>
         ) : (
@@ -502,6 +548,7 @@ export default function WeatherDashboard() {
             ))}
           </div>
         </div>
+        <Explain text={t('explain.history')} />
         <div className="grid gap-3 md:grid-cols-3">
           <ChartCard title={t('charts.wind')} card={`${card} md:col-span-3`}>
             <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
@@ -537,6 +584,7 @@ export default function WeatherDashboard() {
       {/* ---------- compare the models ---------- */}
       <section aria-labelledby="compare-heading">
         <h2 id="compare-heading" className={`${h2} mb-3`}>{t('compareTitle')}</h2>
+        <Explain text={t('explain.compare')} />
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <div className="flex flex-wrap gap-2" role="group" aria-label={t('variableLabel')}>
             {VARIABLES.map((v) => (
@@ -590,6 +638,65 @@ export default function WeatherDashboard() {
         </div>
       </section>
 
+      {/* ---------- forecast vs what happened ---------- */}
+      <section aria-labelledby="verify-heading">
+        <h2 id="verify-heading" className={`${h2} mb-3`}>{t('verifyTitle')}</h2>
+        <Explain text={t('explain.verify', { hours: verifyH })} />
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t('variableLabel')}>
+            {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
+              <button key={v} className={chip(verifyVar === v)} onClick={() => setVerifyVar(v)} aria-pressed={verifyVar === v}>
+                {t(`variables.${v}` as any)}
+              </button>
+            ))}
+          </div>
+          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t('verifyLead')}>
+            {([1, 6, 24] as const).map((h) => (
+              <button key={h} className={chip(verifyH === h)} onClick={() => setVerifyH(h)} aria-pressed={verifyH === h}>
+                {t('madeBefore', { hours: h })}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className={`${card} p-4`}>
+          {example && (
+            <p className="text-sm text-slate-300 mb-3">
+              {t('verifyExample', {
+                time: timeFmt.format(example.at), hours: verifyH, method: t(`methods.${example.m}` as any),
+                pred: fmt(example.pred, verifyVar === 'rain_prob' ? 0 : 1), obs: fmt(example.obs, verifyVar === 'rain_prob' ? 0 : 1),
+                unit: UNIT[verifyVar], diff: fmt(Math.abs(example.pred - example.obs), verifyVar === 'rain_prob' ? 0 : 1),
+              })}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs">
+            <Legend color={COLOR.observed} label={t('series.observed')} />
+            {verifyMethods.map((m) => (
+              <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} />
+            ))}
+          </div>
+          {verifyMethods.length === 0 ? (
+            <p className="text-sm text-slate-500 py-8 text-center">{t('verifyNone')}</p>
+          ) : (
+            <div className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={verifyRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                  <CartesianGrid stroke="#1a2540" vertical={false} />
+                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => dayFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={50} />
+                  <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={verifyVar === 'rain_prob' ? [0, 100] : [0, 'auto']} />
+                  <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[verifyVar]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
+                  <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2.5} dot={loneDot(verifyRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
+                  {verifyMethods.map((m) => (
+                    <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
+                      strokeDasharray={BASELINES.includes(m) ? '5 4' : undefined} dot={false} isAnimationActive={false} connectNulls={false} />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ---------- accuracy + blend ---------- */}
       <section aria-labelledby="accuracy-heading" className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div>
@@ -603,7 +710,7 @@ export default function WeatherDashboard() {
               ))}
             </div>
           </div>
-          <p className="text-xs text-slate-500 mb-3">{t(variable === 'rain_prob' ? 'accuracyHintRain' : 'accuracyHint', { unit: UNIT[variable] })}</p>
+          <Explain text={t(variable === 'rain_prob' ? 'explain.accuracyRain' : 'explain.accuracy', { unit: UNIT[variable], variable: t(`variables.${variable}` as any) })} />
           {metrics.length === 0 ? (
             <p className="text-sm text-slate-500">{t('noScoresYet')}</p>
           ) : (
@@ -651,7 +758,7 @@ export default function WeatherDashboard() {
         </div>
         <div>
           <h3 className={`${h2} mb-1`}>{t('weightsTitle')}</h3>
-          <p className="text-xs text-slate-500 mb-3">{t('weightsHint')}</p>
+          <Explain text={t('explain.weights')} />
           {weights.length === 0 ? (
             <p className="text-sm text-slate-500">{t('noWeightsYet')}</p>
           ) : (
@@ -683,7 +790,7 @@ export default function WeatherDashboard() {
       {/* ---------- how the pre-trained models scored in testing ---------- */}
       <section aria-labelledby="tested-heading">
         <h2 id="tested-heading" className={`${h2} mb-1`}>{t('testedTitle')}</h2>
-        <p className="text-xs text-slate-500 mb-3">{t('testedHint')}</p>
+        <Explain text={t('explain.tested')} />
         <div className="flex flex-wrap gap-2 mb-3" role="group">
           {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
             <button key={v} className={chip(testVar === v)} onClick={() => setTestVar(v)} aria-pressed={testVar === v}>
@@ -720,6 +827,15 @@ export default function WeatherDashboard() {
         </div>
       </section>
     </div>
+  );
+}
+
+function Explain({ text }: { text: string }) {
+  return (
+    <p className="flex gap-2 text-[13px] text-slate-400 leading-relaxed mb-3 max-w-4xl">
+      <span className="shrink-0 mt-[1px] w-4 h-4 rounded-full border border-sky-400/50 text-sky-300 text-[10px] flex items-center justify-center" aria-hidden="true">i</span>
+      <span>{text}</span>
+    </p>
   );
 }
 

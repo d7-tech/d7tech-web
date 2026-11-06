@@ -451,7 +451,6 @@
       "from": "from {dir}",
       "noDirection": "no direction (calm)",
       "gustNow": "gusts {gust} m/s",
-      "rawNote": "Raw sensor readings. The station sits next to the building: temperature reads a few degrees warm and wind is sheltered.",
       "tiles": {
         "rainToday": "Rain today",
         "humidity": "Humidity",
@@ -523,14 +522,11 @@
         "none": "no forecast yet"
       },
       "accuracyTitle": "Accuracy · {variable}",
-      "accuracyHint": "Average error in {unit} (lower is better). % = better than “No change”.",
-      "accuracyHintRain": "Brier score (0 = perfect). % = better than “No change”.",
       "ahead": "{hours} h ahead",
       "days": "{days} days",
       "checks": "{n} checks",
       "noScoresYet": "Scores appear after the first forecasts have been checked.",
       "weightsTitle": "Online blend",
-      "weightsHint": "How much the blend trusts each model right now.",
       "noWeightsYet": "No track record yet.",
       "wind": {
         "calm": "Calm",
@@ -544,8 +540,38 @@
       },
       "best": "most accurate",
       "testedTitle": "How the models scored in testing",
-      "testedHint": "Before going live, both LightGBM models were tested on 6 months of data from nearby weather stations that they never saw in training. Bars show how much smaller their error was than “No change”.",
-      "testedNote": "Above 0 = better than assuming nothing changes. The raw weather service is far off at short range (bars cut at −60%) because it forecasts a grid cell, not the exact spot."
+      "testedNote": "Above 0 = better than assuming nothing changes. The raw weather service is far off at short range (bars cut at −60%) because it forecasts a grid cell, not the exact spot.",
+      "stepsLabel": "How this page works",
+      "steps": {
+        "measure": {
+          "title": "1 · Measure",
+          "text": "The station at our window measures wind, rain, temperature and more every 5 minutes."
+        },
+        "forecast": {
+          "title": "2 · Forecast",
+          "text": "Every hour, several models predict wind and rain for each of the next 24 hours."
+        },
+        "check": {
+          "title": "3 · Check",
+          "text": "When an hour has passed, every forecast for it is compared with what the station really measured. That is how we know which model to trust."
+        }
+      },
+      "explain": {
+        "now": "What the station is measuring right now. The arrow on the compass shows where the wind comes from. The station sits close to the building, so temperature reads a few degrees warm and wind is weaker than in the open.",
+        "hourly": "Our forecast for each of the next 24 hours, read left to right like a timeline. Greener or darker cells mean stronger wind; blue bars and blue cells show the chance of rain in that hour. Arrows point where the wind blows to. The buttons switch which model's forecast you see.",
+        "history": "What the station actually measured. The thick line is the average wind, the thin line the strongest gust. Blank stretches mean no data arrived.",
+        "compare": "Every model's latest forecast on one chart. Left of the “now” line is what was measured, right of it what each model expects. Lines close together mean the models agree; far apart means the forecast is uncertain. Dashed lines are the simple reference forecasts.",
+        "verify": "The honest test. For every past hour, the coloured lines show what each model had predicted {hours} h earlier; the white line shows what really happened. The closer a coloured line follows the white one, the better that model.",
+        "accuracy": "Averaged over all checked hours: how far off each model's {variable} forecast was, in {unit}. Shorter bar = more accurate, ★ = best. The green or red % shows how much better or worse it is than simply assuming “No change”.",
+        "accuracyRain": "Averaged over all checked hours: the Brier score of the rain-chance forecast (0 is perfect, higher is worse). Shorter bar = more accurate, ★ = best. The green or red % compares it with “No change”.",
+        "weights": "The Online blend mixes all models into one forecast. Each bar shows how much it relies on each model right now: models that were right recently get a bigger share.",
+        "tested": "Before going live, the models were tested on 6 months of weather from nearby stations they had never seen. A bar above 0 means the model's error was that much smaller than just assuming “No change”; below 0 means it was worse."
+      },
+      "verifyTitle": "Forecast vs what happened",
+      "verifyLead": "Forecast made",
+      "madeBefore": "{hours} h before",
+      "verifyExample": "Example: for {time}, {method} predicted {pred} {unit}, {hours} h in advance. The station then measured {obs} {unit}, so it was off by {diff}.",
+      "verifyNone": "Not enough checked forecasts yet. This fills up as the hours pass."
     }
   }
 }
