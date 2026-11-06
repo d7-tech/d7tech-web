@@ -571,7 +571,52 @@
       "verifyLead": "Tahminin yapıldığı an",
       "madeBefore": "{hours} sa önce",
       "verifyExample": "Örnek: {time} için {method}, {hours} sa önceden {pred} {unit} tahmin etti. İstasyon sonra {obs} {unit} ölçtü; yani {diff} saptı.",
-      "verifyNone": "Henüz yeterince kontrol edilmiş tahmin yok. Saatler geçtikçe dolar."
+      "verifyNone": "Henüz yeterince kontrol edilmiş tahmin yok. Saatler geçtikçe dolar.",
+      "dirs": {
+        "N": "kuzeyden",
+        "NE": "kuzeydoğudan",
+        "E": "doğudan",
+        "SE": "güneydoğudan",
+        "S": "güneyden",
+        "SW": "güneybatıdan",
+        "W": "batıdan",
+        "NW": "kuzeybatıdan"
+      },
+      "simple": {
+        "nowTitle": "Şu an İstanbul'daki ofisimizde",
+        "raining": "Yağmur yağıyor.",
+        "dry": "Yağmur yağmıyor.",
+        "noWind": "Neredeyse hiç rüzgâr yok.",
+        "windNow": "{word}: {dir} {speed} m/s ({kmh} km/sa).",
+        "windNowNoDir": "{word}: {speed} m/s ({kmh} km/sa).",
+        "gustLabel": "Az önceki en güçlü hamle",
+        "gustValue": "{gust} m/s",
+        "rainLabel": "Bugün yağış",
+        "rainSoFar": "şu ana kadar {mm} mm",
+        "noRainToday": "Şu ana kadar yağış yok",
+        "humidityLabel": "Nem",
+        "sensorNote": "Ofis penceresinin yanındaki kendi hava istasyonumuzla ölçülür. Doğrudan güneşte sıcaklık yüksek görünebilir.",
+        "nextTitle": "Önümüzdeki 24 saat",
+        "rain6": {
+          "unlikely": "Önümüzdeki 6 saatte yağış beklenmiyor (en fazla %{pct} olasılık).",
+          "possible": "Önümüzdeki 6 saatte biraz yağış olabilir (%{pct}'e kadar olasılık).",
+          "likely": "Önümüzdeki 6 saatte yağış bekleniyor (%{pct} olasılık)."
+        },
+        "rainLater": "Daha sonra olasılık {time} civarında %{pct}'e çıkıyor.",
+        "windNext": "Rüzgâr en fazla {word} olacak, {max} m/s'ye kadar.",
+        "gustNext": "En güçlü hamleler {time} civarında yaklaşık {gust} m/s.",
+        "rainShort": "yağış",
+        "nextNote": "3 saatte bir gösterilir. Tahmin: {method}. Küçük ok rüzgârın estiği yönü gösterir.",
+        "trustTitle": "Bu tahmine güvenebilir misiniz?",
+        "trustText": "Her saat kontrol ediyoruz. Son 7 günde rüzgârı 6 saat önceden tahmin ettiğimizde, tahminimiz ({method}) ortalama yalnızca {ours} m/s saptı. Bu bölge için normal hava servisi {service} m/s saptı. Gerçek ölçümlerle yapılan {n} kontrole dayanır.",
+        "oursLabel": "Bizim tahminimiz",
+        "serviceLabel": "Normal hava servisi",
+        "offBy": "{v} m/s sapma",
+        "trustNote": "Küçük olan daha iyidir. Normal bir hava servisi birkaç kilometre genişliğindeki bir bölgeyi tahmin eder; bizimki tam bu noktayı öğrenir.",
+        "trustWaiting": "Hâlâ kontrol topluyoruz. Yakında burada tahminlerimizin gerçekte olana ne kadar yakın çıktığını göreceksiniz.",
+        "techTitle": "Tüm teknik ayrıntıları göster ▾",
+        "techHint": "Tüm modeller, saatlik tablo, grafikler, doğruluk puanları ve test sonuçları; ayrıntı isteyenler için."
+      }
     }
   }
 }
