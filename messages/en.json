@@ -421,53 +421,78 @@
     "prjId": "PRJ-006",
     "sectionLabel": "// AI & MACHINE LEARNING · IOT SENSING",
     "title": "Micro-Climate Forecasting: Rain & Wind",
-    "subtitle": "Live readings and hour-by-hour wind and rain forecasts for our office window in Istanbul.",
-    "howTitle": "How the forecasts work",
-    "methods": {
-      "single": {
-        "title": "Single",
-        "text": "Learns from this station's own readings. Best for the next hour."
-      },
-      "hybrid": {
-        "title": "Hybrid",
-        "text": "Corrects the weather-service forecast with this station's readings. Best for 6–24 hours."
-      },
-      "online": {
-        "title": "Online",
-        "text": "Learns after every hour and blends all forecasts, trusting the most accurate one most."
-      }
-    },
-    "moreTitle": "More details",
-    "moreScoring": "Every forecast is kept as issued and checked against the measurement once its hour has passed. Wind is scored by average error in m/s, rain chance by the Brier score (0 = perfect). The percentage shows how much better a model is than simply assuming “No change”.",
-    "moreSystem": "The station (ESP32 with wind, rain, temperature, humidity and pressure sensors) signs each reading, sends it every 5 minutes via a Raspberry Pi to our AWS server, which also downloads weather-service forecasts every hour and trains the models.",
-    "moreModels": "LightGBM models were pre-trained on 11 years from 13 nearby weather stations and are fine-tuned nightly on this station; SARIMA/SARIMAX start after 7 days of data. The Online blend also weighs the Weather.com daily forecast (12-hour day and night blocks spread over the hours).",
+    "subtitle": "A weather station on our office window in Istanbul, and wind and rain forecasts for that one spot for the next 24 hours.",
+    "overviewTitle": "Overview",
+    "overviewText": "In November 2026 we put a small weather station on the window of our office in Istanbul and connected it to our own server. The aim is to forecast wind and rain for this one spot, rather than for the several-kilometre grid cell a weather service covers. Every hour the server makes new forecasts with several models, and each forecast is kept so it can be checked against what the station measures once the hour has passed. This page shows the readings, the latest forecast and how often each model has been right so far.",
+    "methodsTitle": "How the forecasts are made",
+    "methodsSingle": "Single models use only the station's own measurements: the last hours of wind, gust and rain, the pressure trend and the time of day. We run LightGBM (gradient-boosted decision trees) and SARIMA (a classical time-series model with a daily cycle). They are good for the next hour or two but cannot see weather that has not arrived yet.",
+    "methodsHybrid": "Hybrid models start from the weather-service forecast (the mean of three global models from Open-Meteo) and learn how this spot differs from it, for example that the building cuts the wind to a fraction. We run LightGBM with the forecast as an extra input, and SARIMAX. They are usually the best from 6 to 24 hours ahead.",
+    "methodsOnline": "Online models update after every hour instead of once a day. The River model learns from each new measurement as it arrives, and the Online blend mixes all the forecasts above, plus the Weather.com daily forecast, giving more weight to whichever has been closest lately.",
+    "methodsTraining": "Both LightGBM models were first trained on 11 years of data from 13 nearby Weather Underground stations, so they could forecast from the first day. Once the station has a week of its own data, they are fine-tuned on it every night.",
+    "stationTitle": "Station and data path",
+    "stationText": "The station runs on an ESP32 with a cup anemometer, a wind vane, a tipping-bucket rain gauge and a BME280 sensor for temperature, humidity and pressure. It signs each reading with a secret key and sends it over USB to a Raspberry Pi, which forwards it to our server on AWS. The server stores the readings in PostgreSQL, downloads weather-service forecasts every hour and runs the models.",
+    "issuesTitle": "Known limitations",
+    "issuesText": "For now the station sits on the office window, which limits what it can measure. The building shelters the anemometer, so wind and gusts read far below open-air values; the temperature sensor heats up in direct sun; and the rain gauge has missed rain that nearby stations recorded. The models learn what the station measures, so their scores describe this spot as it is. Moving the sensors onto a mast, with a radiation shield for the temperature sensor, would fix most of this.",
     "dashboard": {
-      "nowTitle": "Now",
-      "updated": "updated {minutes} min ago",
-      "offline": "offline · last reading {time}",
       "loading": "loading…",
       "noData": "no data yet",
-      "range24": "last 24 h: {min}° – {max}°",
-      "from": "from {dir}",
-      "noDirection": "no direction (calm)",
-      "gustNow": "gusts {gust} m/s",
+      "nowTitle": "Current conditions",
+      "minutesAgo": "{minutes} min ago",
+      "nowCaption": "Station readings, refreshed every minute. The sensors sit close to the building, so wind reads lower than in open ground and the temperature rises in direct sun.",
       "tiles": {
+        "temp": "Temperature",
+        "wind": "Wind",
+        "gust": "Gust",
         "rainToday": "Rain today",
         "humidity": "Humidity",
         "pressure": "Pressure",
-        "soil": "Soil moisture"
+        "range24": "Temp., last 24 h",
+        "updated": "Last reading"
       },
-      "hourlyTitle": "Next 24 hours",
+      "hourlyTitle": "Forecast for the next 24 hours",
+      "hourlyText": "The solid line is the expected wind, the dashed line the gusts and the bars the chance of rain in each hour. The table gives the same forecast hour by hour. It shows the Online blend by default; the buttons switch to a single model.",
+      "hourlyCaption": "Issued at {time} by {method}. Wind and gust in m/s; the arrows point the way the wind is blowing.",
       "sourceLabel": "Forecast",
-      "hourlyNote": "Forecast: {method}. Wind and gust in m/s, arrows show where the wind blows.",
-      "rows": {
-        "wind": "Wind",
-        "gust": "Gust",
-        "dir": "Direction",
-        "rainProb": "Rain %",
-        "rainMm": "Rain mm"
+      "variableLabel": "Variable",
+      "successTitle": "How often the forecasts are right",
+      "successText": "Every forecast is stored when it is made and compared with the station's measurement once its hour is over. A wind forecast counts as correct when it is within 1 m/s of the measured hourly mean, a gust forecast within 2 m/s, and a rain forecast when it called rain or no rain correctly. Our target is 85 to 90 % for every model at every horizon: green is on target, amber close, red below.",
+      "bands": {
+        "1": "1 h ahead",
+        "2-6": "2–6 h ahead",
+        "7-24": "7–24 h ahead"
       },
-      "historyTitle": "Measured",
+      "reference": "reference",
+      "successCaption": "Last {days} days, {hours} measured hours. Each cell gives the share of correct forecasts and the count; correct means within ±{tol} m/s. Grey rows are references, not our models: “No change” repeats the last hour, the two weather services are their raw forecasts for this area.",
+      "successCaptionRain": "Last {days} days, {hours} measured hours, {wet} of them wet according to our rain gauge. The gauge has missed rain that nearby stations recorded, so these rain scores are not reliable until it is fixed.",
+      "noScoresYet": "No checked forecasts yet.",
+      "table": {
+        "method": "Model"
+      },
+      "verifyTitle": "Forecasts against measurements",
+      "verifyText": "Each coloured line shows what a model forecast for each hour, made 1, 6 or 24 hours before. The white line is what the station then measured. The closer a line follows the white one, the better that model did.",
+      "madeBefore": "{hours} h before",
+      "verifyNone": "No checked forecasts in this period yet.",
+      "verifyExample": "For example, for {time} {method} forecast {pred} {unit}, {hours} h in advance; the station measured {obs} {unit}, a difference of {diff}.",
+      "verifyCaption": "Forecasts made {hours} h in advance, last 48 hours.",
+      "compareTitle": "Latest forecast from each model",
+      "compareText": "Every model's latest forecast side by side. Left of the dashed line is the past day's measurement, right of it the forecast. Where the lines agree, the forecast is more certain.",
+      "groups": {
+        "single": "Single",
+        "hybrid": "Hybrid",
+        "online": "Online"
+      },
+      "now": "now",
+      "status": {
+        "ready": "forecasting",
+        "needsWeek": "starts after 7 days of station data",
+        "nextHour": "first forecast at the next full hour",
+        "warmingUp": "learning, starts after 48 hours",
+        "blendWaiting": "waiting for the other models",
+        "notForVariable": "not forecast for this variable",
+        "none": "no forecast yet"
+      },
+      "historyTitle": "Measured data",
+      "historyCaption": "Wind is the 10-minute mean, gust the strongest 3-second gust in each 10 minutes. Gaps mean no readings arrived.",
       "range": {
         "24": "24 h",
         "168": "7 days",
@@ -485,9 +510,13 @@
         "rain": "Rain",
         "observed": "Measured"
       },
-      "compareTitle": "Compare the models",
-      "variableLabel": "Variable",
-      "groupLabel": "Model type",
+      "rows": {
+        "wind": "Wind",
+        "gust": "Gust",
+        "dir": "Direction",
+        "rainProb": "Rain %",
+        "rainMm": "Rain mm"
+      },
       "variables": {
         "wind_ms": "Wind",
         "gust_ms": "Gust",
@@ -495,39 +524,25 @@
         "rain_prob": "Rain chance",
         "wind_dir_deg": "Direction"
       },
-      "groups": {
-        "single": "Single",
-        "hybrid": "Hybrid",
-        "online": "Online"
-      },
       "methods": {
         "persistence": "No change",
         "nwp": "Weather service",
+        "twc": "Weather.com",
         "single-lgbm": "Single · LightGBM",
         "single-sarima": "Single · SARIMA",
         "hybrid-lgbm": "Hybrid · LightGBM",
         "hybrid-sarimax": "Hybrid · SARIMAX",
         "online-river": "Online · River",
-        "online": "Online · Blend",
-        "twc": "Weather.com"
+        "online": "Online · Blend"
       },
-      "now": "now",
-      "status": {
-        "ready": "forecasting",
-        "needsWeek": "starts after 7 days of data",
-        "nextHour": "first forecast at the next full hour",
-        "warmingUp": "learning, starts after 48 h",
-        "blendWaiting": "waiting for other models",
-        "notForVariable": "not for this variable",
-        "none": "no forecast yet"
-      },
-      "accuracyTitle": "Accuracy · {variable}",
+      "weightsTitle": "How the Online blend weighs the models",
+      "weightsText": "The Online blend gives each model a share based on how close it has been over the last days, separately for each horizon. A model that has been far off, like the raw weather service at this sheltered spot, ends up with almost no say.",
+      "weightsCaption": "Current shares for the {variable} forecast.",
+      "noWeightsYet": "No record yet.",
       "ahead": "{hours} h ahead",
-      "days": "{days} days",
-      "checks": "{n} checks",
-      "noScoresYet": "Scores appear after the first forecasts have been checked.",
-      "weightsTitle": "Online blend",
-      "noWeightsYet": "No track record yet.",
+      "testedTitle": "Testing before going live",
+      "testedText": "Before the LightGBM models went live we tested them on the last six months of the nearby stations' data, which they had not seen in training. The bars show how much smaller their error was than assuming nothing changes.",
+      "testedCaption": "Test period January to July 2026, 12–13 stations. Bars are cut at −60 %; the raw weather service is far off at short range because it forecasts for a grid cell, not a single spot.",
       "wind": {
         "calm": "Calm",
         "lightAir": "Almost calm",
@@ -537,41 +552,7 @@
         "freshBreeze": "Fresh wind",
         "strongBreeze": "Strong wind",
         "gale": "Gale"
-      },
-      "best": "most accurate",
-      "testedTitle": "How the models scored in testing",
-      "testedNote": "Above 0 = better than assuming nothing changes. The raw weather service is far off at short range (bars cut at −60%) because it forecasts a grid cell, not the exact spot.",
-      "stepsLabel": "How this page works",
-      "steps": {
-        "measure": {
-          "title": "1 · Measure",
-          "text": "The station at our window measures wind, rain, temperature and more every 5 minutes."
-        },
-        "forecast": {
-          "title": "2 · Forecast",
-          "text": "Every hour, several models predict wind and rain for each of the next 24 hours."
-        },
-        "check": {
-          "title": "3 · Check",
-          "text": "When an hour has passed, every forecast for it is compared with what the station really measured. That is how we know which model to trust."
-        }
-      },
-      "explain": {
-        "now": "What the station is measuring right now. The arrow on the compass shows where the wind comes from. The station sits close to the building, so temperature reads a few degrees warm and wind is weaker than in the open.",
-        "hourly": "Our forecast for each of the next 24 hours, read left to right like a timeline. Greener or darker cells mean stronger wind; blue bars and blue cells show the chance of rain in that hour. Arrows point where the wind blows to. The buttons switch which model's forecast you see.",
-        "history": "What the station actually measured. The thick line is the average wind, the thin line the strongest gust. Blank stretches mean no data arrived.",
-        "compare": "Every model's latest forecast on one chart. Left of the “now” line is what was measured, right of it what each model expects. Lines close together mean the models agree; far apart means the forecast is uncertain. Dashed lines are the simple reference forecasts.",
-        "verify": "The honest test. For every past hour, the coloured lines show what each model had predicted {hours} h earlier; the white line shows what really happened. The closer a coloured line follows the white one, the better that model.",
-        "accuracy": "Averaged over all checked hours: how far off each model's {variable} forecast was, in {unit}. Shorter bar = more accurate, ★ = best. The green or red % shows how much better or worse it is than simply assuming “No change”.",
-        "accuracyRain": "Averaged over all checked hours: the Brier score of the rain-chance forecast (0 is perfect, higher is worse). Shorter bar = more accurate, ★ = best. The green or red % compares it with “No change”.",
-        "weights": "The Online blend mixes all models into one forecast. Each bar shows how much it relies on each model right now: models that were right recently get a bigger share.",
-        "tested": "Before going live, the models were tested on 6 months of weather from nearby stations they had never seen. A bar above 0 means the model's error was that much smaller than just assuming “No change”; below 0 means it was worse."
-      },
-      "verifyTitle": "Forecast vs what happened",
-      "verifyLead": "Forecast made",
-      "madeBefore": "{hours} h before",
-      "verifyExample": "Example: for {time}, {method} predicted {pred} {unit}, {hours} h in advance. The station then measured {obs} {unit}, so it was off by {diff}.",
-      "verifyNone": "Not enough checked forecasts yet. This fills up as the hours pass."
+      }
     }
   }
 }

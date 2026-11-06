@@ -56,6 +56,7 @@ type Pred = { method: string; issued_at: string; valid_at: string; value: number
 type Metric = { method: string; horizon_h: number; n: number; mae: number | null; brier: number | null; skill_vs_persistence: number | null };
 type Weight = { horizon_h: number; method: string; weight: number };
 type Verify = { horizon_h: number; observed: { valid_at: string; value: number }[]; forecasts: { method: string; valid_at: string; value: number }[] };
+type Success = { days: number; tolerance: number | null; wet_hours: number; hours: number; rows: { method: string; band: string; n: number; hits: number; rate: number; mae: number }[] };
 type ModelStatus = { method: string; trained_at: string; ready: boolean; note: string | null };
 
 type Variable = 'wind_ms' | 'gust_ms' | 'rain_mm' | 'rain_prob' | 'wind_dir_deg';
@@ -180,31 +181,6 @@ function Arrow({ deg, size = 16, color = '#e2e8f0' }: { deg: number | null; size
   );
 }
 
-function Compass({ deg, speed }: { deg: number | null; speed: string }) {
-  return (
-    <div className="relative w-28 h-28 shrink-0">
-      <svg viewBox="0 0 100 100" className="absolute inset-0">
-        <circle cx="50" cy="50" r="46" fill="none" stroke="#1a2540" strokeWidth="2" />
-        {Array.from({ length: 16 }, (_, i) => (
-          <line key={i} x1="50" y1="6" x2="50" y2={i % 4 === 0 ? 13 : 10} stroke="#334155" strokeWidth="1.5" transform={`rotate(${i * 22.5} 50 50)`} />
-        ))}
-        {(['N', 'E', 'S', 'W'] as const).map((n, i) => (
-          <text key={n} x="50" y="23" textAnchor="middle" fontSize="9" fill="#64748b" transform={`rotate(${i * 90} 50 50)`}>{n}</text>
-        ))}
-        {deg !== null && (
-          <g transform={`rotate(${deg} 50 50)`}>
-            <path d="M50 8 L56 22 L50 19 L44 22 Z" fill="#38bdf8" />
-          </g>
-        )}
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-semibold text-slate-100 tabular-nums leading-none">{speed}</span>
-        <span className="text-[10px] text-slate-500 mt-1">m/s</span>
-      </div>
-    </div>
-  );
-}
-
 export default function WeatherDashboard() {
   const t = useTranslations('MicroClimatePage.dashboard');
   const locale = useLocale();
@@ -219,6 +195,8 @@ export default function WeatherDashboard() {
   const [weights, setWeights] = useState<Weight[]>([]);
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [source, setSource] = useState<string | null>(null);
+  const [success, setSuccess] = useState<Success | null>(null);
+  const [successVar, setSuccessVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob'>('wind_ms');
   const [verifyVar, setVerifyVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob' | 'rain_mm'>('wind_ms');
   const [verifyH, setVerifyH] = useState<1 | 6 | 24>(6);
   const [verify, setVerify] = useState<Verify | null>(null);
@@ -268,6 +246,9 @@ export default function WeatherDashboard() {
   useEffect(() => {
     loadWeights();
   }, [loadWeights]);
+  useEffect(() => {
+    getJson<Success>(`/success?station=${STATION}&variable=${successVar}&days=7`).then(setSuccess);
+  }, [successVar, now]);
   useEffect(() => {
     let alive = true;
     getJson<Verify>(`/verify?station=${STATION}&variable=${verifyVar}&horizon=${verifyH}&hours=48`).then((v) => alive && setVerify(v));
@@ -390,452 +371,402 @@ export default function WeatherDashboard() {
   const calm = (latest?.wind_ms ?? 0) < CALM_MS && (latest?.gust_ms ?? 0) < CALM_MS;
   const dirNow = calm ? null : latest?.wind_dir_deg ?? null;
 
-  const chip = (active: boolean) =>
-    `px-3 py-1.5 rounded-full border text-xs transition-colors ${
-      active ? 'border-sky-400/60 bg-sky-400/10 text-sky-300' : 'border-[#1a2540] text-slate-400 hover:text-slate-200'
+  // ---- success rate (how often each method was right) ----
+  const bandOf = (b: string) => (b === '1' ? 0 : b === '2-6' ? 1 : 2);
+  const successRows = useMemo(() => {
+    if (!success) return [];
+    const ours = ['online', 'hybrid-lgbm', 'single-lgbm', 'hybrid-sarimax', 'single-sarima', 'online-river'];
+    const refs = ['persistence', 'nwp', 'twc'];
+    return [...ours, ...refs]
+      .filter((m) => success.rows.some((r) => r.method === m))
+      .map((m) => ({ m, ref: refs.includes(m), cells: [0, 1, 2].map((i) => success.rows.find((r) => r.method === m && bandOf(r.band) === i)) }));
+  }, [success]);
+  const rateColor = (r: number) => (r >= 0.85 ? 'text-emerald-400' : r >= 0.6 ? 'text-amber-300' : 'text-rose-400');
+
+  const btn = (active: boolean) =>
+    `px-3 py-1.5 rounded-sm border font-mono text-[11px] tracking-wider uppercase transition-colors ${
+      active ? 'border-sky-400/60 bg-sky-400/10 text-sky-300' : 'border-[#1a2540] text-slate-500 hover:text-slate-300'
     }`;
-  const card = 'rounded-lg border border-[#1a2540] bg-[#0a0f1e]/70';
-  const h2 = 'text-lg font-semibold text-slate-100';
+  const box = 'rounded-sm border border-[#1a2540] bg-[#0a0f1e]';
+  const h2 = 'text-xl font-semibold text-slate-100 mb-4';
+  const para = 'text-slate-400 leading-relaxed text-sm sm:text-base mb-5';
+  const cap = 'mt-3 text-xs text-slate-600 leading-relaxed';
 
   return (
-    <div className="space-y-10">
-      {/* ---------- how the page works, in three steps ---------- */}
-      <ol className="grid gap-3 sm:grid-cols-3" aria-label={t('stepsLabel')}>
-        {(['measure', 'forecast', 'check'] as const).map((k, i) => (
-          <li key={k} className={`${card} p-4 flex gap-3`}>
-            <span className="w-7 h-7 shrink-0 rounded-full bg-sky-400/10 border border-sky-400/40 text-sky-300 text-sm flex items-center justify-center">{i + 1}</span>
-            <div>
-              <div className="text-sm text-slate-100 font-medium">{t(`steps.${k}.title` as any)}</div>
-              <div className="text-xs text-slate-400 leading-relaxed mt-0.5">{t(`steps.${k}.text` as any)}</div>
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      {/* ---------- now ---------- */}
-      <section aria-labelledby="now-heading" className={`${card} p-5 sm:p-6`}>
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-          <h2 id="now-heading" className={h2}>{t('nowTitle')}</h2>
-          <span className="inline-flex items-center gap-2 text-xs text-slate-500">
-            <span className={`w-1.5 h-1.5 rounded-full ${live ? 'bg-emerald-400 pulse-dot' : 'bg-amber-400'}`} aria-hidden="true" />
-            {latest === undefined ? t('loading') : latest === null ? t('noData')
-              : live ? t('updated', { minutes: ago ?? 0 }) : t('offline', { time: dayFmt.format(Date.parse(latest.measured_at)) })}
-          </span>
-        </div>
-        <div className="grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-center">
-          <div>
-            <div className="text-6xl font-semibold text-slate-100 tabular-nums leading-none">
-              {fmt(latest?.temp_c)}<span className="text-3xl text-slate-400 align-top ml-1">°C</span>
-            </div>
-            {tempRange && (
-              <div className="text-sm text-slate-500 mt-2 tabular-nums">{t('range24', { min: fmt(tempRange[0]), max: fmt(tempRange[1]) })}</div>
-            )}
-          </div>
-          <div className="flex items-center gap-4">
-            <Compass deg={dirNow} speed={fmt(latest?.wind_ms)} />
-            <div className="text-sm">
-              <div className="text-slate-100 font-medium">{ww ? t(`wind.${ww}` as any) : '–'}</div>
-              <div className="text-slate-400 tabular-nums">{dirNow === null ? t('noDirection') : t('from', { dir: compass(dirNow) })}</div>
-              <div className="text-slate-400 tabular-nums">{t('gustNow', { gust: fmt(latest?.gust_ms) })}</div>
-            </div>
-          </div>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+    <div>
+      {/* ---------- current conditions ---------- */}
+      <section className="mb-14" aria-labelledby="now-heading">
+        <h2 id="now-heading" className={h2}>{t('nowTitle')}</h2>
+        <figure className="m-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[#1a2540] border border-[#1a2540] rounded-sm overflow-hidden">
             {[
+              ['temp', `${fmt(latest?.temp_c)} °C`],
+              ['wind', calm ? `${fmt(latest?.wind_ms)} m/s` : `${fmt(latest?.wind_ms)} m/s · ${compass(dirNow)}`],
+              ['gust', `${fmt(latest?.gust_ms)} m/s`],
               ['rainToday', `${fmt(rainToday)} mm`],
               ['humidity', `${fmt(latest?.rh_pct, 0)} %`],
               ['pressure', `${fmt(latest?.press_hpa, 0)} hPa`],
-              ['soil', `${fmt(latest?.soil_pct, 0)} %`],
+              ['range24', tempRange ? `${fmt(tempRange[0])} – ${fmt(tempRange[1])} °C` : '–'],
+              ['updated', latest ? (live ? t('minutesAgo', { minutes: ago ?? 0 }) : dayFmt.format(Date.parse(latest.measured_at))) : '–'],
             ].map(([k, v]) => (
-              <div key={k}>
-                <dt className="text-xs text-slate-500">{t(`tiles.${k}` as any)}</dt>
-                <dd className="text-slate-100 font-medium tabular-nums">{v}</dd>
+              <div key={k} className="bg-[#0a0f1e] p-4">
+                <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">{t(`tiles.${k}` as any)}</div>
+                <div className="text-lg font-semibold text-slate-100 tabular-nums">{v}</div>
               </div>
             ))}
-          </dl>
-        </div>
-        <div className="mt-4"><Explain text={t('explain.now')} /></div>
+          </div>
+          <figcaption className={cap}>{t('nowCaption')}</figcaption>
+        </figure>
       </section>
 
-      {/* ---------- next 24 hours, hour by hour ---------- */}
-      <section aria-labelledby="hourly-heading">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-          <h2 id="hourly-heading" className={h2}>{t('hourlyTitle')}</h2>
-          {available.length > 1 && (
-            <div className="flex flex-wrap gap-2" role="group" aria-label={t('sourceLabel')}>
-              {available.map((m) => (
-                <button key={m} className={chip(m === src)} onClick={() => setSource(m)} aria-pressed={m === src}>
-                  {t(`methods.${m}` as any)}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <Explain text={t('explain.hourly')} />
+      {/* ---------- next 24 hours ---------- */}
+      <section className="mb-14" aria-labelledby="hourly-heading">
+        <h2 id="hourly-heading" className={h2}>{t('hourlyTitle')}</h2>
+        <p className={para}>{t('hourlyText')}</p>
+        {available.length > 1 && (
+          <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label={t('sourceLabel')}>
+            {available.map((m) => (
+              <button key={m} className={btn(m === src)} onClick={() => setSource(m)} aria-pressed={m === src}>
+                {t(`methods.${m}` as any)}
+              </button>
+            ))}
+          </div>
+        )}
         {strip.length === 0 ? (
           <p className="text-sm text-slate-500">{t('status.none')}</p>
         ) : (
-          <>
-          <div className={`${card} p-4 mb-3`}>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
-              <Legend color="#38bdf8" label={t('series.wind')} />
-              <Legend color="#38bdf8" label={t('series.gust')} dashed />
-              <span className="inline-flex items-center gap-1.5 text-slate-400">
-                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: 'rgba(56,189,248,0.35)' }} aria-hidden="true" />
-                {t('rows.rainProb')}
-              </span>
-            </div>
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={strip.map((r) => ({ t: r.at, wind: r.wind, gust: r.gust, rain: r.prob === null ? null : Math.round(r.prob * 100) }))}
-                  margin={{ top: 8, right: 0, bottom: 0, left: -16 }}>
-                  <CartesianGrid stroke="#1a2540" vertical={false} />
-                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => hourFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={24} />
-                  <YAxis yAxisId="w" stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={[0, 'auto']} unit="" />
-                  <YAxis yAxisId="r" orientation="right" stroke="#475569" fontSize={11} domain={[0, 100]} tickFormatter={(v) => `${v}%`} width={40} />
-                  <Tooltip content={<MeteoTip fmtTime={(v) => dayFmt.format(v)} names={{ wind: t('series.wind'), gust: t('series.gust'), rain: t('rows.rainProb') }} />} />
-                  <Bar yAxisId="r" dataKey="rain" fill="rgba(56,189,248,0.35)" isAnimationActive={false} />
-                  <Line yAxisId="w" dataKey="gust" stroke="#38bdf8" strokeDasharray="4 3" strokeWidth={1.5} dot={false} isAnimationActive={false} />
-                  <Line yAxisId="w" dataKey="wind" stroke="#38bdf8" strokeWidth={2.5} dot={false} isAnimationActive={false} />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className={`${card} overflow-x-auto`}>
-            <table className="text-xs tabular-nums border-collapse min-w-max w-full">
-              <tbody>
-                <tr className="text-slate-500">
-                  <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal px-3 py-2 min-w-[92px]" />
-                  {strip.map((r, i) => {
-                    const newDay = i === 0 || hourFmt.format(r.at) === '00';
-                    return (
-                      <th key={r.at} className={`font-normal px-1 pt-2 text-center min-w-[42px] ${newDay ? 'border-l border-[#1a2540]' : ''}`}>
-                        <div className="text-[10px] text-slate-600 h-3">{newDay ? weekdayFmt.format(r.at) : ''}</div>
-                        <div className="text-slate-300">{hourFmt.format(r.at)}</div>
-                      </th>
-                    );
-                  })}
-                </tr>
-                <StripRow label={t('rows.wind')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.wind), bg: windBg(r.wind) }))} />
-                <StripRow label={t('rows.gust')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.gust), bg: windBg(r.gust) }))} />
-                <tr>
-                  <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal text-slate-500 px-3 py-2">{t('rows.dir')}</th>
-                  {strip.map((r) => (
-                    <td key={r.at} className="text-center py-2"><span className="inline-flex justify-center"><Arrow deg={r.dir} size={14} /></span></td>
-                  ))}
-                </tr>
-                <StripRow label={t('rows.rainProb')} cells={strip.map((r) => {
-                  const pct = r.prob === null ? null : Math.round(r.prob * 100);
-                  return { k: r.at, v: pct === null ? '–' : `${pct}`, bg: pct === null ? 'transparent' : `rgba(56,189,248,${Math.min(pct, 100) / 110})` };
-                })} />
-                <StripRow label={t('rows.rainMm')} cells={strip.map((r) => ({ k: r.at, v: r.mm === null ? '–' : r.mm < 0.05 ? '0' : fmt(r.mm), bg: 'transparent' }))} />
-              </tbody>
-            </table>
-          </div>
-          </>
-        )}
-        <p className="text-xs text-slate-500 mt-2">{src ? t('hourlyNote', { method: t(`methods.${src}` as any) }) : ''}</p>
-      </section>
-
-      {/* ---------- measured ---------- */}
-      <section aria-labelledby="history-heading">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-          <h2 id="history-heading" className={h2}>{t('historyTitle')}</h2>
-          <div className="flex gap-2" role="group" aria-label={t('historyTitle')}>
-            {([24, 168, 720] as const).map((r) => (
-              <button key={r} className={chip(range === r)} onClick={() => setRange(r)} aria-pressed={range === r}>
-                {t(`range.${r}` as any)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <Explain text={t('explain.history')} />
-        <div className="grid gap-3 md:grid-cols-3">
-          <ChartCard title={t('charts.wind')} card={`${card} md:col-span-3`}>
-            <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1a2540" vertical={false} />
-              <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-              <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} />
-              <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="m/s" />} />
-              <Line dataKey="gust" name={t('series.gust')} stroke="#38bdf8" strokeOpacity={0.45} dot={loneDot(history, 'gust', '#38bdf880')} isAnimationActive={false} connectNulls={false} />
-              <Line dataKey="wind" name={t('series.wind')} stroke="#38bdf8" strokeWidth={2} dot={loneDot(history, 'wind', '#38bdf8')} isAnimationActive={false} connectNulls={false} />
-            </LineChart>
-          </ChartCard>
-          <ChartCard title={t('charts.temp')} card={`${card} md:col-span-2`} height={170}>
-            <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1a2540" vertical={false} />
-              <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-              <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={['auto', 'auto']} />
-              <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="°C" />} />
-              <Line dataKey="temp" name={t('series.temp')} stroke="#fb923c" strokeWidth={2} dot={loneDot(history, 'temp', '#fb923c')} isAnimationActive={false} connectNulls={false} />
-            </LineChart>
-          </ChartCard>
-          <ChartCard title={t('charts.rain')} card={card} height={170}>
-            <BarChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1a2540" vertical={false} />
-              <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-              <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} allowDecimals />
-              <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="mm" />} />
-              <Bar dataKey="rain" name={t('series.rain')} fill="#38bdf8" isAnimationActive={false} />
-            </BarChart>
-          </ChartCard>
-        </div>
-      </section>
-
-      {/* ---------- compare the models ---------- */}
-      <section aria-labelledby="compare-heading">
-        <h2 id="compare-heading" className={`${h2} mb-3`}>{t('compareTitle')}</h2>
-        <Explain text={t('explain.compare')} />
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <div className="flex flex-wrap gap-2" role="group" aria-label={t('variableLabel')}>
-            {VARIABLES.map((v) => (
-              <button key={v} className={chip(variable === v)} onClick={() => setVariable(v)} aria-pressed={variable === v}>
-                {t(`variables.${v}` as any)}
-              </button>
-            ))}
-          </div>
-          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('groupLabel')}>
-            {(Object.keys(GROUPS) as Group[]).map((g) => (
-              <button key={g} role="tab" aria-selected={group === g} className={chip(group === g)} onClick={() => setGroup(g)}>
-                {t(`groups.${g}` as any)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className={`${card} p-4`}>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs">
-            <Legend color={COLOR.observed} label={t('series.observed')} />
-            {shown.map((m) => (
-              <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} muted={!methodsWithData.has(m)}
-                title={BASELINES.includes(m) ? undefined : statusOf(m)} />
-            ))}
-          </div>
-          <div className="h-[240px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={forecastRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#1a2540" vertical={false} />
-                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => timeFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={40} />
-                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={variable === 'wind_dir_deg' ? [0, 360] : variable === 'rain_prob' ? [0, 100] : [0, 'auto']} />
-                <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[variable]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
-                <ReferenceLine x={now} stroke="#334155" strokeDasharray="3 3" label={{ value: t('now'), fill: '#64748b', fontSize: 10, position: 'insideTopRight' }} />
-                <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2} dot={loneDot(forecastRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
-                {shown.map((m) => (
-                  <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
-                    strokeDasharray={BASELINES.includes(m) ? '5 4' : undefined} dot={false} isAnimationActive={false} connectNulls />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-1 text-xs">
-            {GROUPS[group].map((m) => (
-              <div key={m} className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: COLOR[m] }} aria-hidden="true" />
-                <span className="text-slate-300">{t(`methods.${m}` as any)}</span>
-                <span className="text-slate-500">· {statusOf(m)}</span>
+          <figure className="m-0">
+            <div className={`${box} p-4`}>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={strip.map((r) => ({ t: r.at, wind: r.wind, gust: r.gust, rain: r.prob === null ? null : Math.round(r.prob * 100) }))}
+                    margin={{ top: 8, right: 0, bottom: 0, left: -16 }}>
+                    <CartesianGrid stroke="#1a2540" vertical={false} />
+                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => hourFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={24} />
+                    <YAxis yAxisId="w" stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={[0, 'auto']} />
+                    <YAxis yAxisId="r" orientation="right" stroke="#475569" fontSize={11} domain={[0, 100]} tickFormatter={(v) => `${v}%`} width={40} />
+                    <Tooltip content={<MeteoTip fmtTime={(v) => dayFmt.format(v)} names={{ wind: t('series.wind'), gust: t('series.gust'), rain: t('rows.rainProb') }} />} />
+                    <Bar yAxisId="r" dataKey="rain" fill="rgba(56,189,248,0.3)" isAnimationActive={false} />
+                    <Line yAxisId="w" dataKey="gust" stroke="#38bdf8" strokeDasharray="4 3" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+                    <Line yAxisId="w" dataKey="wind" stroke="#38bdf8" strokeWidth={2.5} dot={false} isAnimationActive={false} />
+                  </ComposedChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+            <div className={`${box} overflow-x-auto mt-2`}>
+              <table className="text-xs tabular-nums border-collapse min-w-max w-full">
+                <tbody>
+                  <tr className="text-slate-500">
+                    <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal px-3 py-2 min-w-[92px]" />
+                    {strip.map((r, i) => {
+                      const newDay = i === 0 || hourFmt.format(r.at) === '00';
+                      return (
+                        <th key={r.at} className={`font-normal px-1 pt-2 text-center min-w-[42px] ${newDay ? 'border-l border-[#1a2540]' : ''}`}>
+                          <div className="text-[10px] text-slate-600 h-3">{newDay ? weekdayFmt.format(r.at) : ''}</div>
+                          <div className="text-slate-300">{hourFmt.format(r.at)}</div>
+                        </th>
+                      );
+                    })}
+                  </tr>
+                  <StripRow label={t('rows.wind')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.wind), bg: windBg(r.wind) }))} />
+                  <StripRow label={t('rows.gust')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.gust), bg: windBg(r.gust) }))} />
+                  <tr>
+                    <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal text-slate-500 px-3 py-2">{t('rows.dir')}</th>
+                    {strip.map((r) => (
+                      <td key={r.at} className="text-center py-2"><span className="inline-flex justify-center"><Arrow deg={r.dir} size={14} /></span></td>
+                    ))}
+                  </tr>
+                  <StripRow label={t('rows.rainProb')} cells={strip.map((r) => {
+                    const pct = r.prob === null ? null : Math.round(r.prob * 100);
+                    return { k: r.at, v: pct === null ? '–' : `${pct}`, bg: pct === null ? 'transparent' : `rgba(56,189,248,${Math.min(pct, 100) / 110})` };
+                  })} />
+                  <StripRow label={t('rows.rainMm')} cells={strip.map((r) => ({ k: r.at, v: r.mm === null ? '–' : r.mm < 0.05 ? '0' : fmt(r.mm), bg: 'transparent' }))} />
+                </tbody>
+              </table>
+            </div>
+            <figcaption className={cap}>{t('hourlyCaption', { method: src ? t(`methods.${src}` as any) : '', time: (fc.wind_ms ?? []).find((p) => p.method === src) ? timeFmt.format(Date.parse((fc.wind_ms ?? []).find((p) => p.method === src)!.issued_at)) : '–' })}</figcaption>
+          </figure>
+        )}
       </section>
 
-      {/* ---------- forecast vs what happened ---------- */}
-      <section aria-labelledby="verify-heading">
-        <h2 id="verify-heading" className={`${h2} mb-3`}>{t('verifyTitle')}</h2>
-        <Explain text={t('explain.verify', { hours: verifyH })} />
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <div className="flex flex-wrap gap-2" role="group" aria-label={t('variableLabel')}>
-            {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
-              <button key={v} className={chip(verifyVar === v)} onClick={() => setVerifyVar(v)} aria-pressed={verifyVar === v}>
-                {t(`variables.${v}` as any)}
-              </button>
-            ))}
-          </div>
-          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
-          <div className="flex flex-wrap gap-2" role="group" aria-label={t('verifyLead')}>
-            {([1, 6, 24] as const).map((h) => (
-              <button key={h} className={chip(verifyH === h)} onClick={() => setVerifyH(h)} aria-pressed={verifyH === h}>
-                {t('madeBefore', { hours: h })}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className={`${card} p-4`}>
-          {example && (
-            <p className="text-sm text-slate-300 mb-3">
-              {t('verifyExample', {
-                time: timeFmt.format(example.at), hours: verifyH, method: t(`methods.${example.m}` as any),
-                pred: fmt(example.pred, verifyVar === 'rain_prob' ? 0 : 1), obs: fmt(example.obs, verifyVar === 'rain_prob' ? 0 : 1),
-                unit: UNIT[verifyVar], diff: fmt(Math.abs(example.pred - example.obs), verifyVar === 'rain_prob' ? 0 : 1),
-              })}
-            </p>
-          )}
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs">
-            <Legend color={COLOR.observed} label={t('series.observed')} />
-            {verifyMethods.map((m) => (
-              <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} />
-            ))}
-          </div>
-          {verifyMethods.length === 0 ? (
-            <p className="text-sm text-slate-500 py-8 text-center">{t('verifyNone')}</p>
-          ) : (
-            <div className="h-[240px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={verifyRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                  <CartesianGrid stroke="#1a2540" vertical={false} />
-                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => dayFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={50} />
-                  <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={verifyVar === 'rain_prob' ? [0, 100] : [0, 'auto']} />
-                  <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[verifyVar]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
-                  <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2.5} dot={loneDot(verifyRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
-                  {verifyMethods.map((m) => (
-                    <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
-                      strokeDasharray={BASELINES.includes(m) ? '5 4' : undefined} dot={false} isAnimationActive={false} connectNulls={false} />
-                  ))}
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ---------- accuracy + blend ---------- */}
-      <section aria-labelledby="accuracy-heading" className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <div>
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
-            <h2 id="accuracy-heading" className={h2}>{t('accuracyTitle', { variable: t(`variables.${variable}` as any) })}</h2>
-            <div className="flex gap-2" role="group">
-              {([7, 30] as const).map((d) => (
-                <button key={d} className={chip(windowDays === d)} onClick={() => setWindowDays(d)} aria-pressed={windowDays === d}>
-                  {t('days', { days: d })}
-                </button>
-              ))}
-            </div>
-          </div>
-          <Explain text={t(variable === 'rain_prob' ? 'explain.accuracyRain' : 'explain.accuracy', { unit: UNIT[variable], variable: t(`variables.${variable}` as any) })} />
-          {metrics.length === 0 ? (
-            <p className="text-sm text-slate-500">{t('noScoresYet')}</p>
-          ) : (
-            <div className="grid sm:grid-cols-3 gap-3">
-              {[1, 6, 24].map((h) => {
-                const rows = ALL_METHODS.map((m) => ({ m, x: metricFor(m, h) }))
-                  .filter((r) => r.x && headline(r.x) !== null && headline(r.x) !== undefined)
-                  .sort((p, q) => (headline(p.x) as number) - (headline(q.x) as number));
-                const max = Math.max(...rows.map((r) => headline(r.x) as number), 1e-9);
-                return (
-                  <div key={h} className={`${card} p-4`}>
-                    <div className="text-xs text-slate-500 mb-3">{t('ahead', { hours: h })}</div>
-                    {rows.length === 0 ? <p className="text-xs text-slate-600">–</p> : (
-                      <div className="space-y-2.5">
-                        {rows.map(({ m, x }, i) => {
-                          const v = headline(x) as number;
-                          const skill = x?.skill_vs_persistence;
-                          return (
-                            <div key={m} title={t('checks', { n: x!.n })}>
-                              <div className="flex items-baseline justify-between text-xs mb-1 gap-2">
-                                <span className={i === 0 ? 'text-slate-100 font-medium' : 'text-slate-400'}>
-                                  {i === 0 && <span className="text-amber-300 mr-1" aria-label={t('best')}>★</span>}
-                                  {t(`methods.${m}` as any)}
-                                </span>
-                                <span className="tabular-nums text-slate-300 whitespace-nowrap">
-                                  {fmt(v, variable === 'rain_prob' ? 3 : 2)}
-                                  {skill !== null && skill !== undefined && m !== 'persistence' && (
-                                    <span className={`ml-1.5 ${skill > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{skill > 0 ? '+' : ''}{Math.round(skill * 100)}%</span>
-                                  )}
-                                </span>
-                              </div>
-                              <div className="h-1.5 rounded-full bg-[#1a2540] overflow-hidden">
-                                <div className="h-full rounded-full" style={{ width: `${Math.max(3, (v / max) * 100)}%`, background: COLOR[m] }} />
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-        <div>
-          <h3 className={`${h2} mb-1`}>{t('weightsTitle')}</h3>
-          <Explain text={t('explain.weights')} />
-          {weights.length === 0 ? (
-            <p className="text-sm text-slate-500">{t('noWeightsYet')}</p>
-          ) : (
-            <div className={`${card} p-4 space-y-4`}>
-              {[1, 6, 24].map((h) => {
-                const ws = weights.filter((w) => w.horizon_h === h).sort((a, b) => b.weight - a.weight);
-                return (
-                  <div key={h}>
-                    <div className="text-xs text-slate-500 mb-1">{t('ahead', { hours: h })}</div>
-                    <div className="flex h-2.5 rounded-full overflow-hidden bg-[#1a2540]">
-                      {ws.map((w) => (
-                        <div key={w.method} style={{ width: `${w.weight * 100}%`, background: COLOR[w.method] ?? '#94a3b8' }}
-                          title={`${t(`methods.${w.method}` as any)} ${Math.round(w.weight * 100)}%`} />
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-x-3 mt-1 text-[11px] text-slate-400">
-                      {ws.filter((w) => w.weight >= 0.05).map((w) => (
-                        <span key={w.method}>{t(`methods.${w.method}` as any)} {Math.round(w.weight * 100)}%</span>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ---------- how the pre-trained models scored in testing ---------- */}
-      <section aria-labelledby="tested-heading">
-        <h2 id="tested-heading" className={`${h2} mb-1`}>{t('testedTitle')}</h2>
-        <Explain text={t('explain.tested')} />
-        <div className="flex flex-wrap gap-2 mb-3" role="group">
-          {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
-            <button key={v} className={chip(testVar === v)} onClick={() => setTestVar(v)} aria-pressed={testVar === v}>
+      {/* ---------- success rate ---------- */}
+      <section className="mb-14" aria-labelledby="success-heading">
+        <h2 id="success-heading" className={h2}>{t('successTitle')}</h2>
+        <p className={para}>{t('successText')}</p>
+        <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label={t('variableLabel')}>
+          {(['wind_ms', 'gust_ms', 'rain_prob'] as const).map((v) => (
+            <button key={v} className={btn(successVar === v)} onClick={() => setSuccessVar(v)} aria-pressed={successVar === v}>
               {t(`variables.${v}` as any)}
             </button>
           ))}
         </div>
-        <div className={`${card} p-4`}>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
-            {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
-              <span key={m} className="inline-flex items-center gap-1.5 text-slate-400">
-                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: COLOR[m] }} aria-hidden="true" />
-                {t(`methods.${m}` as any)}
-              </span>
-            ))}
-          </div>
-          <div className="h-[240px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={([1, 6, 24] as const).map((h) => ({ h: t('ahead', { hours: h }), ...TEST_SCORES[testVar][h] }))}
-                margin={{ top: 18, right: 8, bottom: 0, left: -12 }} barCategoryGap="22%">
-                <CartesianGrid stroke="#1a2540" vertical={false} />
-                <XAxis dataKey="h" stroke="#475569" fontSize={11} />
-                <YAxis stroke="#475569" fontSize={11} domain={[-60, 70]} allowDataOverflow tickFormatter={(v) => `${v}%`} ticks={[-60, -30, 0, 30, 60]} />
-                <ReferenceLine y={0} stroke="#64748b" />
-                {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
-                  <Bar key={m} dataKey={m} fill={COLOR[m]} isAnimationActive={false} radius={[2, 2, 0, 0]}>
-                    <LabelList dataKey={m} content={SkillLabel} />
-                  </Bar>
-                ))}
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <p className="text-[11px] text-slate-500 mt-2">{t('testedNote')}</p>
+        <figure className="m-0">
+          {successRows.length === 0 ? (
+            <p className="text-sm text-slate-500">{t('noScoresYet')}</p>
+          ) : (
+            <div className={`${box} overflow-x-auto`}>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left font-mono text-[10px] tracking-widest uppercase text-slate-500 border-b border-[#1a2540]">
+                    <th className="p-3 font-normal">{t('table.method')}</th>
+                    {(['1', '2-6', '7-24'] as const).map((b) => <th key={b} className="p-3 font-normal text-right">{t(`bands.${b}` as any)}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {successRows.map(({ m, ref, cells }, i) => (
+                    <tr key={m} className={`border-b border-[#1a2540]/60 last:border-0 ${ref && !successRows[i - 1]?.ref ? 'border-t border-t-[#1a2540]' : ''}`}>
+                      <td className={`p-3 whitespace-nowrap ${ref ? 'text-slate-500' : 'text-slate-200'}`}>
+                        <span className="inline-block w-2 h-2 rounded-full mr-2 align-middle" style={{ background: COLOR[m] }} aria-hidden="true" />
+                        {t(`methods.${m}` as any)}{ref && <span className="text-slate-600 text-xs ml-2">{t('reference')}</span>}
+                      </td>
+                      {cells.map((c, j) => (
+                        <td key={j} className="p-3 text-right tabular-nums">
+                          {c ? (
+                            <>
+                              <span className={`font-semibold ${ref ? 'text-slate-400' : rateColor(c.rate)}`}>{Math.round(c.rate * 100)}%</span>
+                              <span className="text-[11px] text-slate-600 ml-1.5">{c.hits}/{c.n}</span>
+                            </>
+                          ) : <span className="text-slate-600">–</span>}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <figcaption className={cap}>
+            {successVar === 'rain_prob'
+              ? t('successCaptionRain', { days: success?.days ?? 7, hours: success?.hours ?? 0, wet: success?.wet_hours ?? 0 })
+              : t('successCaption', { days: success?.days ?? 7, hours: success?.hours ?? 0, tol: success?.tolerance ?? (successVar === 'gust_ms' ? 2 : 1) })}
+          </figcaption>
+        </figure>
+      </section>
+
+      {/* ---------- forecast vs measurement ---------- */}
+      <section className="mb-14" aria-labelledby="verify-heading">
+        <h2 id="verify-heading" className={h2}>{t('verifyTitle')}</h2>
+        <p className={para}>{t('verifyText')}</p>
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
+            <button key={v} className={btn(verifyVar === v)} onClick={() => setVerifyVar(v)} aria-pressed={verifyVar === v}>
+              {t(`variables.${v}` as any)}
+            </button>
+          ))}
+          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
+          {([1, 6, 24] as const).map((h) => (
+            <button key={h} className={btn(verifyH === h)} onClick={() => setVerifyH(h)} aria-pressed={verifyH === h}>
+              {t('madeBefore', { hours: h })}
+            </button>
+          ))}
         </div>
+        <figure className="m-0">
+          <div className={`${box} p-4`}>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs">
+              <Legend color={COLOR.observed} label={t('series.observed')} />
+              {verifyMethods.map((m) => <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} />)}
+            </div>
+            {verifyMethods.length === 0 ? (
+              <p className="text-sm text-slate-500 py-8 text-center">{t('verifyNone')}</p>
+            ) : (
+              <div className="h-[240px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={verifyRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                    <CartesianGrid stroke="#1a2540" vertical={false} />
+                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => dayFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={50} />
+                    <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={verifyVar === 'rain_prob' ? [0, 100] : [0, 'auto']} />
+                    <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[verifyVar]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
+                    <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2.5} dot={loneDot(verifyRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
+                    {verifyMethods.map((m) => (
+                      <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
+                        strokeDasharray={BASELINES.includes(m) ? '5 4' : undefined} dot={false} isAnimationActive={false} connectNulls={false} />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
+          <figcaption className={cap}>
+            {example ? t('verifyExample', {
+              time: timeFmt.format(example.at), hours: verifyH, method: t(`methods.${example.m}` as any),
+              pred: fmt(example.pred, verifyVar === 'rain_prob' ? 0 : 1), obs: fmt(example.obs, verifyVar === 'rain_prob' ? 0 : 1),
+              unit: UNIT[verifyVar], diff: fmt(Math.abs(example.pred - example.obs), verifyVar === 'rain_prob' ? 0 : 1),
+            }) : t('verifyCaption', { hours: verifyH })}
+          </figcaption>
+        </figure>
+      </section>
+
+      {/* ---------- all models' latest forecasts ---------- */}
+      <section className="mb-14" aria-labelledby="compare-heading">
+        <h2 id="compare-heading" className={h2}>{t('compareTitle')}</h2>
+        <p className={para}>{t('compareText')}</p>
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {VARIABLES.map((v) => (
+            <button key={v} className={btn(variable === v)} onClick={() => setVariable(v)} aria-pressed={variable === v}>
+              {t(`variables.${v}` as any)}
+            </button>
+          ))}
+          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
+          {(Object.keys(GROUPS) as Group[]).map((g) => (
+            <button key={g} className={btn(group === g)} onClick={() => setGroup(g)} aria-pressed={group === g}>
+              {t(`groups.${g}` as any)}
+            </button>
+          ))}
+        </div>
+        <figure className="m-0">
+          <div className={`${box} p-4`}>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs">
+              <Legend color={COLOR.observed} label={t('series.observed')} />
+              {shown.map((m) => (
+                <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} muted={!methodsWithData.has(m)} />
+              ))}
+            </div>
+            <div className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={forecastRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                  <CartesianGrid stroke="#1a2540" vertical={false} />
+                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => timeFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={40} />
+                  <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={variable === 'wind_dir_deg' ? [0, 360] : variable === 'rain_prob' ? [0, 100] : [0, 'auto']} />
+                  <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[variable]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
+                  <ReferenceLine x={now} stroke="#334155" strokeDasharray="3 3" label={{ value: t('now'), fill: '#64748b', fontSize: 10, position: 'insideTopRight' }} />
+                  <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2} dot={loneDot(forecastRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
+                  {shown.map((m) => (
+                    <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
+                      strokeDasharray={BASELINES.includes(m) ? '5 4' : undefined} dot={false} isAnimationActive={false} connectNulls />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          <figcaption className={cap}>
+            {GROUPS[group].map((m) => `${t(`methods.${m}` as any)}: ${statusOf(m)}`).join(' · ')}
+          </figcaption>
+        </figure>
+      </section>
+
+      {/* ---------- measured ---------- */}
+      <section className="mb-14" aria-labelledby="history-heading">
+        <h2 id="history-heading" className={h2}>{t('historyTitle')}</h2>
+        <div className="flex gap-2 mb-4" role="group" aria-label={t('historyTitle')}>
+          {([24, 168, 720] as const).map((r) => (
+            <button key={r} className={btn(range === r)} onClick={() => setRange(r)} aria-pressed={range === r}>
+              {t(`range.${r}` as any)}
+            </button>
+          ))}
+        </div>
+        <figure className="m-0">
+          <div className="grid gap-2 md:grid-cols-3">
+            <ChartCard title={t('charts.wind')} card={`${box} md:col-span-3`}>
+              <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                <CartesianGrid stroke="#1a2540" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} />
+                <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="m/s" />} />
+                <Line dataKey="gust" name={t('series.gust')} stroke="#38bdf8" strokeOpacity={0.45} dot={loneDot(history, 'gust', '#38bdf880')} isAnimationActive={false} connectNulls={false} />
+                <Line dataKey="wind" name={t('series.wind')} stroke="#38bdf8" strokeWidth={2} dot={loneDot(history, 'wind', '#38bdf8')} isAnimationActive={false} connectNulls={false} />
+              </LineChart>
+            </ChartCard>
+            <ChartCard title={t('charts.temp')} card={`${box} md:col-span-2`} height={170}>
+              <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                <CartesianGrid stroke="#1a2540" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={['auto', 'auto']} />
+                <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="°C" />} />
+                <Line dataKey="temp" name={t('series.temp')} stroke="#fb923c" strokeWidth={2} dot={loneDot(history, 'temp', '#fb923c')} isAnimationActive={false} connectNulls={false} />
+              </LineChart>
+            </ChartCard>
+            <ChartCard title={t('charts.rain')} card={box} height={170}>
+              <BarChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                <CartesianGrid stroke="#1a2540" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} allowDecimals />
+                <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="mm" />} />
+                <Bar dataKey="rain" name={t('series.rain')} fill="#38bdf8" isAnimationActive={false} />
+              </BarChart>
+            </ChartCard>
+          </div>
+          <figcaption className={cap}>{t('historyCaption')}</figcaption>
+        </figure>
+      </section>
+
+      {/* ---------- online blend weights ---------- */}
+      <section className="mb-14" aria-labelledby="weights-heading">
+        <h2 id="weights-heading" className={h2}>{t('weightsTitle')}</h2>
+        <p className={para}>{t('weightsText')}</p>
+        {weights.length === 0 ? (
+          <p className="text-sm text-slate-500">{t('noWeightsYet')}</p>
+        ) : (
+          <figure className="m-0">
+            <div className={`${box} p-4 space-y-4`}>
+              {[1, 6, 24].map((h) => {
+                const ws = weights.filter((w) => w.horizon_h === h).sort((a, b) => b.weight - a.weight);
+                return (
+                  <div key={h} className="grid sm:grid-cols-[110px_1fr] gap-2 items-center">
+                    <div className="text-xs text-slate-500">{t('ahead', { hours: h })}</div>
+                    <div>
+                      <div className="flex h-2.5 rounded-sm overflow-hidden bg-[#1a2540]">
+                        {ws.map((w) => (
+                          <div key={w.method} style={{ width: `${w.weight * 100}%`, background: COLOR[w.method] ?? '#94a3b8' }}
+                            title={`${t(`methods.${w.method}` as any)} ${Math.round(w.weight * 100)}%`} />
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap gap-x-3 mt-1 text-[11px] text-slate-400">
+                        {ws.filter((w) => w.weight >= 0.05).map((w) => (
+                          <span key={w.method}>{t(`methods.${w.method}` as any)} {Math.round(w.weight * 100)}%</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <figcaption className={cap}>{t('weightsCaption', { variable: t(`variables.${variable}` as any) })}</figcaption>
+          </figure>
+        )}
+      </section>
+
+      {/* ---------- testing before going live ---------- */}
+      <section aria-labelledby="tested-heading">
+        <h2 id="tested-heading" className={h2}>{t('testedTitle')}</h2>
+        <p className={para}>{t('testedText')}</p>
+        <div className="flex flex-wrap gap-2 mb-4" role="group">
+          {(['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const).map((v) => (
+            <button key={v} className={btn(testVar === v)} onClick={() => setTestVar(v)} aria-pressed={testVar === v}>
+              {t(`variables.${v}` as any)}
+            </button>
+          ))}
+        </div>
+        <figure className="m-0">
+          <div className={`${box} p-4`}>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
+              {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
+                <span key={m} className="inline-flex items-center gap-1.5 text-slate-400">
+                  <span className="inline-block w-3 h-3 rounded-sm" style={{ background: COLOR[m] }} aria-hidden="true" />
+                  {t(`methods.${m}` as any)}
+                </span>
+              ))}
+            </div>
+            <div className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={([1, 6, 24] as const).map((h) => ({ h: t('ahead', { hours: h }), ...TEST_SCORES[testVar][h] }))}
+                  margin={{ top: 18, right: 8, bottom: 0, left: -12 }} barCategoryGap="22%">
+                  <CartesianGrid stroke="#1a2540" vertical={false} />
+                  <XAxis dataKey="h" stroke="#475569" fontSize={11} />
+                  <YAxis stroke="#475569" fontSize={11} domain={[-60, 70]} allowDataOverflow tickFormatter={(v) => `${v}%`} ticks={[-60, -30, 0, 30, 60]} />
+                  <ReferenceLine y={0} stroke="#64748b" />
+                  {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
+                    <Bar key={m} dataKey={m} fill={COLOR[m]} isAnimationActive={false} radius={[2, 2, 0, 0]}>
+                      <LabelList dataKey={m} content={SkillLabel} />
+                    </Bar>
+                  ))}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          <figcaption className={cap}>{t('testedCaption')}</figcaption>
+        </figure>
       </section>
     </div>
-  );
-}
-
-function Explain({ text }: { text: string }) {
-  return (
-    <p className="flex gap-2 text-[13px] text-slate-400 leading-relaxed mb-3 max-w-4xl">
-      <span className="shrink-0 mt-[1px] w-4 h-4 rounded-full border border-sky-400/50 text-sky-300 text-[10px] flex items-center justify-center" aria-hidden="true">i</span>
-      <span>{text}</span>
-    </p>
   );
 }
 
