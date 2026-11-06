@@ -37,14 +37,14 @@ export default async function MicroClimatePage({ params }: { params: { locale: s
           {tCommon('backToProjects')}
         </Link>
 
-        <header className="mb-12">
+        <header className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-5">
             <span className="font-mono text-[11px] tracking-widest text-sky-500/50 uppercase">{t('prjId')}</span>
             <StatusBadge status={project.status} />
           </div>
           <SectionLabel label={t('sectionLabel')} className="mb-4" />
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight mb-3">{t('title')}</h1>
-          <p className="text-base sm:text-lg text-slate-400 leading-relaxed mb-6 max-w-3xl">{t('subtitle')}</p>
+          <p className="text-base text-slate-400 leading-relaxed mb-4 max-w-3xl">{t('subtitle')}</p>
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <TechTag key={tag} tag={tag} />
@@ -52,39 +52,26 @@ export default async function MicroClimatePage({ params }: { params: { locale: s
           </div>
         </header>
 
-        <div className="h-px bg-[#1a2540] mb-12" aria-hidden="true" />
-
-        <section className="mb-12 max-w-3xl" aria-labelledby="overview-heading">
-          <h2 id="overview-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('overviewTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('overviewText')}</p>
-        </section>
-
         <WeatherDashboard />
 
-        <div className="h-px bg-[#1a2540] my-12" aria-hidden="true" />
-
-        <section className="mb-12" aria-labelledby="methods-heading">
-          <h2 id="methods-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('methodsTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base mb-6 max-w-3xl">{t('methodsText')}</p>
-          <div className="grid md:grid-cols-3 gap-4">
+        <section className="mt-14" aria-labelledby="how-heading">
+          <h2 id="how-heading" className="text-lg font-semibold text-slate-100 mb-4">{t('howTitle')}</h2>
+          <div className="grid md:grid-cols-3 gap-3">
             {methods.map((m) => (
-              <div key={m} className="rounded-sm border border-[#1a2540] bg-[#0a0f1e]/60 p-5">
-                <h3 className="text-slate-100 font-semibold mb-2">{t(`methods.${m}.title`)}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-3">{t(`methods.${m}.text`)}</p>
-                <p className="font-mono text-[11px] text-sky-400/70 leading-relaxed">{t(`methods.${m}.variants`)}</p>
+              <div key={m} className="rounded-lg border border-[#1a2540] bg-[#0a0f1e]/70 p-4">
+                <h3 className="text-slate-100 font-semibold mb-1">{t(`methods.${m}.title`)}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{t(`methods.${m}.text`)}</p>
               </div>
             ))}
           </div>
-        </section>
-
-        <section className="mb-12 max-w-3xl" aria-labelledby="scoring-heading">
-          <h2 id="scoring-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('scoringTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('scoringText')}</p>
-        </section>
-
-        <section className="max-w-3xl" aria-labelledby="system-heading">
-          <h2 id="system-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('systemTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('systemText')}</p>
+          <details className="mt-4 group rounded-lg border border-[#1a2540] bg-[#0a0f1e]/40 p-4">
+            <summary className="cursor-pointer text-sm text-slate-300 select-none">{t('moreTitle')}</summary>
+            <div className="mt-3 space-y-3 text-sm text-slate-400 leading-relaxed max-w-3xl">
+              <p>{t('moreScoring')}</p>
+              <p>{t('moreSystem')}</p>
+              <p>{t('moreModels')}</p>
+            </div>
+          </details>
         </section>
       </div>
     </article>
