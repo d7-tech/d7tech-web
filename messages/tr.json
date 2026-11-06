@@ -421,32 +421,32 @@
     "prjId": "PRJ-006",
     "sectionLabel": "// YAPAY ZEKÂ & MAKİNE ÖĞRENMESİ · IOT ALGILAMA",
     "title": "Mikro-İklim Tahmini: Yağmur ve Rüzgâr",
-    "subtitle": "Ofisimizde canlı bir hava istasyonu; önümüzdeki 1, 6 ve 24 saat için Tekil, Hibrit ve Çevrimiçi tahminler — her biri ölçülen değerle karşılaştırılarak puanlanır.",
+    "subtitle": "Ofis penceremizin dışında bir hava istasyonu ve tam bu nokta için önümüzdeki 1, 6 ve 24 saatin rüzgâr ve yağış tahminleri.",
     "overviewTitle": "Genel Bakış",
-    "overviewText": "Hava durumu servisleri birkaç kilometre genişliğindeki bir ızgara hücresi için tahmin yapar; bu proje tek bir noktayı tahmin eder. Ofis penceremizin dışındaki hava istasyonu rüzgâr hızını, hamleleri, yönü, yağmuru, sıcaklığı, nemi ve basıncı ölçer. Her ölçüm istasyonda imzalanır ve sunucumuzda saklanır; sunucu her saat birkaç yöntemle yeni bir tahmin üretir ve her tahmini yayımlandığı haliyle saklar, böylece doğrulukları dürüstçe karşılaştırılabilir.",
+    "overviewText": "Hava durumu uygulamaları birkaç kilometre genişliğindeki bir bölge için tahmin yapar. Bu sayfa tek bir nokta için tahmin yapar: İstanbul'daki ofis penceremiz. İstasyon birkaç saniyede bir rüzgârı, hamleleri, yağışı, sıcaklığı, nemi ve basıncı ölçer. Sunucumuz her saat üç tür modelle (Tekil, Hibrit ve Çevrimiçi; aşağıda açıklanıyor) yeni tahminler yapar ve her tahmini daha sonra gerçekten ölçülenle karşılaştırır; böylece hangisinin en sık doğru çıktığını görebilirsiniz.",
     "methodsTitle": "Tahminler nasıl yapılıyor",
-    "methodsText": "Tüm yöntemler aynı soruyu yanıtlar — şu ana kadar ölçülenlere göre 1, 6 ve 24 saat sonra rüzgâr ve yağmur ne olacak? — ve neyi bildikleri ile nasıl öğrendikleri bakımından ayrılır. İki referans tahmin her zaman gösterilir: süreklilik (\"sonraki saatler son saat gibi olur\") ve ham dış tahmin (birkaç küresel hava modelinin ortalaması). Bir yöntem ancak ikisini de geçtiği yerde faydalıdır.",
+    "methodsText": "Her model aynı soruyu yanıtlar: şu ana kadar ölçülenlere göre 1, 6 ve 24 saat sonra rüzgâr ve yağış ne olacak? Farkları kullandıkları bilgidedir. İki basit referans her zaman gösterilir ve bir model ancak ikisini de geçtiği yerde işe yarar: \"Değişim yok\" (sonraki saatler son saat gibi kalır) ve \"Hava servisi\" (küresel hava modellerinin ortalama tahmini).",
     "methods": {
       "single": {
         "title": "Tekil",
-        "text": "Her gece yalnızca istasyonun kendi geçmişiyle eğitilir. Şu an olanın en önemli olduğu bir sonraki saat için güçlüdür; henüz gelmemiş havayı göremez.",
-        "variants": "LightGBM (gradyan artırmalı ağaçlar) · SARIMA (24 saatlik mevsimselliği olan istatistiksel zaman serisi)"
+        "text": "Yalnızca bu istasyonun kendi ölçümlerini kullanır: son rüzgâr, yağış, basınç değişimi, günün saati. Bir sonraki saat için iyidir ama henüz uzaktaki havayı göremez.",
+        "variants": "LightGBM (karar ağaçları, yakındaki 13 istasyonun 11 yıllık verisiyle önceden eğitildi) · SARIMA (günlük döngülü klasik zaman serisi modeli)"
       },
       "hybrid": {
         "title": "Hibrit",
-        "text": "Dış hava modeli tahminini istasyon ölçümleriyle birleştirir ve bu noktanın ondan nasıl farklılaştığını öğrenir — binanın rüzgârı kesmesi, yağmurun eksik ölçülmesi, zamanlama hataları. Genellikle 6–24 saatte en iyisidir.",
-        "variants": "Hava modeli girdili LightGBM · SARIMAX (hava modelini girdi olarak kullanan SARIMA)"
+        "text": "Hava servisinin tahminini alır ve istasyonun ölçümleriyle düzeltir; bu noktanın nasıl farklı olduğunu öğrenir, örneğin rüzgârı kesen bir bina. Genellikle 6–24 saat için en iyisidir.",
+        "variants": "Hava servisi tahminini girdi olarak alan LightGBM · SARIMAX (SARIMA + hava servisi tahmini)"
       },
       "online": {
         "title": "Çevrimiçi",
-        "text": "Sıfırdan yeniden eğitilmek yerine her saatin sonucu ölçülür ölçülmez ondan öğrenir. İlk günden çalışır; mevsimlere, sensör kaymasına veya bozulan bir veri akışına kendiliğinden uyum sağlar.",
-        "variants": "River (artımlı regresyon) · Karışım (her yöntemi son dönemdeki doğruluğuna göre ağırlıklandırır)"
+        "text": "Öğrenmeyi sürdürür: her saatten sonra tahminini olanla karşılaştırır ve hemen ayarlanır. İlk günden çalışır ve mevsimlere ya da değişen bir sensöre kendiliğinden uyum sağlar.",
+        "variants": "River (her saat güncellenen modeller) · Karışım (diğer tüm tahminleri karıştırır, en isabetliye en çok güvenir)"
       }
     },
     "scoringTitle": "Nasıl puanlanıyorlar",
-    "scoringText": "Sunucu her saat, biten saat için geçerli olan tahminleri ölçümle karşılaştırır. Rüzgâr m/s cinsinden ortalama mutlak hata ile, yağmur olasılığı Brier skoru ile (0 kusursuz) puanlanır. Beceri, tamamen aynı saatlerde sürekliliğe göre iyileşmedir. Tekil ve Hibrit ilk tahminlerinden önce yaklaşık bir haftalık istasyon verisine ihtiyaç duyar ve haftalar, mevsimler biriktikçe iyileşir.",
+    "scoringText": "Bir saat bittiğinde sunucu, o saat için yapılmış her tahmini istasyonun ölçtüğüyle karşılaştırır. Rüzgârda puan m/s cinsinden ortalama hatadır: 0,5, tahminin ortalama yarım metre/saniye saptığı anlamına gelir. Yağış olasılığında Brier skoru kullanılır: 0 (kusursuz) ile 1 arası. Yeşil veya kırmızı yüzde, bir modelin tamamen aynı saatlerde \"Değişim yok\"tan ne kadar iyi ya da kötü olduğunu gösterir. Tekil ve Hibrit, istasyon kendi verisini topladıkça her hafta iyileşir.",
     "systemTitle": "Sistem",
-    "systemText": "İstasyon bir ESP32 üzerinde çalışır ve her ölçümü göndermeden önce gizli bir anahtarla imzalar; sunucu sahte ya da değiştirilmiş her şeyi reddeder. Ölçümler USB üzerinden bir Raspberry Pi'ye, oradan AWS sunucumuza gider (bir sonraki adım 2G hücresel modem); sunucu bunları PostgreSQL'de saklar, dış hava modeli tahminlerini her saat çeker, modelleri eğitir ve bu sayfanın verilerini sunar.",
+    "systemText": "İstasyon; rüzgâr, yağış, sıcaklık, nem ve basınç sensörlerine sahip bir ESP32 mikrodenetleyicidir. Her ölçümü gizli bir anahtarla imzalar; böylece sunucu sahte ya da değiştirilmiş her şeyi reddeder. Ölçümler USB ile bir Raspberry Pi'ye, oradan AWS'deki sunucumuza gider (sıradaki adım hücresel modem). Sunucu ölçümleri saklar, her saat hava servisi tahminlerini indirir, modelleri eğitir ve bu sayfada gösterilen verileri sağlar.",
     "dashboard": {
       "liveTitle": "İstasyonda şu an",
       "loading": "yükleniyor…",
@@ -482,8 +482,8 @@
         "rain": "Yağış",
         "observed": "Ölçülen"
       },
-      "forecastTitle": "Tahminler",
-      "forecastIntro": "Ölçülen son 24 saat ve her yöntemin önümüzdeki 24 saat için en son tahmini. Bir değişken ve bir yöntem ailesi seçin; iki referans tahmin kesikli çizilir.",
+      "forecastTitle": "Tüm tahminler",
+      "forecastIntro": "Beyaz çizgi istasyonun son 24 saatte ölçtüğüdür. Renkli çizgiler önümüzdeki 24 saatin tahminleridir. Neye bakmak istediğinizi ve hangi tür modeli göstereceğinizi seçin. Kesikli çizgiler iki basit referanstır.",
       "variableLabel": "Değişken",
       "variables": {
         "wind_ms": "Rüzgâr",
@@ -492,15 +492,15 @@
         "rain_prob": "Yağış olasılığı",
         "wind_dir_deg": "Yön"
       },
-      "groupLabel": "Yöntem ailesi",
+      "groupLabel": "Model türü",
       "groups": {
         "single": "Tekil",
         "hybrid": "Hibrit",
         "online": "Çevrimiçi"
       },
       "methods": {
-        "persistence": "Süreklilik",
-        "nwp": "Hava modeli",
+        "persistence": "Değişim yok",
+        "nwp": "Hava servisi",
         "single-lgbm": "Tekil · LightGBM",
         "single-sarima": "Tekil · SARIMA",
         "hybrid-lgbm": "Hibrit · LightGBM",
@@ -520,7 +520,7 @@
       "issuedAt": "yayım {time}",
       "noForecastYet": "henüz tahmin yok",
       "notForVariable": "bu değişken için tahmin yapılmıyor (yalnızca rüzgâr, hamle ve yağış miktarı)",
-      "ready": "tahmin yapıyor",
+      "ready": "şu an tahmin yapıyor",
       "warmingUp": "öğreniyor — 48 ölçülmüş saatten sonra yayımlar",
       "blendWaiting": "diğer yöntemleri bekliyor",
       "training": "veri bekleniyor: {note}",
@@ -529,14 +529,44 @@
         "in": "{hours} sa sonra",
         "at": "{hours} sa ileri"
       },
-      "accuracyTitle": "Şimdiye kadarki doğruluk",
+      "accuracyTitle": "Ne kadar isabetli oldular?",
       "days": "{days} gün",
-      "accuracyIntro": "{variable} tahmininin ortalama mutlak hatası (düşük daha iyi); renkli sayı sürekliliğe göre iyileşmedir.",
-      "accuracyIntroRain": "{variable} tahmininin Brier skoru (0 kusursuz, düşük daha iyi); renkli sayı sürekliliğe göre iyileşmedir.",
-      "noScoresYet": "// Puanlar, tahminler ölçümlerle karşılaştırıldıkça görünür (ilk günden itibaren).",
-      "weightsTitle": "Çevrimiçi karışım şu an kime güveniyor",
-      "weightsIntro": "Karışım her yöntemi son günlerdeki doğruluğuna göre, her tahmin ufku için ayrı ayrı ağırlıklandırır.",
-      "noWeightsYet": "// Karışımın henüz bir geçmişi yok."
+      "accuracyIntro": "{variable} tahmininin, sonra ölçülene göre {unit} cinsinden ortalama hatası. Düşük olan daha iyidir. Yeşil veya kırmızı yüzde, \"Değişim yok\"tan ne kadar iyi ya da kötü olduğunu gösterir.",
+      "accuracyIntroRain": "{variable} tahmininin hatası (Brier skoru: 0 kusursuz, 1 hep yanlış). Düşük olan daha iyidir. Yeşil veya kırmızı yüzde, \"Değişim yok\"tan ne kadar iyi ya da kötü olduğunu gösterir.",
+      "noScoresYet": "// Puanlar, tahminler ölçümlerle karşılaştırılabildiğinde görünür.",
+      "weightsTitle": "Çevrimiçi karışım tahminleri nasıl karıştırıyor",
+      "weightsIntro": "Karışım, son günlerde daha isabetli olan tahmine daha çok ağırlık verir; 1, 6 ve 24 saat ilerisi için ayrı ayrı.",
+      "noWeightsYet": "// Karışımın henüz bir geçmişi yok.",
+      "outlookTitle": "Önümüzdeki saatler",
+      "outlookIntro": "Bu nokta için şu anki en iyi tahminimiz ({method}). Tüm tahminler ve ne kadar isabetli oldukları aşağıda.",
+      "outlookIn": "{hours} sa sonra",
+      "outlookWind": "Rüzgâr {wind} m/s ({kmh} km/sa)",
+      "outlookGust": "hamleler {gust} m/s'ye kadar",
+      "outlookRainChance": "%{pct} yağış olasılığı",
+      "outlookRainMm": "yaklaşık {mm} mm",
+      "wind": {
+        "calm": "Sakin",
+        "lightAir": "Neredeyse sakin",
+        "lightBreeze": "Hafif esinti",
+        "gentleBreeze": "Tatlı esinti",
+        "moderateBreeze": "Orta rüzgâr",
+        "freshBreeze": "Sert esinti",
+        "strongBreeze": "Kuvvetli rüzgâr",
+        "gale": "Fırtına"
+      },
+      "rain": {
+        "dry": "Kuru",
+        "possible": "Yağış olabilir",
+        "likely": "Yağış bekleniyor"
+      },
+      "groupInfo": {
+        "single": "Tekil modeller yalnızca bu istasyonun kendi ölçümlerini kullanır.",
+        "hybrid": "Hibrit modeller hava servisinin tahminini bu istasyonun ölçümleriyle düzeltir.",
+        "online": "Çevrimiçi modeller her saat öğrenmeyi sürdürür; Karışım tüm tahminleri karıştırır ve en isabetliye en çok güvenir."
+      },
+      "needsWeek": "istasyonda 7 günlük veri olunca başlar",
+      "nextHour": "hazır · ilk tahmin bir sonraki tam saatte",
+      "checks": "{n} kontrol"
     }
   }
 }

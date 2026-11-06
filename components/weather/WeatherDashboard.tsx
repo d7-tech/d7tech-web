@@ -146,6 +146,26 @@ function loneDot(data: Record<string, unknown>[], key: string, color: string) {
   return LoneDot;
 }
 
+/** Beaufort-style description of a wind speed (m/s). */
+function windWord(ms: number | null | undefined) {
+  if (ms === null || ms === undefined) return null;
+  const steps: [number, string][] = [[0.5, 'calm'], [1.6, 'lightAir'], [3.4, 'lightBreeze'], [5.5, 'gentleBreeze'],
+    [8, 'moderateBreeze'], [10.8, 'freshBreeze'], [13.9, 'strongBreeze'], [Infinity, 'gale']];
+  return steps.find(([lim]) => ms < lim)![1];
+}
+
+/** Which forecast the summary uses: the first of these that has a forecast. */
+const OUTLOOK_ORDER = ['online', 'hybrid-lgbm', 'single-lgbm', 'nwp'];
+const OUTLOOK_VARS = ['wind_ms', 'gust_ms', 'rain_prob', 'rain_mm'] as const;
+type OutlookVar = (typeof OUTLOOK_VARS)[number];
+
+function valueAt(ps: Pred[] | undefined, method: string, h: number) {
+  const mine = (ps ?? []).filter((p) => p.method === method);
+  if (!mine.length) return null;
+  const target = Date.parse(mine[0].issued_at) + h * HOUR;
+  return mine.find((p) => Date.parse(p.valid_at) === target)?.value ?? null;
+}
+
 const axisNum = (v: number) => Number(v.toFixed(Math.abs(v) >= 100 ? 0 : Math.abs(v) < 1 ? 2 : 1)).toString();
 
 export default function WeatherDashboard() {
@@ -162,6 +182,7 @@ export default function WeatherDashboard() {
   const [weights, setWeights] = useState<Weight[]>([]);
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [now, setNow] = useState(() => Date.now());
+  const [outlook, setOutlook] = useState<Partial<Record<OutlookVar, Pred[]>>>({});
 
   const timeFmt = useMemo(
     () => new Intl.DateTimeFormat(locale, { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }),
@@ -193,6 +214,11 @@ export default function WeatherDashboard() {
     setWeights(w ?? []);
   }, [variable]);
 
+  const loadOutlook = useCallback(async () => {
+    const res = await Promise.all(OUTLOOK_VARS.map((v) => getJson<Pred[]>(`/forecast?station=${STATION}&variable=${v}`)));
+    setOutlook(Object.fromEntries(OUTLOOK_VARS.map((v, i) => [v, res[i] ?? []])));
+  }, []);
+
   const loadMetrics = useCallback(async () => {
     setMetrics((await getJson<Metric[]>(`/metrics?station=${STATION}&variable=${variable}&window_days=${windowDays}`)) ?? []);
   }, [variable, windowDays]);
@@ -210,6 +236,13 @@ export default function WeatherDashboard() {
   useEffect(() => {
     loadMetrics();
   }, [loadMetrics]);
+  useEffect(() => {
+    loadOutlook();
+    const id = setInterval(loadOutlook, REFRESH_MS * 5);
+    return () => clearInterval(id);
+  }, [loadOutlook]);
+
+  const outlookMethod = OUTLOOK_ORDER.find((m) => (outlook.wind_ms ?? []).some((p) => p.method === m));
 
   // ---- history charts: one point per 10-minute bin, nulls where a bin is missing (drawn as gaps) ----
   const history = useMemo(() => {
@@ -317,18 +350,61 @@ export default function WeatherDashboard() {
             { k: 'temp', v: `${fmt(latest?.temp_c)} °C` },
             { k: 'humidity', v: `${fmt(latest?.rh_pct, 0)} %` },
             { k: 'pressure', v: `${fmt(latest?.press_hpa, 0)} hPa` },
-            { k: 'wind', v: `${fmt(latest?.wind_ms)} m/s` },
+            { k: 'wind', v: `${fmt(latest?.wind_ms)} m/s`, sub: windWord(latest?.wind_ms) ? t(`wind.${windWord(latest?.wind_ms)}` as any) : undefined },
             { k: 'gust', v: `${fmt(latest?.gust_ms)} m/s` },
             { k: 'direction', v: latest?.wind_dir_deg != null ? `${compass(latest.wind_dir_deg)} · ${fmt(latest.wind_dir_deg, 0)}°` : '–' },
             { k: 'rainToday', v: `${fmt(rainToday)} mm` },
             { k: 'soil', v: `${fmt(latest?.soil_pct, 0)} %` },
-          ].map(({ k, v }) => (
+          ].map(({ k, v, sub }: { k: string; v: string; sub?: string }) => (
             <div key={k} className={`${card} p-4`}>
               <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">{t(`tiles.${k}` as any)}</div>
               <div className="text-lg sm:text-xl font-semibold text-slate-100 tabular-nums">{v}</div>
+              {sub && <div className="text-xs text-slate-500 mt-0.5">{sub}</div>}
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ---------- the next hours, in words ---------- */}
+      <section aria-labelledby="outlook-heading">
+        <h2 id="outlook-heading" className="text-xl font-semibold text-slate-100 mb-2">{t('outlookTitle')}</h2>
+        <p className="text-slate-400 text-sm leading-relaxed mb-4">
+          {outlookMethod ? t('outlookIntro', { method: t(`methods.${outlookMethod}` as any) }) : t('noForecastYet')}
+        </p>
+        {outlookMethod && (
+          <div className="grid sm:grid-cols-3 gap-3">
+            {[1, 6, 24].map((h) => {
+              const wind = valueAt(outlook.wind_ms, outlookMethod, h);
+              const gust = valueAt(outlook.gust_ms, outlookMethod, h);
+              const prob = valueAt(outlook.rain_prob, outlookMethod, h) ?? valueAt(outlook.rain_prob, 'nwp', h);
+              const mm = valueAt(outlook.rain_mm, outlookMethod, h);
+              const issuedAt = (outlook.wind_ms ?? []).find((p) => p.method === outlookMethod)?.issued_at;
+              const at = issuedAt ? Date.parse(issuedAt) + h * HOUR : null;
+              const word = windWord(wind);
+              const pct = prob === null ? null : Math.round(prob * 100);
+              const rainKey = pct === null ? null : pct < 20 ? 'dry' : pct < 50 ? 'possible' : 'likely';
+              return (
+                <div key={h} className={`${card} p-4`}>
+                  <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-2">
+                    {t('outlookIn', { hours: h })}{at ? ` · ${timeFmt.format(at)}` : ''}
+                  </div>
+                  <div className="text-lg font-semibold text-slate-100 mb-1">{word ? t(`wind.${word}` as any) : '–'}</div>
+                  <div className="text-sm text-slate-300 tabular-nums">
+                    {t('outlookWind', { wind: fmt(wind), kmh: fmt(wind === null ? null : wind * 3.6, 0) })}
+                    {gust !== null && <> · {t('outlookGust', { gust: fmt(gust) })}</>}
+                  </div>
+                  {rainKey && (
+                    <div className="text-sm text-slate-300 mt-2 tabular-nums">
+                      <span className={rainKey === 'dry' ? 'text-slate-300' : 'text-sky-300'}>{t(`rain.${rainKey}` as any)}</span>
+                      {' · '}{t('outlookRainChance', { pct: pct ?? 0 })}
+                      {mm !== null && mm >= 0.05 && <> · {t('outlookRainMm', { mm: fmt(mm) })}</>}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* ---------- history ---------- */}
@@ -389,13 +465,14 @@ export default function WeatherDashboard() {
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2 mb-5" role="tablist" aria-label={t('groupLabel')}>
+        <div className="flex flex-wrap gap-2 mb-3" role="tablist" aria-label={t('groupLabel')}>
           {(Object.keys(GROUPS) as Group[]).map((g) => (
             <button key={g} role="tab" aria-selected={group === g} className={btn(group === g)} onClick={() => setGroup(g)}>
               {t(`groups.${g}` as any)}
             </button>
           ))}
         </div>
+        <p className="text-slate-400 text-sm leading-relaxed mb-4">{t(`groupInfo.${group}` as any)}</p>
 
         <div className={`${card} p-4`}>
           <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 font-mono text-[11px]">
@@ -443,7 +520,8 @@ export default function WeatherDashboard() {
             else if (methodsWithData.has(m)) note = t('ready');
             else if (m === 'online-river') note = t('warmingUp');
             else if (m === 'online') note = t('blendWaiting');
-            else if (status && !status.ready) note = t('training', { note: status.note ?? '' });
+            else if (status && !status.ready) note = /not enough data/.test(status.note ?? '') ? t('needsWeek') : t('training', { note: status.note ?? '' });
+            else if (status?.ready) note = t('nextHour');
             else note = t('noForecastYet');
             return (
               <div key={m} className={`${card} p-3 flex items-start gap-3`}>
@@ -502,7 +580,7 @@ export default function WeatherDashboard() {
           </div>
         </div>
         <p className="text-slate-400 text-sm leading-relaxed mb-4">
-          {t(variable === 'rain_prob' ? 'accuracyIntroRain' : 'accuracyIntro', { variable: t(`variables.${variable}` as any) })}
+          {t(variable === 'rain_prob' ? 'accuracyIntroRain' : 'accuracyIntro', { variable: t(`variables.${variable}` as any), unit: UNIT[variable] })}
         </p>
         {metrics.length === 0 ? (
           <p className="font-mono text-[11px] text-slate-500">{t('noScoresYet')}</p>
@@ -536,7 +614,7 @@ export default function WeatherDashboard() {
                               {Math.round(skill * 100)}%
                             </div>
                           )}
-                          {x && <div className="text-[10px] text-slate-600">n={x.n}</div>}
+                          {x && <div className="text-[10px] text-slate-600">{t('checks', { n: x.n })}</div>}
                         </td>
                       );
                     })}

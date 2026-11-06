@@ -421,32 +421,32 @@
     "prjId": "PRJ-006",
     "sectionLabel": "// AI & MACHINE LEARNING · IOT SENSING",
     "title": "Micro-Climate Forecasting: Rain & Wind",
-    "subtitle": "A live weather station at our office, with Single, Hybrid and Online forecasts for the next 1, 6 and 24 hours — each scored against what was then measured.",
+    "subtitle": "A weather station outside our office window, and forecasts of wind and rain for this exact spot for the next 1, 6 and 24 hours.",
     "overviewTitle": "Overview",
-    "overviewText": "Weather services forecast for a grid cell several kilometres wide; this project forecasts for one exact spot. A weather station outside our office window measures wind speed, gusts, direction, rain, temperature, humidity and pressure. Every reading is signed on the station and stored on our server, which issues a new forecast every hour with several methods and keeps every forecast exactly as it was issued, so their accuracy can be compared honestly.",
+    "overviewText": "Weather apps forecast for an area several kilometres wide. This page forecasts for one point: our office window in Istanbul. The station measures wind, gusts, rain, temperature, humidity and pressure every few seconds. Every hour our server makes new forecasts with three kinds of model (Single, Hybrid and Online, explained below) and later checks each forecast against what was really measured, so you can see which one is right most often.",
     "methodsTitle": "How the forecasts are made",
-    "methodsText": "All methods answer the same question — given everything measured up to now, what will wind and rain be in 1, 6 and 24 hours? — and differ in what they know and how they learn. Two reference forecasts are always shown: persistence (\"the next hours are like the last one\") and the raw external forecast (the mean of several global weather models). A method is only useful where it beats both.",
+    "methodsText": "Every model answers the same question: given what has been measured up to now, what will wind and rain be in 1, 6 and 24 hours? They differ in what information they use. Two simple references are always shown, and a model is only worth using where it beats both: \"No change\" (the next hours stay like the last hour) and \"Weather service\" (the forecast from global weather models, averaged).",
     "methods": {
       "single": {
         "title": "Single",
-        "text": "Trained once a night on the station's own history only. Strong for the next hour, where what is happening now matters most; it cannot see weather that has not arrived yet.",
-        "variants": "LightGBM (gradient-boosted trees) · SARIMA (statistical time series with a 24-hour season)"
+        "text": "Uses only this station's own measurements: recent wind, rain, pressure change, time of day. Good for the next hour, but it can't see weather that is still far away.",
+        "variants": "LightGBM (decision trees, pre-trained on 11 years of 13 nearby stations) · SARIMA (classic time-series model with a daily cycle)"
       },
       "hybrid": {
         "title": "Hybrid",
-        "text": "Combines the external weather-model forecast with the station's measurements and learns how this exact spot differs from it — sheltering by the building, rain under-catch, timing errors. Usually the best at 6 to 24 hours.",
-        "variants": "LightGBM with weather-model inputs · SARIMAX (SARIMA with the weather model as an input)"
+        "text": "Takes the weather-service forecast and corrects it with the station's measurements, learning how this spot differs, for example a building blocking the wind. Usually the best for 6 to 24 hours.",
+        "variants": "LightGBM with the weather-service forecast as input · SARIMAX (SARIMA plus the weather-service forecast)"
       },
       "online": {
         "title": "Online",
-        "text": "Learns from every hour as soon as its outcome is measured, instead of being retrained from scratch. Works from the first day and adapts to seasons, sensor drift or a broken data feed.",
-        "variants": "River (incremental regression) · Blend (weights every method by its recent accuracy)"
+        "text": "Keeps learning: after every hour it compares its forecast with what happened and adjusts at once. It works from the first day and adapts by itself to seasons or a changed sensor.",
+        "variants": "River (models updated every hour) · Blend (mixes all the other forecasts, trusting the most accurate one most)"
       }
     },
     "scoringTitle": "How they are scored",
-    "scoringText": "Every hour the server compares the forecasts that were valid for the hour that just ended with the measurement. Wind is scored by its mean absolute error in m/s, rain chance by the Brier score (0 is perfect). Skill is the improvement over persistence on exactly the same hours. Single and Hybrid need about a week of station data before their first forecast, and get better as more weeks and seasons are collected.",
+    "scoringText": "When an hour ends, the server compares every forecast made for that hour with what the station measured. For wind, the score is the average error in m/s: 0.5 means the forecast was off by half a metre per second on average. For rain chance it is the Brier score, from 0 (perfect) to 1. The green or red percentage shows how much better or worse a model is than \"No change\" on exactly the same hours. Single and Hybrid improve each week as the station collects its own data.",
     "systemTitle": "The system",
-    "systemText": "The station runs on an ESP32 and signs every reading with a secret key before sending it, so the server rejects anything forged or altered. Readings travel over USB to a Raspberry Pi and on to our AWS server (a 2G cellular modem is the next step), which stores them in PostgreSQL, fetches the external weather-model forecasts every hour, trains the models and serves this page's data.",
+    "systemText": "The station is an ESP32 microcontroller with wind, rain, temperature, humidity and pressure sensors. It signs every reading with a secret key, so the server rejects anything forged or altered. Readings go over USB to a Raspberry Pi and on to our server at AWS (a cellular modem is the next step). The server stores the readings, downloads weather-service forecasts every hour, trains the models and provides the data shown on this page.",
     "dashboard": {
       "liveTitle": "Now at the station",
       "loading": "loading…",
@@ -482,8 +482,8 @@
         "rain": "Rain",
         "observed": "Measured"
       },
-      "forecastTitle": "Forecasts",
-      "forecastIntro": "The measured last 24 hours and each method's latest forecast for the next 24 hours. Pick a variable and a method family; the two reference forecasts are drawn dashed.",
+      "forecastTitle": "All forecasts",
+      "forecastIntro": "The white line is what the station measured over the last 24 hours. The coloured lines are forecasts for the next 24 hours. Choose what to look at and which kind of model to show. The dashed lines are the two simple references.",
       "variableLabel": "Variable",
       "variables": {
         "wind_ms": "Wind",
@@ -492,15 +492,15 @@
         "rain_prob": "Rain chance",
         "wind_dir_deg": "Direction"
       },
-      "groupLabel": "Method family",
+      "groupLabel": "Kind of model",
       "groups": {
         "single": "Single",
         "hybrid": "Hybrid",
         "online": "Online"
       },
       "methods": {
-        "persistence": "Persistence",
-        "nwp": "Weather model",
+        "persistence": "No change",
+        "nwp": "Weather service",
         "single-lgbm": "Single · LightGBM",
         "single-sarima": "Single · SARIMA",
         "hybrid-lgbm": "Hybrid · LightGBM",
@@ -520,7 +520,7 @@
       "issuedAt": "issued {time}",
       "noForecastYet": "no forecast yet",
       "notForVariable": "not forecast for this variable (wind, gust and rain amount only)",
-      "ready": "forecasting",
+      "ready": "forecasting now",
       "warmingUp": "learning — publishes after 48 measured hours",
       "blendWaiting": "waiting for the other methods",
       "training": "waiting for data: {note}",
@@ -529,14 +529,44 @@
         "in": "in {hours} h",
         "at": "{hours} h ahead"
       },
-      "accuracyTitle": "Accuracy so far",
+      "accuracyTitle": "How accurate have they been?",
       "days": "{days} days",
-      "accuracyIntro": "Mean absolute error of the {variable} forecast (lower is better); the coloured number is the improvement over persistence.",
-      "accuracyIntroRain": "Brier score of the {variable} forecast (0 is perfect, lower is better); the coloured number is the improvement over persistence.",
-      "noScoresYet": "// Scores appear once forecasts have been checked against measurements (from the first day on).",
-      "weightsTitle": "Who the Online blend trusts now",
-      "weightsIntro": "The blend weights every method by how accurate it has been over the last days, separately for each forecast horizon.",
-      "noWeightsYet": "// The blend has no track record yet."
+      "accuracyIntro": "Average error of the {variable} forecast against what was then measured, in {unit}. Lower is better. The green or red percentage is how much better or worse than \"No change\".",
+      "accuracyIntroRain": "Error of the {variable} forecast (Brier score: 0 is perfect, 1 is always wrong). Lower is better. The green or red percentage is how much better or worse than \"No change\".",
+      "noScoresYet": "// Scores appear once forecasts can be checked against measurements.",
+      "weightsTitle": "How the Online blend mixes the forecasts",
+      "weightsIntro": "The blend gives more weight to whichever forecast has been more accurate over the last days, separately for 1, 6 and 24 hours ahead.",
+      "noWeightsYet": "// The blend has no track record yet.",
+      "outlookTitle": "The next hours",
+      "outlookIntro": "Our current best forecast for this spot ({method}). All the forecasts and how accurate they have been are further down.",
+      "outlookIn": "In {hours} h",
+      "outlookWind": "Wind {wind} m/s ({kmh} km/h)",
+      "outlookGust": "gusts up to {gust} m/s",
+      "outlookRainChance": "{pct}% chance of rain",
+      "outlookRainMm": "about {mm} mm",
+      "wind": {
+        "calm": "Calm",
+        "lightAir": "Almost calm",
+        "lightBreeze": "Light breeze",
+        "gentleBreeze": "Gentle breeze",
+        "moderateBreeze": "Moderate wind",
+        "freshBreeze": "Fresh wind",
+        "strongBreeze": "Strong wind",
+        "gale": "Gale"
+      },
+      "rain": {
+        "dry": "Dry",
+        "possible": "Rain possible",
+        "likely": "Rain likely"
+      },
+      "groupInfo": {
+        "single": "Single models use only this station's own measurements.",
+        "hybrid": "Hybrid models correct the weather-service forecast using this station's measurements.",
+        "online": "Online models keep learning every hour; the Blend mixes all the forecasts, trusting the most accurate one most."
+      },
+      "needsWeek": "starts once the station has 7 days of data",
+      "nextHour": "ready · first forecast at the next full hour",
+      "checks": "{n} checks"
     }
   }
 }
