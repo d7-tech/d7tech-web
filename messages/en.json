@@ -571,52 +571,7 @@
       "verifyLead": "Forecast made",
       "madeBefore": "{hours} h before",
       "verifyExample": "Example: for {time}, {method} predicted {pred} {unit}, {hours} h in advance. The station then measured {obs} {unit}, so it was off by {diff}.",
-      "verifyNone": "Not enough checked forecasts yet. This fills up as the hours pass.",
-      "dirs": {
-        "N": "north",
-        "NE": "north-east",
-        "E": "east",
-        "SE": "south-east",
-        "S": "south",
-        "SW": "south-west",
-        "W": "west",
-        "NW": "north-west"
-      },
-      "simple": {
-        "nowTitle": "Right now at our office in Istanbul",
-        "raining": "It is raining.",
-        "dry": "It is not raining.",
-        "noWind": "There is almost no wind.",
-        "windNow": "{word}: {speed} m/s ({kmh} km/h) from the {dir}.",
-        "windNowNoDir": "{word}: {speed} m/s ({kmh} km/h).",
-        "gustLabel": "Strongest gust just now",
-        "gustValue": "{gust} m/s",
-        "rainLabel": "Rain today",
-        "rainSoFar": "{mm} mm so far",
-        "noRainToday": "No rain so far",
-        "humidityLabel": "Humidity",
-        "sensorNote": "Measured by our own weather station next to the office window. In direct sun the temperature can read too high.",
-        "nextTitle": "The next 24 hours",
-        "rain6": {
-          "unlikely": "Rain is unlikely in the next 6 hours (at most {pct}% chance).",
-          "possible": "Some rain is possible in the next 6 hours (up to {pct}% chance).",
-          "likely": "Rain is likely in the next 6 hours ({pct}% chance)."
-        },
-        "rainLater": "Later the chance rises to {pct}% around {time}.",
-        "windNext": "Wind will be at most a {word}, up to {max} m/s.",
-        "gustNext": "Strongest gusts about {gust} m/s around {time}.",
-        "rainShort": "rain",
-        "nextNote": "Shown every 3 hours. Forecast: {method}. The small arrow points where the wind blows.",
-        "trustTitle": "Can you trust this forecast?",
-        "trustText": "We check it every hour. Over the last 7 days, when we predicted the wind 6 hours ahead, our forecast ({method}) was off by only {ours} m/s on average. The normal weather service for this area was off by {service} m/s. Based on {n} checks against real measurements.",
-        "oursLabel": "Our forecast",
-        "serviceLabel": "Normal weather service",
-        "offBy": "off by {v} m/s",
-        "trustNote": "Smaller is better. A normal weather service forecasts for an area several kilometres wide; ours learns this exact spot.",
-        "trustWaiting": "We are still collecting checks. Soon you will see here how close our forecasts came to what really happened.",
-        "techTitle": "Show all technical details ▾",
-        "techHint": "Every model, the hourly table, charts, accuracy scores and test results, for readers who want the details."
-      }
+      "verifyNone": "Not enough checked forecasts yet. This fills up as the hours pass."
     }
   }
 }

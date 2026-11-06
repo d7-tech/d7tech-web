@@ -17,7 +17,6 @@ import {
   YAxis,
 } from 'recharts';
 import { TEST_SCORES } from '@/lib/data/weatherTestScores';
-import { CloudDrizzle, CloudRain, Droplets, Moon, Sun, Umbrella, Wind } from 'lucide-react';
 
 /**
  * Live data and forecasts from the LakeLink server (FastAPI, read-only, CORS-enabled for d7tech.net).
@@ -220,7 +219,6 @@ export default function WeatherDashboard() {
   const [weights, setWeights] = useState<Weight[]>([]);
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [source, setSource] = useState<string | null>(null);
-  const [simpleMetrics, setSimpleMetrics] = useState<Metric[]>([]);
   const [verifyVar, setVerifyVar] = useState<'wind_ms' | 'gust_ms' | 'rain_prob' | 'rain_mm'>('wind_ms');
   const [verifyH, setVerifyH] = useState<1 | 6 | 24>(6);
   const [verify, setVerify] = useState<Verify | null>(null);
@@ -270,9 +268,6 @@ export default function WeatherDashboard() {
   useEffect(() => {
     loadWeights();
   }, [loadWeights]);
-  useEffect(() => {
-    getJson<Metric[]>(`/metrics?station=${STATION}&variable=wind_ms&window_days=7`).then((m) => setSimpleMetrics(m ?? []));
-  }, [now]);
   useEffect(() => {
     let alive = true;
     getJson<Verify>(`/verify?station=${STATION}&variable=${verifyVar}&horizon=${verifyH}&hours=48`).then((v) => alive && setVerify(v));
@@ -395,40 +390,6 @@ export default function WeatherDashboard() {
   const calm = (latest?.wind_ms ?? 0) < CALM_MS && (latest?.gust_ms ?? 0) < CALM_MS;
   const dirNow = calm ? null : latest?.wind_dir_deg ?? null;
 
-  // ---- plain-language view ----
-  const localHour = (ms: number) => Number(hourFmt.format(ms)) % 24;
-  const isDay = (ms: number) => localHour(ms) >= 7 && localHour(ms) < 19;
-  const best = strip; // the hourly strip already uses the best available forecast
-  const next6 = best.slice(0, 6);
-  const maxRain = (rows: typeof best) => rows.reduce<{ pct: number; at: number } | null>((m, r) => {
-    const pct = r.prob === null ? null : Math.round(r.prob * 100);
-    return pct !== null && (!m || pct > m.pct) ? { pct, at: r.at } : m;
-  }, null);
-  const rain6 = maxRain(next6);
-  const rain24 = maxRain(best);
-  const maxWind = best.reduce<{ v: number; at: number } | null>((m, r) => (r.wind !== null && (!m || r.wind > m.v) ? { v: r.wind, at: r.at } : m), null);
-  const maxGust = best.reduce<{ v: number; at: number } | null>((m, r) => (r.gust !== null && (!m || r.gust > m.v) ? { v: r.gust, at: r.at } : m), null);
-  const rainWord = (pct: number) => (pct < 20 ? 'unlikely' : pct < 50 ? 'possible' : 'likely');
-  const trust = useMemo(() => {
-    const at = (m: string, h: number) => simpleMetrics.find((x) => x.method === m && x.horizon_h === h);
-    const ours = ['online', 'hybrid-lgbm', 'single-lgbm']
-      .map((m) => ({ m, x: at(m, 6) }))
-      .filter((r) => r.x && r.x.mae !== null && r.x.n >= 3)
-      .sort((a, b) => (a.x!.mae as number) - (b.x!.mae as number))[0];
-    const service = at('nwp', 6);
-    if (!ours || !service || service.mae === null) return null;
-    return { method: ours.m, ours: ours.x!.mae as number, service: service.mae, n: ours.x!.n };
-  }, [simpleMetrics]);
-  const skyIcon = (pct: number | null, ms: number, size = 28) => {
-    const cls = 'shrink-0';
-    if (pct !== null && pct >= 50) return <CloudRain size={size} className={`${cls} text-sky-300`} aria-hidden="true" />;
-    if (pct !== null && pct >= 25) return <CloudDrizzle size={size} className={`${cls} text-sky-300/80`} aria-hidden="true" />;
-    return isDay(ms) ? <Sun size={size} className={`${cls} text-amber-300`} aria-hidden="true" /> : <Moon size={size} className={`${cls} text-slate-300`} aria-hidden="true" />;
-  };
-  // one gauge tip (~0.3 mm) in dry air is usually a knock or a false tip, not rain
-  const rainLastHour = bins.filter((b) => Date.parse(b.bin_start) >= now - 60 * 60_000).reduce((a, b) => a + (b.rain_mm ?? 0), 0);
-  const rainingNow = rainLastHour >= 0.5 || (rainLastHour > 0 && (latest?.rh_pct ?? 0) >= 80);
-
   const chip = (active: boolean) =>
     `px-3 py-1.5 rounded-full border text-xs transition-colors ${
       active ? 'border-sky-400/60 bg-sky-400/10 text-sky-300' : 'border-[#1a2540] text-slate-400 hover:text-slate-200'
@@ -438,106 +399,6 @@ export default function WeatherDashboard() {
 
   return (
     <div className="space-y-10">
-      {/* ================= simple view ================= */}
-      <section aria-labelledby="s-now" className={`${card} p-5 sm:p-7`}>
-        <h2 id="s-now" className="text-sm text-slate-400 mb-4">{t('simple.nowTitle')}</h2>
-        {latest ? (
-          <>
-            <div className="flex items-center gap-5 flex-wrap">
-              {rainingNow ? <CloudRain size={64} className="text-sky-300" aria-hidden="true" /> : skyIcon(null, now, 64)}
-              <div>
-                <div className="text-5xl font-semibold text-slate-100 tabular-nums">{fmt(latest.temp_c, 0)}°C</div>
-                <p className="text-lg text-slate-200 mt-1">
-                  {t(rainingNow ? 'simple.raining' : 'simple.dry')}{' '}
-                  {calm ? t('simple.noWind') : t(dirNow === null ? 'simple.windNowNoDir' : 'simple.windNow', { word: ww ? t(`wind.${ww}` as any) : '', speed: fmt(latest.wind_ms), kmh: fmt((latest.wind_ms ?? 0) * 3.6, 0), dir: compassName(dirNow, t as any) })}
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-              <Fact icon={<Wind size={20} className="text-sky-300" />} label={t('simple.gustLabel')} value={t('simple.gustValue', { gust: fmt(latest.gust_ms) })} />
-              <Fact icon={<Umbrella size={20} className="text-sky-300" />} label={t('simple.rainLabel')} value={rainToday > 0 ? t('simple.rainSoFar', { mm: fmt(rainToday) }) : t('simple.noRainToday')} />
-              <Fact icon={<Droplets size={20} className="text-sky-300" />} label={t('simple.humidityLabel')} value={`${fmt(latest.rh_pct, 0)} %`} />
-            </div>
-            <p className="text-xs text-slate-500 mt-4">{t('simple.sensorNote')}</p>
-          </>
-        ) : (
-          <p className="text-slate-400">{latest === undefined ? t('loading') : t('noData')}</p>
-        )}
-      </section>
-
-      <section aria-labelledby="s-next" className={`${card} p-5 sm:p-7`}>
-        <h2 id="s-next" className="text-sm text-slate-400 mb-4">{t('simple.nextTitle')}</h2>
-        {best.length === 0 ? <p className="text-slate-400">{t('status.none')}</p> : (
-          <>
-            <ul className="space-y-2 text-base text-slate-200 mb-6">
-              {rain6 && (
-                <li className="flex gap-3 items-start"><Umbrella size={20} className="text-sky-300 mt-0.5 shrink-0" aria-hidden="true" />
-                  <span>{t(`simple.rain6.${rainWord(rain6.pct)}` as any, { pct: rain6.pct })}
-                    {rain24 && rain24.pct >= 25 && rain24.pct > rain6.pct ? ` ${t('simple.rainLater', { pct: rain24.pct, time: timeFmt.format(rain24.at) })}` : ''}</span></li>
-              )}
-              {maxWind && (
-                <li className="flex gap-3 items-start"><Wind size={20} className="text-sky-300 mt-0.5 shrink-0" aria-hidden="true" />
-                  <span>{t('simple.windNext', { word: t(`wind.${windWord(maxWind.v)}` as any).toLowerCase(), max: fmt(maxWind.v) })}
-                    {maxGust ? ` ${t('simple.gustNext', { gust: fmt(maxGust.v), time: timeFmt.format(maxGust.at) })}` : ''}</span></li>
-              )}
-            </ul>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-              {best.filter((_, i) => (i + 1) % 3 === 0).map((r) => {
-                const pct = r.prob === null ? null : Math.round(r.prob * 100);
-                return (
-                  <div key={r.at} className="rounded-md bg-[#020409]/60 border border-[#1a2540] p-2 text-center">
-                    <div className="text-xs text-slate-400">{timeFmt.format(r.at)}</div>
-                    <div className="flex justify-center my-2">{skyIcon(pct, r.at, 26)}</div>
-                    <div className="text-sm text-sky-300 tabular-nums">{pct === null ? '–' : `${pct}%`}</div>
-                    <div className="text-[11px] text-slate-500">{t('simple.rainShort')}</div>
-                    <div className="flex items-center justify-center gap-1 mt-1 text-sm text-slate-200 tabular-nums">
-                      <Arrow deg={r.dir} size={11} /> {fmt(r.wind)}
-                    </div>
-                    <div className="text-[11px] text-slate-500">m/s</div>
-                  </div>
-                );
-              })}
-            </div>
-            <p className="text-xs text-slate-500 mt-4">{t('simple.nextNote', { method: src ? t(`methods.${src}` as any) : '' })}</p>
-          </>
-        )}
-      </section>
-
-      <section aria-labelledby="s-trust" className={`${card} p-5 sm:p-7`}>
-        <h2 id="s-trust" className="text-sm text-slate-400 mb-4">{t('simple.trustTitle')}</h2>
-        {trust ? (
-          <>
-            <p className="text-base text-slate-200 mb-5">
-              {t('simple.trustText', { ours: fmt(trust.ours, 2), service: fmt(trust.service, 1), n: trust.n, method: t(`methods.${trust.method}` as any) })}
-            </p>
-            <div className="space-y-3 max-w-xl">
-              {[
-                { label: t('simple.oursLabel'), v: trust.ours, color: '#34d399' },
-                { label: t('simple.serviceLabel'), v: trust.service, color: '#f59e0b' },
-              ].map((b) => (
-                <div key={b.label}>
-                  <div className="flex justify-between text-sm mb-1"><span className="text-slate-300">{b.label}</span>
-                    <span className="text-slate-100 tabular-nums">{t('simple.offBy', { v: fmt(b.v, 2) })}</span></div>
-                  <div className="h-3 rounded-full bg-[#1a2540] overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${Math.max(2, (b.v / Math.max(trust.ours, trust.service)) * 100)}%`, background: b.color }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-slate-500 mt-4">{t('simple.trustNote')}</p>
-          </>
-        ) : (
-          <p className="text-slate-400">{t('simple.trustWaiting')}</p>
-        )}
-      </section>
-
-      {/* ================= technical view, folded ================= */}
-      <details className="group">
-        <summary className="cursor-pointer select-none list-none rounded-lg border border-[#1a2540] bg-[#0a0f1e]/40 px-5 py-4 text-slate-200 hover:border-sky-400/40">
-          <span className="font-medium">{t('simple.techTitle')}</span>
-          <span className="block text-xs text-slate-500 mt-1">{t('simple.techHint')}</span>
-        </summary>
-        <div className="space-y-10 mt-8">
       {/* ---------- how the page works, in three steps ---------- */}
       <ol className="grid gap-3 sm:grid-cols-3" aria-label={t('stepsLabel')}>
         {(['measure', 'forecast', 'check'] as const).map((k, i) => (
@@ -965,25 +826,6 @@ export default function WeatherDashboard() {
           <p className="text-[11px] text-slate-500 mt-2">{t('testedNote')}</p>
         </div>
       </section>
-        </div>
-      </details>
-    </div>
-  );
-}
-
-function compassName(deg: number | null, t: (k: string) => string) {
-  if (deg === null) return '';
-  return t(`dirs.${compass(deg)}`);
-}
-
-function Fact({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-3 rounded-md bg-[#020409]/60 border border-[#1a2540] px-4 py-3">
-      <span aria-hidden="true">{icon}</span>
-      <div>
-        <div className="text-xs text-slate-500">{label}</div>
-        <div className="text-slate-100">{value}</div>
-      </div>
     </div>
   );
 }
