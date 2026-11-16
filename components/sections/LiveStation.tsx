@@ -69,8 +69,11 @@ export default function LiveStation() {
     <div className="border-t border-white/15 bg-paper/70 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center gap-x-8 gap-y-3">
         <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-          <span className={`w-1.5 h-1.5 rounded-full ${fresh ? 'bg-emerald-400' : 'bg-ink-muted'}`} aria-hidden="true" />
-          {t('label')}
+          <span className="relative flex w-2 h-2" aria-hidden="true">
+            {fresh && <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-75 animate-ping" />}
+            <span className={`relative w-2 h-2 rounded-full ${fresh ? 'bg-emerald-400' : 'bg-ink-muted'}`} />
+          </span>
+          {fresh ? t('label') : t('offline')}
         </p>
         <dl className="flex flex-wrap gap-x-8 gap-y-2">
           {readings.map((r) => (

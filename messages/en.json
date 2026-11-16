@@ -564,7 +564,8 @@
     "pressure": "Pressure",
     "updated": "Updated {time}",
     "stale": "Last reading {time}",
-    "more": "Forecasts"
+    "more": "Forecasts",
+    "offline": "Offline · Istanbul"
   },
   "Anim": {
     "range": "UWB range",

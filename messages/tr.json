@@ -564,7 +564,8 @@
     "pressure": "Basınç",
     "updated": "Güncellendi {time}",
     "stale": "Son ölçüm {time}",
-    "more": "Tahminler"
+    "more": "Tahminler",
+    "offline": "Çevrimdışı · İstanbul"
   },
   "Anim": {
     "range": "UWB mesafesi",
