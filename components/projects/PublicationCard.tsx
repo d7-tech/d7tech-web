@@ -8,7 +8,7 @@ export default function PublicationCard({ publication }: { publication: Publicat
         href={`https://doi.org/${publication.doi}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-brand hover:underline break-all"
+        className="font-mono text-sm text-brand-light hover:text-ink break-all"
       >
         doi:{publication.doi}
       </a>

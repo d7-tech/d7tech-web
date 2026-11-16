@@ -23,12 +23,12 @@ export default async function CareersPage({ params }: { params: { locale: string
   const t = await getTranslations({ locale: params.locale, namespace: 'CareersPage' });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-24">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-28">
       <h1 id="careers-heading">{t('heroTitle')}</h1>
       <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('heroDescription')}</p>
       <Link
         href="/contact"
-        className="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-md bg-brand text-white text-[15px] font-medium hover:bg-brand-dark transition-colors"
+        className="mt-9 inline-flex items-center gap-2 px-5 py-3 bg-ink text-paper text-[15px] font-medium hover:bg-white transition-colors"
       >
         {t('ctaButton')}
         <ArrowRight size={16} aria-hidden="true" />

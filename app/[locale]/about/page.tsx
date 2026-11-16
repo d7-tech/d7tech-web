@@ -43,14 +43,14 @@ export default async function AboutPage({ params }: { params: { locale: string }
   ];
 
   const Section = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
-    <section className="border-t border-line py-14 sm:py-20 grid gap-8 lg:grid-cols-[1fr_2fr]" aria-labelledby={id}>
-      <h2 id={id}>{title}</h2>
+    <section className="border-t border-line py-10 sm:py-14 grid gap-6 lg:grid-cols-[260px_1fr] lg:gap-16" aria-labelledby={id}>
+      <h2 id={id} className="text-2xl sm:text-[1.75rem]">{title}</h2>
       <div>{children}</div>
     </section>
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16">
       <header className="pb-14 sm:pb-16">
         <h1 id="about-heading">{t('heroTitle')}</h1>
         <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('heroDescription')}</p>
@@ -61,18 +61,18 @@ export default async function AboutPage({ params }: { params: { locale: string }
       </Section>
 
       <Section id="team-heading" title={t('teamTitle')}>
-        <ul className="grid gap-x-8 sm:grid-cols-2">
+        <ul className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {team.map((member) => (
-            <li key={member.name} className="border-b border-line py-4">
+            <li key={member.name} className="bg-paper p-5">
               <a
                 href={member.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-ink hover:text-brand hover:underline"
+                className="font-medium text-ink hover:text-brand-light"
               >
                 {member.name}
               </a>
-              <p className="text-[15px] text-ink-muted">{member.role}</p>
+              <p className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-muted">{member.role}</p>
             </li>
           ))}
         </ul>
@@ -81,8 +81,8 @@ export default async function AboutPage({ params }: { params: { locale: string }
       <Section id="history-heading" title={t('historyTitle')}>
         <dl className="space-y-6">
           {timeline.map((item) => (
-            <div key={item.year} className="grid grid-cols-[88px_1fr] gap-4">
-              <dt className="font-medium text-ink tabular-nums">{item.year}</dt>
+            <div key={item.year} className="grid grid-cols-[96px_1fr] gap-4 border-b border-line pb-5 last:border-0">
+              <dt className="font-mono text-sm text-brand-light tabular-nums pt-0.5">{item.year}</dt>
               <dd className="space-y-1.5">
                 {item.events.map((event) => (
                   <p key={event}>{event}</p>

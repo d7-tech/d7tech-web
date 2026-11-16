@@ -25,21 +25,21 @@ export default async function MicroClimatePage({ params }: { params: { locale: s
       <WeatherDashboard />
 
       <Section title={t('methodsTitle')}>
-        <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2 max-w-3xl">
+        <dl className="grid gap-px bg-line border border-line sm:grid-cols-2">
           {(['single', 'hybrid', 'online', 'training'] as const).map((k) => (
-            <div key={k}>
-              <dt className="font-semibold text-ink">{t(`models.${k}.name`)}</dt>
-              <dd className="mt-1 text-ink-soft">{t(`models.${k}.text`)}</dd>
+            <div key={k} className="bg-paper p-5">
+              <dt className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">{t(`models.${k}.name`)}</dt>
+              <dd className="mt-2 text-ink-soft">{t(`models.${k}.text`)}</dd>
             </div>
           ))}
         </dl>
       </Section>
 
       <Section title={t('stationTitle')}>
-        <dl className="max-w-2xl border-t border-line text-[15px]">
+        <dl className="max-w-3xl border-t border-line">
           {(['board', 'wind', 'rain', 'air', 'link', 'server'] as const).map((k) => (
-            <div key={k} className="grid grid-cols-[120px_1fr] gap-4 py-3 border-b border-line">
-              <dt className="text-ink-muted">{t(`station.${k}.label`)}</dt>
+            <div key={k} className="grid grid-cols-[130px_1fr] sm:grid-cols-[170px_1fr] gap-4 py-3.5 border-b border-line">
+              <dt className="font-mono text-[11px] uppercase tracking-wider text-ink-muted pt-0.5">{t(`station.${k}.label`)}</dt>
               <dd className="text-ink">{t(`station.${k}.value`)}</dd>
             </div>
           ))}

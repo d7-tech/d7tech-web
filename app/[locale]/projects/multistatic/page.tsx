@@ -30,7 +30,7 @@ export default async function MultistaticPage({ params }: { params: { locale: st
       {project.youtubeEmbed && (
         <Section title={t('demoTitle')}>
           <Body>{t('demoText')}</Body>
-          <div className="relative w-full aspect-video rounded-md overflow-hidden bg-night">
+          <div className="relative w-full aspect-video overflow-hidden bg-night border border-line">
             <iframe
               src={project.youtubeEmbed}
               title={t('demoIframeTitle')}

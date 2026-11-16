@@ -21,7 +21,15 @@ export interface Project {
   coverObjectFit?: 'cover' | 'contain';
   publications?: Publication[];
   youtubeEmbed?: string;
+  /** ISO year-month, e.g. 2026-01 */
   startDate?: string;
+  /** Partner organisation shown in the facts column */
+  partner?: string;
+  /** Self-hosted project video under public/ */
+  video?: string;
+  videoPoster?: string;
+  /** Image for the dark home/projects tiles, if different from coverImage */
+  tileImage?: string;
 }
 
 export const projects: Project[] = [
@@ -71,6 +79,7 @@ export const projects: Project[] = [
     tags: ['Sensor Fusion', 'Target Tracking', 'Radar', 'Signal Processing'],
     category: 'sensing',
     coverImage: '/images/projects/multistatic.jpg',
+    tileImage: '/images/projects/multistatic-diagram.svg',
     coverImageAlt: 'RF and measurement hardware — multi-static radar and signal processing context',
     coverObjectFit: 'contain',
     description:
@@ -126,6 +135,22 @@ export const projects: Project[] = [
     coverImageAlt: 'Measured wind and several forecast lines branching from the present moment',
     description:
       'A weather station at our office measures wind, rain, temperature, humidity and pressure and sends signed readings to our AWS server, which forecasts rain and wind for the next 1, 6 and 24 hours with several methods and scores every forecast against what was then measured.',
+  },
+  {
+    id: 'prj-007',
+    slug: 'indoor-positioning',
+    title: 'Indoor Positioning for Ship Model Tests',
+    subtitle: 'UWB, optical and inertial tracking fused into a live digital twin',
+    status: 'completed',
+    tags: ['UWB', 'Sensor Fusion', 'Computer Vision', 'IMU', 'Digital Twin'],
+    category: 'sensing',
+    coverImage: '/images/projects/indoor-positioning.jpg',
+    coverImageAlt: 'Model ship running in the YTU-MARINE test pool',
+    description:
+      'A motion-tracking system for ship model tests in the YTU-MARINE Research Center pool: UWB positioning, optical tracking and inertial sensors fused into one estimate and shown as a live digital twin.',
+    partner: 'YTU-MARINE Research Center',
+    video: '/videos/indoor-positioning.mp4',
+    videoPoster: '/images/projects/indoor-positioning.jpg',
   },
 ];
 

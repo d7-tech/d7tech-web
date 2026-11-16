@@ -49,7 +49,7 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
             href={demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-brand text-white text-[15px] font-medium hover:bg-brand-dark transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-3 bg-ink text-paper text-[15px] font-medium hover:bg-white transition-colors"
           >
             {t('demoCta')}
             <ExternalLink size={15} aria-hidden="true" />

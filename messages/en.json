@@ -12,7 +12,9 @@
     "factStart": "Started",
     "factArea": "Area",
     "factTech": "Technologies",
-    "publications": "Publications"
+    "publications": "Publications",
+    "factPartner": "Partner",
+    "playVideo": "Play video"
   },
   "StatusBadge": {
     "active": "Active",
@@ -102,6 +104,10 @@
     "micro-climate": {
       "title": "Micro-Climate Forecasting: Rain & Wind",
       "subtitle": "Our own weather station and hourly rain and wind forecasts"
+    },
+    "indoor-positioning": {
+      "title": "Indoor Positioning for Ship Model Tests",
+      "subtitle": "UWB, optical and inertial tracking fused into a live digital twin"
     }
   },
   "HomePage": {
@@ -505,10 +511,62 @@
     "radarconf": "IEEE RadarConf 2025",
     "radarconfNote": "Multi-static tracking, Kraków",
     "siu": "IEEE SIU 2025",
-    "siuNote": "Fall detection with UWB"
+    "siuNote": "Fall detection with UWB",
+    "ytu": "YTU-MARINE",
+    "ytuNote": "Indoor positioning system"
   },
   "ContactCta": {
     "heading": "Working on autonomy or sensing? Let's talk.",
     "button": "Contact us"
+  },
+  "IndoorPositioningPage": {
+    "metadata": {
+      "title": "Indoor Positioning for Ship Model Tests",
+      "description": "UWB, optical and inertial motion tracking for ship model tests in the YTU-MARINE pool, fused into a live digital twin. A D7 Technology project."
+    },
+    "title": "Indoor Positioning for Ship Model Tests",
+    "subtitle": "UWB, optical and inertial tracking fused into a live digital twin",
+    "overviewText": "A motion-tracking system for ship model tests in the YTU-MARINE Research Center pool. Three independent sensing layers are fused into one estimate of the model's position and motion, for manoeuvring, seakeeping and autonomy tests.",
+    "videoTitle": "Project video",
+    "layersTitle": "Three sensing layers",
+    "layers": {
+      "uwb": {
+        "name": "UWB positioning",
+        "text": "Nine anchors around the pool range to tags on the model about seven times a second."
+      },
+      "optical": {
+        "name": "Optical tracking",
+        "text": "ArUco markers around the pool and a camera on the model."
+      },
+      "inertial": {
+        "name": "Inertial and propulsion sensors",
+        "text": "High-rate IMU data for linear and angular motion, plus propulsion readings."
+      }
+    },
+    "twinTitle": "Digital twin",
+    "twinText": "Every run appears live in a 3D model of the pool and is recorded, so any moment of a test can be replayed, not just the final results.",
+    "twinCaption": "The live digital twin during a run"
+  },
+  "FeaturedVideo": {
+    "label": "Featured project",
+    "cta": "Read more"
+  },
+  "Live": {
+    "label": "Live · Istanbul",
+    "temp": "Temperature",
+    "wind": "Wind",
+    "humidity": "Humidity",
+    "pressure": "Pressure",
+    "updated": "Updated {time}",
+    "stale": "Last reading {time}",
+    "more": "Forecasts"
+  },
+  "Anim": {
+    "range": "UWB range",
+    "raw": "Raw fix",
+    "fused": "Fused track",
+    "marker": "ArUco marker",
+    "camera": "Camera view",
+    "caption": "How our indoor positioning system tracks a model ship"
   }
 }

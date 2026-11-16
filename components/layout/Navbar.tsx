@@ -14,7 +14,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const isHome = pathname === '/';
-  // On the home page the bar sits over the hero photo until the user scrolls.
+  // On the home page the bar sits over the hero video until the user scrolls.
   const overHero = isHome && !scrolled && !open;
 
   const links = [
@@ -40,19 +40,15 @@ export default function Navbar() {
 
   const isActive = (href: string) => pathname.startsWith(href);
 
-  const text = overHero ? 'text-white' : 'text-ink';
-  const linkIdle = overHero ? 'text-white/80 hover:text-white' : 'text-ink-soft hover:text-ink';
-  const linkActive = overHero ? 'text-white' : 'text-brand';
-
   const langSwitch = (
-    <div className="flex items-center gap-2 text-sm">
+    <div className="flex items-center gap-2 font-mono text-xs">
       {(['en', 'tr'] as const).map((l, i) => (
         <span key={l} className="flex items-center gap-2">
-          {i > 0 && <span className={overHero ? 'text-white/40' : 'text-line'} aria-hidden="true">/</span>}
+          {i > 0 && <span className="text-line" aria-hidden="true">/</span>}
           <Link
             href={pathname}
             locale={l}
-            className={locale === l ? `${text} font-medium` : linkIdle}
+            className={locale === l ? 'text-ink' : 'text-ink-muted hover:text-ink'}
             aria-label={l === 'tr' ? 'Türkçe' : 'English'}
             aria-current={locale === l ? 'true' : undefined}
           >
@@ -66,14 +62,14 @@ export default function Navbar() {
   return (
     <header
       className={`${isHome ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-colors duration-200 ${
-        overHero ? 'bg-transparent' : 'bg-paper border-b border-line'
+        overHero ? 'bg-transparent' : 'bg-paper/90 backdrop-blur-md border-b border-line'
       }`}
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" aria-label={t('mainNavAriaLabel')}>
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3" aria-label={t('logoAriaLabel')}>
-            <Image src="/images/d7-logo.png" alt="" width={34} height={34} priority />
-            <span className={`text-[17px] font-semibold tracking-tight ${text}`}>D7 Technology</span>
+            <Image src="/images/d7-logo.png" alt="" width={32} height={32} priority />
+            <span className="font-display text-lg font-semibold uppercase tracking-wide text-ink">D7 Technology</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -81,18 +77,20 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-[15px] font-medium transition-colors ${isActive(link.href) ? linkActive : linkIdle}`}
+                className={`text-[15px] transition-colors ${
+                  isActive(link.href) ? 'text-ink' : 'text-ink-soft hover:text-ink'
+                }`}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {link.label}
               </Link>
             ))}
-            <span className={`w-px h-4 ${overHero ? 'bg-white/30' : 'bg-line'}`} aria-hidden="true" />
+            <span className="w-px h-4 bg-line" aria-hidden="true" />
             {langSwitch}
           </div>
 
           <button
-            className={`md:hidden -mr-2 p-2 ${text}`}
+            className="md:hidden -mr-2 p-2 text-ink"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -111,7 +109,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`block py-3 text-base border-b border-line last:border-0 ${
-                  isActive(link.href) ? 'text-brand font-medium' : 'text-ink'
+                  isActive(link.href) ? 'text-ink font-medium' : 'text-ink-soft'
                 }`}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >

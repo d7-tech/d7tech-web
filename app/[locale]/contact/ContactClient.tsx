@@ -62,28 +62,28 @@ export default function ContactClient() {
     { value: 'press', label: t('subjectPress') },
   ];
 
-  const label = 'block text-sm font-medium text-ink mb-1.5';
+  const label = 'block font-mono text-[11px] uppercase tracking-wider text-ink-muted mb-2';
   const field =
-    'w-full px-3 py-2.5 bg-white border border-line rounded-md text-[15px] text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors';
+    'w-full px-3 py-2.5 bg-surface border border-line text-[15px] text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand-light focus:ring-1 focus:ring-brand-light transition-colors';
   const err = 'mt-1 text-sm text-red-700';
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20">
       <h1 id="contact-heading">{t('heroTitle')}</h1>
       <p className="mt-4 text-xl text-ink-muted max-w-xl">{t('heroDescription')}</p>
 
       <div className="mt-12 border-t border-line pt-12 grid gap-12 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-8">
           <div>
-            <h2 className="text-base font-semibold">{t('locationLabel')}</h2>
-            <p className="mt-1">{t('locationValue')}</p>
+            <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">{t('locationLabel')}</h2>
+            <p className="mt-2 text-ink">{t('locationValue')}</p>
           </div>
           <div>
-            <h2 className="text-base font-semibold">{t('followUs')}</h2>
-            <ul className="mt-1 space-y-1">
+            <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">{t('followUs')}</h2>
+            <ul className="mt-2 space-y-1">
               {social.map((s) => (
                 <li key={s.label}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-brand hover:underline">
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-brand-light hover:underline">
                     {s.label}
                   </a>
                 </li>
@@ -95,10 +95,10 @@ export default function ContactClient() {
 
         <div>
           {submitted ? (
-            <div className="rounded-md border border-line bg-white p-8" role="status">
+            <div className="border border-line bg-surface p-8" role="status">
               <h2 className="text-xl">{t('successTitle')}</h2>
               <p className="mt-2">{t('successDescription')}</p>
-              <button onClick={() => setSubmitted(false)} className="mt-4 text-brand hover:underline">
+              <button onClick={() => setSubmitted(false)} className="mt-4 text-brand-light hover:underline">
                 {t('sendAnother')}
               </button>
             </div>
@@ -165,7 +165,7 @@ export default function ContactClient() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-md bg-brand text-white text-[15px] font-medium hover:bg-brand-dark disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-ink text-paper text-[15px] font-medium hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
                   <><Loader2 size={15} className="animate-spin" aria-hidden="true" />{t('sending')}</>

@@ -1,52 +1,54 @@
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
+import TrackingField from '@/components/anim/TrackingField';
+import LiveStation from '@/components/sections/LiveStation';
 
-/** Split hero: text on the dark panel, the (portrait) ADVISOR photo beside it. */
+/** Hero: headline beside a live diagram of our indoor positioning system, station readings along the bottom. */
 export default function Hero() {
   const t = useTranslations('Hero');
+  const tA = useTranslations('Anim');
+  const labels = { range: tA('range'), raw: tA('raw'), fused: tA('fused'), marker: tA('marker'), camera: tA('camera') };
 
   return (
-    <section className="bg-night">
-      <div className="grid lg:grid-cols-2 lg:h-[88svh] lg:min-h-[600px] lg:max-h-[860px]">
-        <div className="order-2 lg:order-1 flex items-end">
-          <div className="w-full lg:max-w-[576px] lg:ml-auto px-4 sm:px-6 lg:px-8 lg:pr-12 pt-10 pb-14 sm:pb-20">
-            <h1 className="text-white text-[2.5rem] sm:text-6xl lg:text-[3.75rem] leading-[1.03]">
-              {t('headline')}
-            </h1>
-            <p className="mt-5 text-lg sm:text-xl text-night-soft">{t('subtext')}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+    <section className="relative lg:min-h-[88svh] lg:max-h-[900px] flex flex-col bg-paper overflow-hidden">
+      <div className="relative flex-1 flex items-center">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-14 grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-14 items-center">
+          <div>
+            <h1 className="text-[2.5rem] sm:text-6xl lg:text-[3.75rem] leading-[0.98]">{t('headline')}</h1>
+            <p className="mt-6 text-lg sm:text-xl text-ink-soft max-w-xl">{t('subtext')}</p>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link
                 href="/projects"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-white text-ink text-[15px] font-medium hover:bg-white/90 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-ink text-paper text-[15px] font-medium hover:bg-white transition-colors"
               >
                 {t('viewProjects')}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center px-5 py-3 rounded-md border border-white/30 text-white text-[15px] font-medium hover:bg-white/10 transition-colors"
+                className="inline-flex items-center px-5 py-3 border border-ink/30 text-ink text-[15px] font-medium hover:border-ink transition-colors"
               >
                 {t('contactUs')}
               </Link>
             </div>
           </div>
-        </div>
 
-        <figure className="order-1 lg:order-2 relative m-0 aspect-[4/5] sm:aspect-[16/10] lg:aspect-auto">
-          <Image
-            src="/images/projects/advisor.jpg"
-            alt={t('photoCaption')}
-            fill
-            priority
-            className="object-cover object-[50%_40%]"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          {/* Keeps the navigation readable over the bright sky */}
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-night/70 to-transparent" aria-hidden="true" />
-          <figcaption className="absolute bottom-4 right-4 sm:right-6 text-xs text-white/70">{t('photoCaption')}</figcaption>
-        </figure>
+          <div>
+            <TrackingField labels={labels} />
+            <Link
+              href="/projects/indoor-positioning"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-ink"
+            >
+              {tA('caption')}
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative">
+        <LiveStation />
       </div>
     </section>
   );

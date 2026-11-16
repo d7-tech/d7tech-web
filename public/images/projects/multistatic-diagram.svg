@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="Multi-static radar geometry: one transmitter, three receivers and a target track">
+  <rect width="1280" height="800" fill="#0f1318"/>
+  <g stroke="#1e252e" stroke-width="1">
+    <path d="M0 160H1280M0 320H1280M0 480H1280M0 640H1280M160 0V800M320 0V800M480 0V800M640 0V800M800 0V800M960 0V800M1120 0V800"/>
+  </g>
+  <!-- iso-range ellipse for the TX / RX 1 pair through the target -->
+  <ellipse cx="640" cy="610" rx="467" ry="240" transform="rotate(1.4 640 610)" fill="none" stroke="#7aa6f0" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="10 8"/>
+  <!-- target track -->
+  <path d="M470 560 C 560 470, 650 430, 760 380 S 930 300, 1010 250" fill="none" stroke="#eceff3" stroke-opacity="0.55" stroke-width="2.5" stroke-dasharray="4 10" stroke-linecap="round"/>
+  <!-- signal paths -->
+  <path d="M240 600 L760 380" stroke="#7aa6f0" stroke-width="3"/>
+  <path d="M760 380 L1040 620 M760 380 L680 160 M760 380 L300 210" stroke="#eceff3" stroke-opacity="0.5" stroke-width="2"/>
+  <!-- target -->
+  <circle cx="760" cy="380" r="11" fill="#eceff3"/>
+  <circle cx="760" cy="380" r="24" fill="none" stroke="#eceff3" stroke-opacity="0.4" stroke-width="2"/>
+  <!-- nodes -->
+  <g fill="#7aa6f0"><path d="M240 578 L262 616 L218 616 Z"/></g>
+  <g fill="none" stroke="#eceff3" stroke-width="3">
+    <path d="M1040 598 L1062 636 L1018 636 Z"/>
+    <path d="M680 138 L702 176 L658 176 Z"/>
+    <path d="M300 188 L322 226 L278 226 Z"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" fill="#8b95a3">
+    <text x="210" y="660">TX</text>
+    <text x="1000" y="680">RX 1</text>
+    <text x="715" y="150">RX 2</text>
+    <text x="250" y="180">RX 3</text>
+    <text x="1020" y="240">TARGET TRACK</text>
+  </g>
+</svg>

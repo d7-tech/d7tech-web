@@ -1,6 +1,6 @@
 import '../globals.css';
 import type { Metadata } from 'next';
-import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed, IBM_Plex_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -13,6 +13,13 @@ const plexSans = IBM_Plex_Sans({
   variable: '--font-sans',
   display: 'swap',
   weight: ['400', '500', '600'],
+});
+
+const plexCondensed = IBM_Plex_Sans_Condensed({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: ['500', '600'],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -80,7 +87,7 @@ export default async function LocaleLayout({
   ]);
 
   return (
-    <html lang={locale} className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang={locale} className={`${plexSans.variable} ${plexCondensed.variable} ${plexMono.variable}`}>
       <body className="font-sans antialiased bg-paper text-ink-soft">
         <NextIntlClientProvider messages={messages}>
           <a

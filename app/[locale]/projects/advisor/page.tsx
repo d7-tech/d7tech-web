@@ -37,23 +37,23 @@ export default async function AdvisorPage({ params }: { params: { locale: string
 
       <Section title={t('navTitle')}>
         <Body>{t('navText')}</Body>
-        <table className="w-full text-[15px] border-y border-line" aria-label={t('sensorTableLabel')}>
+        <table className="w-full text-[15px] border border-line bg-surface" aria-label={t('sensorTableLabel')}>
           <thead>
-            <tr className="text-left text-sm text-ink-muted border-b border-line">
-              <th className="py-2.5 pr-4 font-normal">{t('sensorColSensor')}</th>
-              <th className="py-2.5 pr-4 font-normal">{t('sensorColSystem')}</th>
-              <th className="py-2.5 font-normal hidden sm:table-cell">{t('sensorColFunction')}</th>
+            <tr className="text-left font-mono text-[11px] uppercase tracking-wider text-ink-muted border-b border-line">
+              <th className="py-3 px-4 font-normal">{t('sensorColSensor')}</th>
+              <th className="py-3 pr-4 font-normal">{t('sensorColSystem')}</th>
+              <th className="py-3 pr-4 font-normal hidden sm:table-cell">{t('sensorColFunction')}</th>
             </tr>
           </thead>
           <tbody>
             {sensors.map((s) => (
               <tr key={s.name} className="border-b border-line last:border-0 align-top">
-                <td className="py-3 pr-4 font-medium text-ink whitespace-nowrap">{s.name}</td>
+                <td className="py-3 px-4 font-mono text-sm text-brand-light whitespace-nowrap">{s.name}</td>
                 <td className="py-3 pr-4 text-ink-soft">
                   {s.full}
                   <span className="sm:hidden block text-sm text-ink-muted mt-0.5">{s.desc}</span>
                 </td>
-                <td className="py-3 text-ink-muted hidden sm:table-cell">{s.desc}</td>
+                <td className="py-3 pr-4 text-ink-muted hidden sm:table-cell">{s.desc}</td>
               </tr>
             ))}
           </tbody>

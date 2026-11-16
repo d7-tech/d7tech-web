@@ -12,7 +12,9 @@
     "factStart": "Başlangıç",
     "factArea": "Alan",
     "factTech": "Teknolojiler",
-    "publications": "Yayınlar"
+    "publications": "Yayınlar",
+    "factPartner": "Ortak",
+    "playVideo": "Videoyu oynat"
   },
   "StatusBadge": {
     "active": "Aktif",
@@ -102,6 +104,10 @@
     "micro-climate": {
       "title": "Mikro-İklim Tahmini: Yağmur ve Rüzgâr",
       "subtitle": "Kendi hava istasyonumuz ve saatlik yağış ve rüzgâr tahminleri"
+    },
+    "indoor-positioning": {
+      "title": "Gemi Model Testleri için İç Mekân Konumlandırma",
+      "subtitle": "Canlı dijital ikizde birleşen UWB, optik ve ataletsel takip"
     }
   },
   "HomePage": {
@@ -505,10 +511,62 @@
     "radarconf": "IEEE RadarConf 2025",
     "radarconfNote": "Çok statik takip, Krakov",
     "siu": "IEEE SIU 2025",
-    "siuNote": "UWB ile düşme tespiti"
+    "siuNote": "UWB ile düşme tespiti",
+    "ytu": "YTU-MARINE",
+    "ytuNote": "İç mekân konumlandırma sistemi"
   },
   "ContactCta": {
     "heading": "Otonomi ya da algılama üzerine mi çalışıyorsunuz? Konuşalım.",
     "button": "Bize ulaşın"
+  },
+  "IndoorPositioningPage": {
+    "metadata": {
+      "title": "Gemi Model Testleri için İç Mekân Konumlandırma",
+      "description": "YTU-MARINE havuzundaki gemi model testleri için canlı dijital ikizde birleşen UWB, optik ve ataletsel hareket takibi. Bir D7 Technology projesi."
+    },
+    "title": "Gemi Model Testleri için İç Mekân Konumlandırma",
+    "subtitle": "Canlı dijital ikizde birleşen UWB, optik ve ataletsel takip",
+    "overviewText": "YTU-MARINE Araştırma Merkezi havuzundaki gemi model testleri için bir hareket takip sistemi. Üç bağımsız algılama katmanı, manevra, denizcilik ve otonomi testlerinde modelin konumu ve hareketi için tek bir kestirimde birleştirilir.",
+    "videoTitle": "Proje videosu",
+    "layersTitle": "Üç algılama katmanı",
+    "layers": {
+      "uwb": {
+        "name": "UWB konumlandırma",
+        "text": "Havuz çevresindeki dokuz çapa, modeldeki etiketlere saniyede yaklaşık yedi kez mesafe ölçer."
+      },
+      "optical": {
+        "name": "Optik takip",
+        "text": "Havuz çevresinde ArUco işaretleri ve model üzerinde bir kamera."
+      },
+      "inertial": {
+        "name": "Ataletsel ve sevk sensörleri",
+        "text": "Doğrusal ve açısal hareket için yüksek hızlı IMU verisi ve sevk ölçümleri."
+      }
+    },
+    "twinTitle": "Dijital ikiz",
+    "twinText": "Her koşu havuzun 3B modelinde canlı izlenir ve kaydedilir; böylece yalnızca sonuçlar değil, testin her anı yeniden incelenebilir.",
+    "twinCaption": "Bir koşu sırasında canlı dijital ikiz"
+  },
+  "FeaturedVideo": {
+    "label": "Öne çıkan proje",
+    "cta": "Devamını okuyun"
+  },
+  "Live": {
+    "label": "Canlı · İstanbul",
+    "temp": "Sıcaklık",
+    "wind": "Rüzgâr",
+    "humidity": "Nem",
+    "pressure": "Basınç",
+    "updated": "Güncellendi {time}",
+    "stale": "Son ölçüm {time}",
+    "more": "Tahminler"
+  },
+  "Anim": {
+    "range": "UWB mesafesi",
+    "raw": "Ham konum",
+    "fused": "Birleştirilmiş iz",
+    "marker": "ArUco işareti",
+    "camera": "Kamera görüşü",
+    "caption": "İç mekân konumlandırma sistemimiz bir gemi modelini nasıl izler"
   }
 }
