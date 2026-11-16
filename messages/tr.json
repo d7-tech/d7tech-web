@@ -13,8 +13,7 @@
     "factArea": "Alan",
     "factTech": "Teknolojiler",
     "publications": "Yayınlar",
-    "factPartner": "Ortak",
-    "playVideo": "Videoyu oynat"
+    "factPartner": "Ortak"
   },
   "StatusBadge": {
     "active": "Aktif",
@@ -163,7 +162,7 @@
         "role": "Makine Mühendisi"
       },
       "ceyda": {
-        "name": "Ceyda",
+        "name": "Ceyda Depeharman",
         "role": "Kontrol ve Otomasyon Mühendisi"
       }
     },
@@ -294,7 +293,9 @@
     "fieldTitle": "Saha testleri",
     "fieldText": "Spor ve sağlık ortamlarındaki denemeler sistemi çok yollu yayılım, vücut engeli ve değişen koşullara karşı sınadı.",
     "fieldImageAlt": "Hareket yakalama tarzı saha deneyinde ayak bileğine takılı sensörler takan kapalı alanda sporcu",
-    "fieldCaption": "Ayak bileğine takılı sensörlerle saha testi"
+    "fieldCaption": "Ayak bileğine takılı sensörlerle saha testi",
+    "uwbAnimCaption": "UWB çapaları sırayla bir etikete mesafe ölçer; her mesafe, çapasının çevresinde bir çemberdir.",
+    "imuAnimCaption": "İvmeölçer (ax, ay) ve jiroskop (gz) izleri; hareket modellerinin ham girdisi."
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -532,7 +533,6 @@
     "title": "Gemi Model Testleri için İç Mekân Konumlandırma",
     "subtitle": "Canlı dijital ikizde birleşen UWB, optik ve ataletsel takip",
     "overviewText": "YTU-MARINE Araştırma Merkezi havuzundaki gemi model testleri için bir hareket takip sistemi. Üç bağımsız algılama katmanı, manevra, denizcilik ve otonomi testlerinde modelin konumu ve hareketi için tek bir kestirimde birleştirilir.",
-    "videoTitle": "Proje videosu",
     "layersTitle": "Üç algılama katmanı",
     "layers": {
       "uwb": {
@@ -554,8 +554,7 @@
   },
   "FeaturedVideo": {
     "label": "Öne çıkan proje",
-    "cta": "Devamını okuyun",
-    "watch": "Videoyu izleyin"
+    "cta": "Devamını okuyun"
   },
   "Live": {
     "label": "Canlı · İstanbul",

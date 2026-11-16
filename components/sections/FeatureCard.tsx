@@ -3,14 +3,17 @@ import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '@/components/motion/Reveal';
 import { getProjectBySlug } from '@/lib/data/projects';
+import TrackingField from '@/components/anim/TrackingField';
 
 const SLUG = 'indoor-positioning';
 
-/** Slate card: one project, its text on the left and its video on the right. */
+/** Slate card: one project, its text on the left and a live diagram of it on the right. */
 export default function FeatureCard() {
   const t = useTranslations('FeaturedVideo');
   const tProject = useTranslations('ProjectData');
   const project = getProjectBySlug(SLUG)!;
+  const tA = useTranslations('Anim');
+  const labels = { range: tA('range'), raw: tA('raw'), fused: tA('fused'), marker: tA('marker'), camera: tA('camera') };
 
   return (
     <section className="wrap py-16 sm:py-24" aria-labelledby="feature-heading">
@@ -30,15 +33,9 @@ export default function FeatureCard() {
               </Link>
             </div>
           </div>
-          <video
-            className="w-full h-full min-h-[260px] object-cover bg-night"
-            src={project.video}
-            poster={project.videoPoster}
-            controls
-            playsInline
-            preload="none"
-            aria-label={t('watch')}
-          />
+          <div className="bg-[#0f151c] p-5 sm:p-8 flex items-center">
+            <TrackingField labels={labels} className="w-full" />
+          </div>
         </div>
       </Reveal>
     </section>

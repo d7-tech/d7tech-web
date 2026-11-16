@@ -34,7 +34,7 @@ export default async function AboutPage({ params }: { params: { locale: string }
     { name: t('team.fehim.name'), role: t('team.fehim.role'), linkedin: 'https://www.linkedin.com/in/fehim-ku%C5%9F-a19006131/' },
     { name: t('team.zain.name'), role: t('team.zain.role') },
     { name: t('team.zeynep.name'), role: t('team.zeynep.role') },
-    { name: t('team.ceyda.name'), role: t('team.ceyda.role') },
+    { name: t('team.ceyda.name'), role: t('team.ceyda.role'), linkedin: 'https://www.linkedin.com/in/ceyda-depeharman/' },
   ];
 
   const timeline = [

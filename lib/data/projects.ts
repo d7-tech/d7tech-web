@@ -25,9 +25,6 @@ export interface Project {
   startDate?: string;
   /** Partner organisation shown in the facts column */
   partner?: string;
-  /** Self-hosted project video under public/ */
-  video?: string;
-  videoPoster?: string;
   /** Image for the dark home/projects tiles, if different from coverImage */
   tileImage?: string;
 }
@@ -149,8 +146,6 @@ export const projects: Project[] = [
     description:
       'A motion-tracking system for ship model tests in the YTU-MARINE Research Center pool: UWB positioning, optical tracking and inertial sensors fused into one estimate and shown as a live digital twin.',
     partner: 'YTU-MARINE Research Center',
-    video: '/videos/indoor-positioning.mp4',
-    videoPoster: '/images/projects/indoor-positioning.jpg',
   },
 ];
 

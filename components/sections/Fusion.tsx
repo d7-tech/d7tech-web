@@ -2,17 +2,11 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '@/components/motion/Reveal';
-import TrackingField from '@/components/anim/TrackingField';
-import SensingLayers from '@/components/anim/SensingLayers';
 import Hotspots, { type Spot } from '@/components/sections/Hotspots';
 
-/** Slate section built around the live diagram of the indoor positioning system. */
+/** Slate section: the digital twin of the pool with clickable labels. */
 export default function Fusion() {
   const t = useTranslations('Fusion');
-  const tA = useTranslations('Anim');
-  const tP = useTranslations('IndoorPositioningPage');
-  const labels = { range: tA('range'), raw: tA('raw'), fused: tA('fused'), marker: tA('marker'), camera: tA('camera') };
-  const layers = (['uwb', 'optical', 'inertial'] as const).map((k) => ({ name: tP(`layers.${k}.name`) }));
   const tH = useTranslations('Hotspots');
   // Points measured on digital-twin-still.jpg (1600 px wide, top 615 px visible at 2.6:1)
   const spots: Spot[] = [
@@ -48,13 +42,6 @@ export default function Fusion() {
           />
         </div>
 
-        <Reveal className="mt-16 rounded bg-[#0f151c] p-4 sm:p-8">
-          <TrackingField labels={labels} />
-        </Reveal>
-
-        <Reveal className="mt-3">
-          <SensingLayers items={layers} />
-        </Reveal>
       </div>
     </section>
   );

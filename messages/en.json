@@ -13,8 +13,7 @@
     "factArea": "Area",
     "factTech": "Technologies",
     "publications": "Publications",
-    "factPartner": "Partner",
-    "playVideo": "Play video"
+    "factPartner": "Partner"
   },
   "StatusBadge": {
     "active": "Active",
@@ -163,7 +162,7 @@
         "role": "Mechanical Engineer"
       },
       "ceyda": {
-        "name": "Ceyda",
+        "name": "Ceyda Depeharman",
         "role": "Control and Automation Engineer"
       }
     },
@@ -294,7 +293,9 @@
     "fieldTitle": "Field tests",
     "fieldText": "Trials in sports and healthcare settings tested the system against multipath, body blocking and changing conditions.",
     "fieldImageAlt": "Athlete on an indoor court wearing ankle-mounted sensors during a motion capture style field experiment",
-    "fieldCaption": "Field test with ankle-mounted sensors"
+    "fieldCaption": "Field test with ankle-mounted sensors",
+    "uwbAnimCaption": "UWB anchors take turns ranging to a tag; each range is a circle around its anchor.",
+    "imuAnimCaption": "Accelerometer (ax, ay) and gyroscope (gz) traces, the raw input to the motion models."
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -532,7 +533,6 @@
     "title": "Indoor Positioning for Ship Model Tests",
     "subtitle": "UWB, optical and inertial tracking fused into a live digital twin",
     "overviewText": "A motion-tracking system for ship model tests in the YTU-MARINE Research Center pool. Three independent sensing layers are fused into one estimate of the model's position and motion, for manoeuvring, seakeeping and autonomy tests.",
-    "videoTitle": "Project video",
     "layersTitle": "Three sensing layers",
     "layers": {
       "uwb": {
@@ -554,8 +554,7 @@
   },
   "FeaturedVideo": {
     "label": "Featured project",
-    "cta": "Read more",
-    "watch": "Watch the video"
+    "cta": "Read more"
   },
   "Live": {
     "label": "Live · Istanbul",

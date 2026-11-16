@@ -143,6 +143,19 @@ function ImuPanel() {
 
 const PANELS = [UwbPanel, OpticalPanel, ImuPanel];
 
+/** One of the panels on its own, with a caption. */
+export function PanelFigure({ kind, caption }: { kind: 'uwb' | 'optical' | 'imu'; caption: string }) {
+  const Panel = { uwb: UwbPanel, optical: OpticalPanel, imu: ImuPanel }[kind];
+  return (
+    <figure className="m-0">
+      <div className="rounded bg-[#0f151c] p-6">
+        <Panel />
+      </div>
+      <figcaption className="mt-3 text-sm text-ink-muted">{caption}</figcaption>
+    </figure>
+  );
+}
+
 export default function SensingLayers({ items }: { items: { name: string; text?: string }[] }) {
   return (
     <div className="grid gap-px bg-line border border-line rounded overflow-hidden sm:grid-cols-3">
