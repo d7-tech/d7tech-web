@@ -236,7 +236,7 @@
     "fieldTrialCaption": "Liman ortamında saha testi düzeni",
     "fieldTrialImageAlt": "Otonom yüzey aracı — liman ve eskort denemeleri için Maritime Robotics platformu",
     "navTitle": "Sensörler",
-    "navText": "Engel tespiti ve rota planlaması için altı sensör türü gerçek zamanlı olarak birleştirilir.",
+    "navText": "Engel tespiti ve rota planlaması için yedi sensör türü gerçek zamanlı olarak birleştirilir.",
     "sensorTableLabel": "Sensör paketi özellikleri",
     "sensorColSensor": "Sensör",
     "sensorColSystem": "Sistem",
@@ -245,6 +245,8 @@
     "imuDesc": "Tutum ve hareket tahmini",
     "gnssFull": "Küresel Navigasyon Uydu Sistemi",
     "gnssDesc": "Küresel konumlandırma ve hız",
+    "uwbFull": "Ultra Geniş Bant Konumlandırma",
+    "uwbDesc": "Sabit çapalara göre hassas yerel konumlandırma",
     "cameraFull": "Görsel Algılama Sistemi",
     "cameraDesc": "Nesne tespiti ve sahne anlama",
     "lidarFull": "3D Lazer Haritalama",
@@ -610,8 +612,24 @@
     "dive": "DALIŞ",
     "climb": "TIRMANIŞ",
     "uplink": "VERİ GÖNDERİMİ",
-    "legendDive": "Daha az yüzer: batar ve ileri süzülür",
-    "legendClimb": "Daha çok yüzer: yükselir ve ileri süzülür",
-    "legendUplink": "Yüzeyde: verisini gönderir"
+    "howTitle": "Planör nasıl çalışır",
+    "steps": {
+      "sink": {
+        "title": "Batma",
+        "text": "Yüzerlik motoru yağı gövdenin içine çeker; planör, yer değiştirdiği sudan biraz daha ağır olur. Batarya öne kayar, burun aşağı eğilir ve kanatlar batışı ileri süzülmeye çevirir."
+      },
+      "turn": {
+        "title": "Dönüş",
+        "text": "Planlanan derinlikte pompa yağı dıştaki bir keseye iter. Planör artık ağırlığından daha fazla su yer değiştirir ve yükselmeye başlar."
+      },
+      "climb": {
+        "title": "Tırmanış",
+        "text": "Batarya geriye kayar, burun yukarı kalkar ve kanatlar dikey hareketi yine ileri harekete çevirir; pervane çalışmaz."
+      },
+      "surface": {
+        "title": "Yüzey",
+        "text": "Yüzeyde GPS konumu alır, verisini gönderir ve yeni komutları alır, sonra yeniden dalar. Asıl enerji harcayan pompadır; bu yüzden planörler haftalarca denizde kalabilir."
+      }
+    }
   }
 }

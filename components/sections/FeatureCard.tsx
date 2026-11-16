@@ -7,7 +7,7 @@ import TrackingField from '@/components/anim/TrackingField';
 
 const SLUG = 'indoor-positioning';
 
-/** Slate card: one project, its text on the left and a live diagram of it on the right. */
+/** Slate card: one project on the left; on the right its pool photo turns into the live tracking diagram as you scroll. */
 export default function FeatureCard() {
   const t = useTranslations('FeaturedVideo');
   const tProject = useTranslations('ProjectData');
@@ -34,7 +34,20 @@ export default function FeatureCard() {
             </div>
           </div>
           <div className="bg-[#0f151c] p-5 sm:p-8 flex items-center">
-            <TrackingField labels={labels} className="w-full" />
+            <TrackingField
+              labels={labels}
+              className="w-full"
+              entry={{
+                photo: '/images/projects/indoor-positioning.jpg',
+                photoAlt: tProject(`${SLUG}.title`),
+                photoW: 2560,
+                photoH: 1440,
+                sprite: '/images/projects/model-ship.png',
+                spriteAspect: 366 / 144,
+                // the model ship in the photo: x 687-779, y 292-328 of 1280 x 720
+                ship: { cx: 733 / 1280, cy: 310 / 720, w: 92 / 1280 },
+              }}
+            />
           </div>
         </div>
       </Reveal>

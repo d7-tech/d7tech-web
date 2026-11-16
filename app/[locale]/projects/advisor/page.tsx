@@ -22,6 +22,7 @@ export default async function AdvisorPage({ params }: { params: { locale: string
   const sensors = [
     { name: 'IMU', full: t('imuFull'), desc: t('imuDesc') },
     { name: 'GNSS', full: t('gnssFull'), desc: t('gnssDesc') },
+    { name: 'UWB', full: t('uwbFull'), desc: t('uwbDesc') },
     { name: 'Camera', full: t('cameraFull'), desc: t('cameraDesc') },
     { name: 'LiDAR', full: t('lidarFull'), desc: t('lidarDesc') },
     { name: 'Radar', full: t('radarFull'), desc: t('radarDesc') },

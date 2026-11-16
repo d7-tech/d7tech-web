@@ -236,7 +236,7 @@
     "fieldTrialCaption": "Field trial setup in a harbour",
     "fieldTrialImageAlt": "Autonomous surface vehicle — Maritime Robotics platform for harbor and escort trials",
     "navTitle": "Sensors",
-    "navText": "Six sensor types are fused in real time for obstacle detection and path planning.",
+    "navText": "Seven sensor types are fused in real time for obstacle detection and path planning.",
     "sensorTableLabel": "Sensor suite specifications",
     "sensorColSensor": "Sensor",
     "sensorColSystem": "System",
@@ -245,6 +245,8 @@
     "imuDesc": "Attitude and motion estimation",
     "gnssFull": "Global Navigation Satellite System",
     "gnssDesc": "Global positioning and velocity",
+    "uwbFull": "Ultra-Wideband Positioning",
+    "uwbDesc": "Precise local positioning from fixed anchors",
     "cameraFull": "Visual Perception System",
     "cameraDesc": "Object detection and scene understanding",
     "lidarFull": "3D Laser Mapping",
@@ -610,8 +612,24 @@
     "dive": "DIVE",
     "climb": "CLIMB",
     "uplink": "UPLINK",
-    "legendDive": "Less buoyant: sinks and glides forward",
-    "legendClimb": "More buoyant: rises and glides forward",
-    "legendUplink": "At the surface: sends its data"
+    "howTitle": "How a glider works",
+    "steps": {
+      "sink": {
+        "title": "Sink",
+        "text": "The buoyancy engine draws oil into the hull, so the glider weighs slightly more than the water it displaces. The battery slides forward, the nose tips down and the wings turn the sinking into forward glide."
+      },
+      "turn": {
+        "title": "Turn",
+        "text": "At the planned depth the pump pushes the oil out into an external bladder. The glider now displaces more water than it weighs and starts to rise."
+      },
+      "climb": {
+        "title": "Climb",
+        "text": "The battery slides back, the nose tips up and the wings again turn vertical motion into forward travel, with no propeller running."
+      },
+      "surface": {
+        "title": "Surface",
+        "text": "At the surface it gets a GPS fix, sends its data and takes new instructions, then dives again. The pump is the main energy cost, which is why gliders can stay at sea for weeks."
+      }
+    }
   }
 }

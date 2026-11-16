@@ -2,8 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '@/components/motion/Reveal';
-import GliderVisual from '@/components/sections/GliderVisual';
-import DiveProfile from '@/components/anim/DiveProfile';
+import GliderDive from '@/components/anim/GliderDive';
 
 /** The autonomous underwater glider: the render gliding through its panel, and how it moves. */
 export default function Glider() {
@@ -12,7 +11,7 @@ export default function Glider() {
   const tPage = useTranslations('UnderwaterGlidersPage');
 
   return (
-    <section className="py-16 sm:py-24" aria-labelledby="glider-heading">
+    <section className="py-16 sm:py-24 overflow-x-clip" aria-labelledby="glider-heading">
       <div className="wrap">
         <Reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
@@ -26,16 +25,17 @@ export default function Glider() {
           </Link>
         </Reveal>
 
-        <GliderVisual alt={tProject('underwater-gliders.title')} />
-
-        <Reveal className="mt-3 rounded bg-[#0f151c] p-5 sm:p-8">
-          <DiveProfile labels={{ dive: t('dive'), climb: t('climb'), uplink: t('uplink') }} />
-          <ul className="mt-5 grid gap-3 sm:grid-cols-3 font-mono text-[11px] uppercase tracking-[0.06em] text-[#8b95a3]">
-            <li>↘ {t('legendDive')}</li>
-            <li>↗ {t('legendClimb')}</li>
-            <li className="text-[#7aa6f0]">◠ {t('legendUplink')}</li>
-          </ul>
-        </Reveal>
+        <GliderDive
+          alt={tProject('underwater-gliders.title')}
+          phases={{ dive: t('dive'), climb: t('climb'), uplink: t('uplink') }}
+          howTitle={t('howTitle')}
+          steps={{
+            sink: { title: t('steps.sink.title'), text: t('steps.sink.text') },
+            turn: { title: t('steps.turn.title'), text: t('steps.turn.text') },
+            climb: { title: t('steps.climb.title'), text: t('steps.climb.text') },
+            surface: { title: t('steps.surface.title'), text: t('steps.surface.text') },
+          }}
+        />
       </div>
     </section>
   );

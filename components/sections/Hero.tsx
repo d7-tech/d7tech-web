@@ -20,6 +20,7 @@ export default function Hero() {
           priority
           className="object-cover object-[50%_46%]"
           sizes="100vw"
+          quality={90}
         />
       </Parallax>
       <div className="absolute inset-0 bg-gradient-to-b from-[#0f151c]/75 via-[#0f151c]/10 to-[#0f151c]/85" aria-hidden="true" />

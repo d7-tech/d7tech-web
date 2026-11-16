@@ -1,6 +1,11 @@
 'use client';
 
-import { useId, useMemo, useRef } from 'react';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
+import { emptyPose, type Pose3D } from '@/components/three/pose';
+
+const Overlay3D = dynamic(() => import('@/components/three/Overlay3D'), { ssr: false });
 import { useFrame, closedSpline } from './useFrame';
 
 /*
@@ -40,8 +45,67 @@ const C = {
 
 export type TrackingLabels = { range: string; raw: string; fused: string; marker: string; camera: string };
 
-export default function TrackingField({ labels, className = '' }: { labels: TrackingLabels; className?: string }) {
+/** Optional opening: a photo of the real ship whose cut-out slides into the diagram and takes over the track. */
+export type TrackingEntry = {
+  photo: string;
+  photoAlt: string;
+  photoW: number;
+  photoH: number;
+  sprite: string;
+  spriteAspect: number;
+  /** ship centre and width in the photo, as fractions of the photo */
+  ship: { cx: number; cy: number; w: number };
+};
+
+const SHIP_W = 112; // ship cut-out length on the water, viewBox units (at the plane's mid depth)
+const TILT = 38; // how far the pool surface leans back, degrees
+const PLANE_SCALE = 0.92;
+const SPRITE_BASE = 400; // base width of the ship element, px (scaled per frame)
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const smooth = (a: number, b: number, v: number) => {
+  const x = clamp01((v - a) / (b - a));
+  return x * x * (3 - 2 * x);
+};
+const DEG = Math.PI / 180;
+const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+
+export default function TrackingField({
+  labels,
+  className = '',
+  entry,
+}: {
+  labels: TrackingLabels;
+  className?: string;
+  entry?: TrackingEntry;
+}) {
   const path = useMemo(() => closedSpline(WAYPOINTS, 900), []);
+  // where the ship joins the track: the point whose (reversed) heading points most nearly left, like the ship in the photo
+  const joinIdx = useMemo(() => {
+    let best = 0, bestErr = Infinity;
+    const n = path.length;
+    for (let i = 0; i < n; i++) {
+      const a = path[(i + 5) % n], b = path[(i - 5 + n) % n];
+      const h = Math.atan2(b[1] - a[1], b[0] - a[0]); // reversed travel direction
+      const err = Math.abs(Math.atan2(Math.sin(h - Math.PI), Math.cos(h - Math.PI)));
+      if (err < bestErr) { bestErr = err; best = i; }
+    }
+    return best;
+  }, [path]);
+  const stage = useRef<HTMLDivElement>(null);
+  const svgEl = useRef<SVGSVGElement | null>(null);
+  const photoEl = useRef<HTMLDivElement>(null);
+  const spriteEl = useRef<HTMLDivElement>(null);
+  const legend = useRef<HTMLElement>(null);
+  const anchorEl = useRef<SVGCircleElement>(null);
+  const shadowEl = useRef<SVGEllipseElement>(null);
+  const wakeEl = useRef<SVGPathElement>(null);
+  const wakeOuterEl = useRef<SVGPathElement>(null);
+  const waterLines = useRef<(SVGPathElement | null)[]>([]);
+  const pose = useRef<Pose3D>(emptyPose());
+  const invalidate = useRef<() => void>(() => {});
+  const onInvalidate = useCallback((fn: () => void) => {
+    invalidate.current = fn;
+  }, []);
   const clipId = `pool-${useId().replace(/:/g, '')}`;
 
   const ship = useRef<SVGGElement>(null);
@@ -58,19 +122,132 @@ export default function TrackingField({ labels, className = '' }: { labels: Trac
     lineA: new Array(ANCHORS.length).fill(0) as number[],
     ringA: new Array(ANCHORS.length).fill(0) as number[],
     fixes: [] as { x: number; y: number; t: number }[],
+    entered: false,
+    tEnter: 0,
+    reduce: false,
+    prevH: 0,
+    lean: 0,
   });
+
+  useEffect(() => {
+    st.current.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
 
   const frame = useFrame<SVGSVGElement>((t) => {
     const s = st.current;
     const n = path.length;
-    const f = ((t % PERIOD) / PERIOD) * n;
+
+    // with an entry, scroll moves from the photo (p = 0) to the diagram (p = 1)
+    let p = 1;
+    const box = stage.current?.getBoundingClientRect();
+    if (entry && box && !s.reduce) {
+      const vh = window.innerHeight;
+      p = clamp01((vh * 0.78 - (box.top + box.height / 2)) / (vh * 0.4));
+    }
+    const e = easeInOut(p);
+    const dir = entry ? -1 : 1;
+
+    let f: number;
+    if (!entry) f = ((t % PERIOD) / PERIOD) * n;
+    else if (p <= 0) {
+      s.entered = false;
+      f = joinIdx;
+    } else {
+      if (!s.entered) { s.entered = true; s.tEnter = t; }
+      f = joinIdx - (((t - s.tEnter) % PERIOD) / PERIOD) * n;
+    }
+    f = ((f % n) + n) % n;
     const i = Math.floor(f);
     const u = f - i;
     const a = path[i % n], b = path[(i + 1) % n];
     const x = a[0] + (b[0] - a[0]) * u;
     const y = a[1] + (b[1] - a[1]) * u;
     const ahead = path[(i + 5) % n], behind = path[(i - 5 + n) % n];
-    const h = Math.atan2(ahead[1] - behind[1], ahead[0] - behind[0]);
+    const h = dir > 0 ? Math.atan2(ahead[1] - behind[1], ahead[0] - behind[0]) : Math.atan2(behind[1] - ahead[1], behind[0] - ahead[0]);
+
+    if (entry && box && spriteEl.current) {
+      const k = box.width / 800;
+      const hd = (h * 180) / Math.PI;
+      const dt = Math.max(0, Math.min(100, t - s.lastT));
+
+      // things that live on the water surface (tilted with the plane)
+      anchorEl.current?.setAttribute('cx', x.toFixed(1));
+      anchorEl.current?.setAttribute('cy', y.toFixed(1));
+      shadowEl.current?.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${hd.toFixed(1)})`);
+      const back = h + Math.PI;
+      const arm = (len: number, spread: number, side: number) =>
+        `${(x + len * Math.cos(back + side * spread)).toFixed(1)} ${(y + len * Math.sin(back + side * spread)).toFixed(1)}`;
+      const sx0w = x + 22 * Math.cos(back), sy0w = y + 22 * Math.sin(back);
+      wakeEl.current?.setAttribute('d', `M${arm(95, 0.3, -1)}L${sx0w.toFixed(1)} ${sy0w.toFixed(1)}L${arm(95, 0.3, 1)}`);
+      wakeOuterEl.current?.setAttribute('d', `M${arm(130, 0.42, -1)}L${sx0w.toFixed(1)} ${sy0w.toFixed(1)}L${arm(130, 0.42, 1)}`);
+      wakeEl.current?.setAttribute('stroke-opacity', (0.55 + 0.12 * Math.sin(t * 0.006)).toFixed(3));
+      waterLines.current.forEach((el, j) => {
+        if (!el) return;
+        const y0 = 70 + j * 62;
+        let d = '';
+        for (let xx = 40; xx <= 760; xx += 16) {
+          d += `${xx === 40 ? 'M' : 'L'}${xx} ${(y0 + 3.2 * Math.sin(xx * 0.028 + t * 0.0016 + j * 1.3)).toFixed(1)}`;
+        }
+        el.setAttribute('d', d);
+      });
+
+      // where the ship's point lands on screen after the 3D tilt, and how far away it is
+      const ar = anchorEl.current?.getBoundingClientRect();
+      const px1 = ar ? ar.left + ar.width / 2 - box.left : x * k;
+      const py1 = ar ? ar.top + ar.height / 2 - box.top : y * k;
+      const depth = ar ? ar.width / (24 * k) : 1;
+
+      // the ship in the photo (object-cover): centre, length, and its waterline
+      const A = entry.photoW / entry.photoH;
+      const imgW = box.width / box.height > A ? box.width : box.height * A;
+      const imgH = imgW / A;
+      const ox = (box.width - imgW) / 2, oy = (box.height - imgH) / 2;
+      const sx0 = ox + entry.ship.cx * imgW, sy0 = oy + entry.ship.cy * imgH, sw0 = entry.ship.w * imgW;
+      const wl0 = sy0 + (sw0 / entry.spriteAspect) * 0.36;
+
+      // one continuous move: from the photo's waterline to the ship's point on the pool
+      const sw1 = SHIP_W * k * depth;
+      const wx = sx0 + (px1 - sx0) * e;
+      const wy = wl0 + (py1 - wl0) * e;
+      const L = sw0 + (sw1 - sw0) * e;
+
+      // the real cut-out leads, then hands over to the 3D model early in the move
+      const spriteOpacity = 1 - smooth(0.1, 0.26, e);
+      const sc = L / SPRITE_BASE;
+      const sh = L / entry.spriteAspect;
+      spriteEl.current.style.opacity = spriteOpacity.toFixed(3);
+      spriteEl.current.style.transform =
+        `translate(${(wx - SPRITE_BASE / 2).toFixed(1)}px, ${(wy - sh * 0.36 - SPRITE_BASE / entry.spriteAspect / 2).toFixed(1)}px) scale(${sc.toFixed(4)})`;
+
+      // 3D model: starts side-on like the photo, the camera rises to look down on it as it settles on the water
+      let dyaw = -h - Math.PI;
+      dyaw = Math.atan2(Math.sin(dyaw), Math.cos(dyaw));
+      let dh = h - s.prevH;
+      dh = Math.atan2(Math.sin(dh), Math.cos(dh));
+      s.prevH = h;
+      const turnRate = dt > 0 ? dh / dt : 0;
+      s.lean += (Math.max(-0.16, Math.min(0.16, turnRate * 260)) - s.lean) * Math.min(1, dt / 300);
+      const P = pose.current;
+      P.visible = e > 0.1;
+      P.x = wx;
+      P.y = wy + Math.sin(t * 0.0042) * 1.2 * e;
+      P.s = L;
+      P.ox = (90 - TILT) * DEG * e;
+      P.oz = 0;
+      P.my = Math.PI + dyaw * e;
+      P.ix = s.lean * e + 0.045 * Math.sin(t * 0.0031);
+      P.iz = 0.03 * Math.sin(t * 0.0037 + 1);
+      invalidate.current();
+
+      // the photo lies back into the pool plane and dissolves into the digital twin
+      if (photoEl.current) {
+        photoEl.current.style.opacity = (1 - e).toFixed(3);
+        photoEl.current.style.transform = `perspective(950px) rotateX(${(TILT * e).toFixed(2)}deg) scale(${(1 - 0.08 * e).toFixed(4)})`;
+        photoEl.current.style.filter = `saturate(${(1 - 0.5 * e).toFixed(3)}) brightness(${(1 - 0.35 * e).toFixed(3)})`;
+      }
+      if (svgEl.current) svgEl.current.style.opacity = e.toFixed(3);
+      if (legend.current) legend.current.style.opacity = e.toFixed(3);
+    }
 
     ship.current?.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${((h * 180) / Math.PI).toFixed(1)})`);
 
@@ -144,8 +321,8 @@ export default function TrackingField({ labels, className = '' }: { labels: Trac
     const seg = (from: number, to: number) => {
       let d = '';
       for (let k = from; k <= to; k += 3) {
-        const p = path[((i - k) % n + n) % n];
-        d += `${k === from ? 'M' : 'L'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+        const q = path[((i - dir * k) % n + n) % n];
+        d += `${k === from ? 'M' : 'L'}${q[0].toFixed(1)} ${q[1].toFixed(1)}`;
       }
       return d;
     };
@@ -158,7 +335,28 @@ export default function TrackingField({ labels, className = '' }: { labels: Trac
 
   return (
     <figure className={`m-0 ${className}`}>
-      <svg ref={frame} viewBox="0 0 800 480" className="w-full h-auto" role="img" aria-label={labels.fused}>
+      <div ref={stage} className={entry ? 'relative aspect-[800/400]' : 'relative'}>
+      {entry && (
+        <div ref={photoEl} className="absolute inset-0 overflow-hidden rounded" style={{ transformOrigin: '50% 55%' }}>
+          <Image src={entry.photo} alt={entry.photoAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 760px" />
+        </div>
+      )}
+      <div
+        className={entry ? 'absolute inset-x-0 top-1/2 -translate-y-1/2' : 'relative'}
+        style={entry ? { perspective: '950px', perspectiveOrigin: '50% 30%' } : undefined}
+      >
+      <svg
+        ref={(el) => { svgEl.current = el; (frame as React.MutableRefObject<SVGSVGElement | null>).current = el; }}
+        viewBox="0 0 800 480"
+        className="relative w-full h-auto"
+        style={
+          entry
+            ? { opacity: 0, transform: `rotateX(${TILT}deg) scale(${PLANE_SCALE})`, transformOrigin: '50% 55%' }
+            : undefined
+        }
+        role="img"
+        aria-label={labels.fused}
+      >
         <defs>
           <clipPath id={clipId}>
             <rect x={POOL.x} y={POOL.y} width={POOL.w} height={POOL.h} />
@@ -169,6 +367,18 @@ export default function TrackingField({ labels, className = '' }: { labels: Trac
           {gridX.map((gx) => <line key={`x${gx}`} x1={gx} y1={POOL.y} x2={gx} y2={POOL.y + POOL.h} />)}
           {gridY.map((gy) => <line key={`y${gy}`} x1={POOL.x} y1={gy} x2={POOL.x + POOL.w} y2={gy} />)}
         </g>
+
+        {entry && (
+          <g clipPath={`url(#${clipId})`}>
+            {[0, 1, 2, 3, 4, 5].map((j) => (
+              <path key={j} ref={(el) => { waterLines.current[j] = el; }} fill="none" stroke={C.blue} strokeOpacity="0.09" strokeWidth="1.2" />
+            ))}
+            <path ref={wakeOuterEl} fill="none" stroke={C.ink} strokeOpacity="0.22" strokeWidth="1.6" strokeLinejoin="round" />
+            <path ref={wakeEl} fill="none" stroke={C.ink} strokeOpacity="0.6" strokeWidth="2.4" strokeLinejoin="round" />
+            <ellipse ref={shadowEl} rx="46" ry="12" fill="#000" fillOpacity="0.5" />
+            <circle ref={anchorEl} r="12" fill="none" opacity="0" />
+          </g>
+        )}
 
         <g fill="none" stroke={C.blue} strokeWidth="1" clipPath={`url(#${clipId})`}>
           {ANCHORS.map(([ax, ay], k) => (
@@ -218,12 +428,30 @@ export default function TrackingField({ labels, className = '' }: { labels: Trac
           })}
         </g>
 
-        <g ref={ship}>
-          <polygon points="14,0 5,6 -11,6 -11,-6 5,-6" fill={C.ink} />
-        </g>
+        {!entry && (
+          <g ref={ship}>
+            <polygon points="14,0 5,6 -11,6 -11,-6 5,-6" fill={C.ink} />
+          </g>
+        )}
       </svg>
+      </div>
+      {entry && (
+        <div
+          ref={spriteEl}
+          className="pointer-events-none absolute left-0 top-0 will-change-transform"
+          style={{ width: SPRITE_BASE, height: SPRITE_BASE / entry.spriteAspect, opacity: 0 }}
+        >
+          <Image src={entry.sprite} alt="" fill className="object-contain" sizes="400px" />
+        </div>
+      )}
+      {entry && (
+        <div className="pointer-events-none absolute inset-0 z-10">
+          <Overlay3D model="ship" pose={pose} onInvalidate={onInvalidate} />
+        </div>
+      )}
+      </div>
 
-      <figcaption className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      <figcaption ref={legend} style={entry ? { opacity: 0 } : undefined} className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
         <span className="inline-flex items-center gap-2"><span className="w-2.5 h-2.5 bg-brand-light" aria-hidden="true" />{labels.range}</span>
         <span className="inline-flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-ink-muted" aria-hidden="true" />{labels.raw}</span>
         <span className="inline-flex items-center gap-2"><span className="w-4 h-0.5 bg-ink" aria-hidden="true" />{labels.fused}</span>

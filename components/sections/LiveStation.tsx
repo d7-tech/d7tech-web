@@ -41,12 +41,9 @@ export default function LiveStation() {
     };
   }, []);
 
-  if (!data) return null;
-
-  const at = new Date(data.measured_at);
-  const ageMin = (Date.now() - at.getTime()) / 60_000;
-  // A station that has been silent for two days would only make the site look abandoned.
-  if (ageMin > 48 * 60) return null;
+  // Always shown. Without a reading (station or server unreachable) it says offline with empty values.
+  const at = data ? new Date(data.measured_at) : null;
+  const ageMin = at ? (Date.now() - at.getTime()) / 60_000 : Infinity;
   const fresh = ageMin < 30;
   const sameDay = ageMin < 12 * 60;
   const time = new Intl.DateTimeFormat(locale, {
@@ -55,14 +52,14 @@ export default function LiveStation() {
     minute: '2-digit',
     hourCycle: 'h23',
     ...(sameDay ? {} : { day: 'numeric', month: 'short' }),
-  }).format(at);
+  }).format(at ?? new Date());
 
   const n = (v: number | null, d = 1) => (v === null || v === undefined ? '–' : v.toFixed(d));
   const readings = [
-    { k: 'temp', v: n(data.temp_c), u: '°C' },
-    { k: 'wind', v: n(data.wind_ms), u: 'm/s' },
-    { k: 'humidity', v: n(data.rh_pct, 0), u: '%' },
-    { k: 'pressure', v: n(data.press_hpa, 0), u: 'hPa' },
+    { k: 'temp', v: n(data?.temp_c ?? null), u: '°C' },
+    { k: 'wind', v: n(data?.wind_ms ?? null), u: 'm/s' },
+    { k: 'humidity', v: n(data?.rh_pct ?? null, 0), u: '%' },
+    { k: 'pressure', v: n(data?.press_hpa ?? null, 0), u: 'hPa' },
   ] as const;
 
   return (
@@ -85,9 +82,11 @@ export default function LiveStation() {
             </div>
           ))}
         </dl>
-        <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-          {fresh ? t('updated', { time }) : t('stale', { time })}
-        </p>
+        {at && (
+          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+            {fresh ? t('updated', { time }) : t('stale', { time })}
+          </p>
+        )}
         <Link
           href="/projects/micro-climate"
           className="ml-auto inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-brand-light hover:text-ink"
