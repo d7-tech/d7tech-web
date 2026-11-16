@@ -10,9 +10,9 @@
     "viewProject": "View Project"
   },
   "StatusBadge": {
-    "active": "ACTIVE",
-    "completed": "COMPLETED",
-    "inDevelopment": "IN DEVELOPMENT"
+    "active": "Active",
+    "completed": "Completed",
+    "inDevelopment": "In development"
   },
   "Navbar": {
     "logoAriaLabel": "D7 Technology — Home",
@@ -22,7 +22,8 @@
     "projects": "Projects",
     "about": "About",
     "careers": "Careers",
-    "getInTouch": "Get in Touch"
+    "getInTouch": "Get in Touch",
+    "contact": "Contact"
   },
   "Footer": {
     "tagline": "Designing intelligent autonomous platforms and advanced sensing technologies for real-world applications.",
@@ -342,7 +343,7 @@
     "demoTitle": "Multi-Static Systems Demo",
     "demoText": "The following demonstration illustrates the multi-static radar system processing pipeline, including plot-level data fusion, track initiation, and multi-target tracking performance in a simulated scenario.",
     "demoIframeTitle": "Multi-Static Radar Demo",
-    "publicationsLabel": "// IEEE PUBLICATIONS"
+    "publicationsLabel": "IEEE publications"
   },
   "WearableSensorsPage": {
     "metadata": {
@@ -367,7 +368,7 @@
     "fieldText": "Real-world trials were conducted in sports and healthcare settings to validate system performance outside controlled laboratory conditions. Field experiments tested the system's robustness to multipath propagation, body occlusion, and varying environmental conditions, demonstrating reliable fall detection and performance analysis in practical deployments.",
     "fieldImageAlt": "Athlete on an indoor court wearing ankle-mounted sensors during a motion capture style field experiment",
     "fieldCaption": "Field experiment setup — real-world wearable sensor deployment",
-    "publicationsLabel": "// IEEE PUBLICATIONS"
+    "publicationsLabel": "IEEE publications"
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -469,7 +470,7 @@
         "method": "Model"
       },
       "verifyTitle": "Forecasts against measurements",
-      "verifyText": "Each coloured line shows what a model forecast for each hour, made 1, 6 or 24 hours before. The white line is what the station then measured. The closer a line follows the white one, the better that model did.",
+      "verifyText": "Each coloured line shows what a model forecast for each hour, made 1, 6 or 24 hours before. The black line is what the station then measured. The closer a line follows the black one, the better that model did.",
       "madeBefore": "{hours} h before",
       "verifyNone": "No checked forecasts in this period yet.",
       "verifyExample": "For example, for {time} {method} forecast {pred} {unit}, {hours} h in advance; the station measured {obs} {unit}, a difference of {diff}.",

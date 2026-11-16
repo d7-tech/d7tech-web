@@ -72,16 +72,16 @@ const GROUPS: Record<Group, string[]> = {
 const BASELINES = ['persistence', 'nwp', 'twc'];
 const ALL_METHODS = [...GROUPS.single, ...GROUPS.hybrid, ...GROUPS.online, ...BASELINES];
 const COLOR: Record<string, string> = {
-  observed: '#e2e8f0',
-  persistence: '#64748b',
-  nwp: '#f59e0b',
-  twc: '#e879f9',
-  'single-lgbm': '#38bdf8',
-  'single-sarima': '#a78bfa',
-  'hybrid-lgbm': '#34d399',
-  'hybrid-sarimax': '#f472b6',
-  'online-river': '#fb923c',
-  online: '#facc15',
+  observed: '#1a1c20',
+  persistence: '#8a8f98',
+  nwp: '#d97706',
+  twc: '#a21caf',
+  'single-lgbm': '#134997',
+  'single-sarima': '#7c3aed',
+  'hybrid-lgbm': '#15803d',
+  'hybrid-sarimax': '#db2777',
+  'online-river': '#ea580c',
+  online: '#ca8a04',
 };
 const SARIMA_VARS: Variable[] = ['wind_ms', 'gust_ms', 'rain_mm'];
 /** Forecast sources offered in the hourly strip, best first. */
@@ -118,8 +118,8 @@ function windWord(ms: number | null | undefined) {
 /** Cell colour for a wind speed, light to strong (as on wind-forecast tables). */
 function windBg(ms: number | null) {
   if (ms === null) return 'transparent';
-  const stops: [number, string][] = [[1, '#0f172a'], [2, '#0c4a6e'], [4, '#0e7490'], [6, '#047857'], [8, '#4d7c0f'],
-    [11, '#a16207'], [14, '#c2410c'], [Infinity, '#b91c1c']];
+  const stops: [number, string][] = [[1, '#f4f3ef'], [2, '#e0ecfb'], [4, '#c7dcf7'], [6, '#c8ecd6'], [8, '#e3f0b8'],
+    [11, '#fbe3a6'], [14, '#fbc49a'], [Infinity, '#f6a5a0']];
   return stops.find(([lim]) => ms < lim)![1];
 }
 
@@ -172,8 +172,8 @@ function loneDot(data: Record<string, unknown>[], key: string, color: string) {
 const axisNum = (v: number) => Number(v.toFixed(Math.abs(v) >= 100 ? 0 : Math.abs(v) < 1 ? 2 : 1)).toString();
 
 /** Arrow pointing where the wind blows to (meteorological direction = where it comes from). */
-function Arrow({ deg, size = 16, color = '#e2e8f0' }: { deg: number | null; size?: number; color?: string }) {
-  if (deg === null || deg === undefined) return <span className="text-slate-600">–</span>;
+function Arrow({ deg, size = 16, color = '#1a1c20' }: { deg: number | null; size?: number; color?: string }) {
+  if (deg === null || deg === undefined) return <span className="text-ink-muted">–</span>;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" style={{ transform: `rotate(${deg + 180}deg)` }} aria-label={compass(deg)}>
       <path d="M12 2 L18 20 L12 16 L6 20 Z" fill={color} />
@@ -381,16 +381,16 @@ export default function WeatherDashboard() {
       .filter((m) => success.rows.some((r) => r.method === m))
       .map((m) => ({ m, ref: refs.includes(m), cells: [0, 1, 2].map((i) => success.rows.find((r) => r.method === m && bandOf(r.band) === i)) }));
   }, [success]);
-  const rateColor = (r: number) => (r >= 0.85 ? 'text-emerald-400' : r >= 0.6 ? 'text-amber-300' : 'text-rose-400');
+  const rateColor = (r: number) => (r >= 0.85 ? 'text-emerald-700' : r >= 0.6 ? 'text-amber-700' : 'text-rose-700');
 
   const btn = (active: boolean) =>
-    `px-3 py-1.5 rounded-sm border font-mono text-[11px] tracking-wider uppercase transition-colors ${
-      active ? 'border-sky-400/60 bg-sky-400/10 text-sky-300' : 'border-[#1a2540] text-slate-500 hover:text-slate-300'
+    `px-3 py-1.5 rounded-md border text-sm transition-colors ${
+      active ? 'border-brand bg-brand text-white' : 'border-line bg-white text-ink-soft hover:border-ink-muted hover:text-ink'
     }`;
-  const box = 'rounded-sm border border-[#1a2540] bg-[#0a0f1e]';
-  const h2 = 'text-xl font-semibold text-slate-100 mb-4';
-  const para = 'text-slate-400 leading-relaxed text-sm sm:text-base mb-5';
-  const cap = 'mt-3 text-xs text-slate-600 leading-relaxed';
+  const box = 'rounded-md border border-line bg-white';
+  const h2 = 'text-[1.35rem] mb-3';
+  const para = 'text-[17px] leading-[1.75] mb-5';
+  const cap = 'mt-2.5 text-sm text-ink-muted leading-relaxed';
 
   return (
     <div>
@@ -398,7 +398,7 @@ export default function WeatherDashboard() {
       <section className="mb-14" aria-labelledby="now-heading">
         <h2 id="now-heading" className={h2}>{t('nowTitle')}</h2>
         <figure className="m-0">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[#1a2540] border border-[#1a2540] rounded-sm overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-line border border-line rounded-sm overflow-hidden">
             {[
               ['temp', `${fmt(latest?.temp_c)} °C`],
               ['wind', calm ? `${fmt(latest?.wind_ms)} m/s` : `${fmt(latest?.wind_ms)} m/s · ${compass(dirNow)}`],
@@ -409,9 +409,9 @@ export default function WeatherDashboard() {
               ['range24', tempRange ? `${fmt(tempRange[0])} – ${fmt(tempRange[1])} °C` : '–'],
               ['updated', latest ? (live ? t('minutesAgo', { minutes: ago ?? 0 }) : dayFmt.format(Date.parse(latest.measured_at))) : '–'],
             ].map(([k, v]) => (
-              <div key={k} className="bg-[#0a0f1e] p-4">
-                <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">{t(`tiles.${k}` as any)}</div>
-                <div className="text-lg font-semibold text-slate-100 tabular-nums">{v}</div>
+              <div key={k} className="bg-white p-4">
+                <div className="text-[13px] text-ink-muted mb-1">{t(`tiles.${k}` as any)}</div>
+                <div className="text-lg font-semibold text-ink tabular-nums">{v}</div>
               </div>
             ))}
           </div>
@@ -433,7 +433,7 @@ export default function WeatherDashboard() {
           </div>
         )}
         {strip.length === 0 ? (
-          <p className="text-sm text-slate-500">{t('status.none')}</p>
+          <p className="text-sm text-ink-muted">{t('status.none')}</p>
         ) : (
           <figure className="m-0">
             <div className={`${box} p-4`}>
@@ -441,14 +441,14 @@ export default function WeatherDashboard() {
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart data={strip.map((r) => ({ t: r.at, wind: r.wind, gust: r.gust, rain: r.prob === null ? null : Math.round(r.prob * 100) }))}
                     margin={{ top: 8, right: 0, bottom: 0, left: -16 }}>
-                    <CartesianGrid stroke="#1a2540" vertical={false} />
-                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => hourFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={24} />
-                    <YAxis yAxisId="w" stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={[0, 'auto']} />
-                    <YAxis yAxisId="r" orientation="right" stroke="#475569" fontSize={11} domain={[0, 100]} tickFormatter={(v) => `${v}%`} width={40} />
+                    <CartesianGrid stroke="#e7e5df" vertical={false} />
+                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => hourFmt.format(v)} stroke="#8a8f98" fontSize={11} minTickGap={24} />
+                    <YAxis yAxisId="w" stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} domain={[0, 'auto']} />
+                    <YAxis yAxisId="r" orientation="right" stroke="#8a8f98" fontSize={11} domain={[0, 100]} tickFormatter={(v) => `${v}%`} width={40} />
                     <Tooltip content={<MeteoTip fmtTime={(v) => dayFmt.format(v)} names={{ wind: t('series.wind'), gust: t('series.gust'), rain: t('rows.rainProb') }} />} />
-                    <Bar yAxisId="r" dataKey="rain" fill="rgba(56,189,248,0.3)" isAnimationActive={false} />
-                    <Line yAxisId="w" dataKey="gust" stroke="#38bdf8" strokeDasharray="4 3" strokeWidth={1.5} dot={false} isAnimationActive={false} />
-                    <Line yAxisId="w" dataKey="wind" stroke="#38bdf8" strokeWidth={2.5} dot={false} isAnimationActive={false} />
+                    <Bar yAxisId="r" dataKey="rain" fill="rgba(19,73,151,0.22)" isAnimationActive={false} />
+                    <Line yAxisId="w" dataKey="gust" stroke="#134997" strokeDasharray="4 3" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+                    <Line yAxisId="w" dataKey="wind" stroke="#134997" strokeWidth={2.5} dot={false} isAnimationActive={false} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
@@ -456,14 +456,14 @@ export default function WeatherDashboard() {
             <div className={`${box} overflow-x-auto mt-2`}>
               <table className="text-xs tabular-nums border-collapse min-w-max w-full">
                 <tbody>
-                  <tr className="text-slate-500">
-                    <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal px-3 py-2 min-w-[92px]" />
+                  <tr className="text-ink-muted">
+                    <th className="sticky left-0 z-10 bg-white text-left font-normal px-3 py-2 min-w-[92px]" />
                     {strip.map((r, i) => {
                       const newDay = i === 0 || hourFmt.format(r.at) === '00';
                       return (
-                        <th key={r.at} className={`font-normal px-1 pt-2 text-center min-w-[42px] ${newDay ? 'border-l border-[#1a2540]' : ''}`}>
-                          <div className="text-[10px] text-slate-600 h-3">{newDay ? weekdayFmt.format(r.at) : ''}</div>
-                          <div className="text-slate-300">{hourFmt.format(r.at)}</div>
+                        <th key={r.at} className={`font-normal px-1 pt-2 text-center min-w-[42px] ${newDay ? 'border-l border-line' : ''}`}>
+                          <div className="text-[10px] text-ink-muted h-3">{newDay ? weekdayFmt.format(r.at) : ''}</div>
+                          <div className="text-ink-soft">{hourFmt.format(r.at)}</div>
                         </th>
                       );
                     })}
@@ -471,14 +471,14 @@ export default function WeatherDashboard() {
                   <StripRow label={t('rows.wind')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.wind), bg: windBg(r.wind) }))} />
                   <StripRow label={t('rows.gust')} cells={strip.map((r) => ({ k: r.at, v: fmt(r.gust), bg: windBg(r.gust) }))} />
                   <tr>
-                    <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal text-slate-500 px-3 py-2">{t('rows.dir')}</th>
+                    <th className="sticky left-0 z-10 bg-white text-left font-normal text-ink-muted px-3 py-2">{t('rows.dir')}</th>
                     {strip.map((r) => (
                       <td key={r.at} className="text-center py-2"><span className="inline-flex justify-center"><Arrow deg={r.dir} size={14} /></span></td>
                     ))}
                   </tr>
                   <StripRow label={t('rows.rainProb')} cells={strip.map((r) => {
                     const pct = r.prob === null ? null : Math.round(r.prob * 100);
-                    return { k: r.at, v: pct === null ? '–' : `${pct}`, bg: pct === null ? 'transparent' : `rgba(56,189,248,${Math.min(pct, 100) / 110})` };
+                    return { k: r.at, v: pct === null ? '–' : `${pct}`, bg: pct === null ? 'transparent' : `rgba(19,73,151,${Math.min(pct, 100) / 280})` };
                   })} />
                   <StripRow label={t('rows.rainMm')} cells={strip.map((r) => ({ k: r.at, v: r.mm === null ? '–' : r.mm < 0.05 ? '0' : fmt(r.mm), bg: 'transparent' }))} />
                 </tbody>
@@ -502,31 +502,31 @@ export default function WeatherDashboard() {
         </div>
         <figure className="m-0">
           {successRows.length === 0 ? (
-            <p className="text-sm text-slate-500">{t('noScoresYet')}</p>
+            <p className="text-sm text-ink-muted">{t('noScoresYet')}</p>
           ) : (
             <div className={`${box} overflow-x-auto`}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left font-mono text-[10px] tracking-widest uppercase text-slate-500 border-b border-[#1a2540]">
+                  <tr className="text-left text-[13px] text-ink-muted border-b border-line">
                     <th className="p-3 font-normal">{t('table.method')}</th>
                     {(['1', '2-6', '7-24'] as const).map((b) => <th key={b} className="p-3 font-normal text-right">{t(`bands.${b}` as any)}</th>)}
                   </tr>
                 </thead>
                 <tbody>
                   {successRows.map(({ m, ref, cells }, i) => (
-                    <tr key={m} className={`border-b border-[#1a2540]/60 last:border-0 ${ref && !successRows[i - 1]?.ref ? 'border-t border-t-[#1a2540]' : ''}`}>
-                      <td className={`p-3 whitespace-nowrap ${ref ? 'text-slate-500' : 'text-slate-200'}`}>
+                    <tr key={m} className={`border-b border-line last:border-0 ${ref && !successRows[i - 1]?.ref ? 'border-t border-t-line' : ''}`}>
+                      <td className={`p-3 whitespace-nowrap ${ref ? 'text-ink-muted' : 'text-ink'}`}>
                         <span className="inline-block w-2 h-2 rounded-full mr-2 align-middle" style={{ background: COLOR[m] }} aria-hidden="true" />
-                        {t(`methods.${m}` as any)}{ref && <span className="text-slate-600 text-xs ml-2">{t('reference')}</span>}
+                        {t(`methods.${m}` as any)}{ref && <span className="text-ink-muted text-xs ml-2">{t('reference')}</span>}
                       </td>
                       {cells.map((c, j) => (
                         <td key={j} className="p-3 text-right tabular-nums">
                           {c ? (
                             <>
-                              <span className={`font-semibold ${ref ? 'text-slate-400' : rateColor(c.rate)}`}>{Math.round(c.rate * 100)}%</span>
-                              <span className="text-[11px] text-slate-600 ml-1.5">{c.hits}/{c.n}</span>
+                              <span className={`font-semibold ${ref ? 'text-ink-soft' : rateColor(c.rate)}`}>{Math.round(c.rate * 100)}%</span>
+                              <span className="text-[11px] text-ink-muted ml-1.5">{c.hits}/{c.n}</span>
                             </>
-                          ) : <span className="text-slate-600">–</span>}
+                          ) : <span className="text-ink-muted">–</span>}
                         </td>
                       ))}
                     </tr>
@@ -553,7 +553,7 @@ export default function WeatherDashboard() {
               {t(`variables.${v}` as any)}
             </button>
           ))}
-          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
+          <span className="w-px h-5 bg-line mx-1 hidden sm:block" aria-hidden="true" />
           {([1, 6, 24] as const).map((h) => (
             <button key={h} className={btn(verifyH === h)} onClick={() => setVerifyH(h)} aria-pressed={verifyH === h}>
               {t('madeBefore', { hours: h })}
@@ -567,14 +567,14 @@ export default function WeatherDashboard() {
               {verifyMethods.map((m) => <Legend key={m} color={COLOR[m]} label={t(`methods.${m}` as any)} dashed={BASELINES.includes(m)} />)}
             </div>
             {verifyMethods.length === 0 ? (
-              <p className="text-sm text-slate-500 py-8 text-center">{t('verifyNone')}</p>
+              <p className="text-sm text-ink-muted py-8 text-center">{t('verifyNone')}</p>
             ) : (
               <div className="h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={verifyRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                    <CartesianGrid stroke="#1a2540" vertical={false} />
-                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => dayFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={50} />
-                    <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={verifyVar === 'rain_prob' ? [0, 100] : [0, 'auto']} />
+                    <CartesianGrid stroke="#e7e5df" vertical={false} />
+                    <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => dayFmt.format(v)} stroke="#8a8f98" fontSize={11} minTickGap={50} />
+                    <YAxis stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} domain={verifyVar === 'rain_prob' ? [0, 100] : [0, 'auto']} />
                     <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[verifyVar]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
                     <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2.5} dot={loneDot(verifyRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
                     {verifyMethods.map((m) => (
@@ -606,7 +606,7 @@ export default function WeatherDashboard() {
               {t(`variables.${v}` as any)}
             </button>
           ))}
-          <span className="w-px h-5 bg-[#1a2540] mx-1 hidden sm:block" aria-hidden="true" />
+          <span className="w-px h-5 bg-line mx-1 hidden sm:block" aria-hidden="true" />
           {(Object.keys(GROUPS) as Group[]).map((g) => (
             <button key={g} className={btn(group === g)} onClick={() => setGroup(g)} aria-pressed={group === g}>
               {t(`groups.${g}` as any)}
@@ -624,11 +624,11 @@ export default function WeatherDashboard() {
             <div className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={forecastRows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                  <CartesianGrid stroke="#1a2540" vertical={false} />
-                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => timeFmt.format(v)} stroke="#475569" fontSize={11} minTickGap={40} />
-                  <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={variable === 'wind_dir_deg' ? [0, 360] : variable === 'rain_prob' ? [0, 100] : [0, 'auto']} />
+                  <CartesianGrid stroke="#e7e5df" vertical={false} />
+                  <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={(v) => timeFmt.format(v)} stroke="#8a8f98" fontSize={11} minTickGap={40} />
+                  <YAxis stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} domain={variable === 'wind_dir_deg' ? [0, 360] : variable === 'rain_prob' ? [0, 100] : [0, 'auto']} />
                   <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit={UNIT[variable]} names={(k) => (k === 'observed' ? t('series.observed') : t(`methods.${k}` as any))} />} />
-                  <ReferenceLine x={now} stroke="#334155" strokeDasharray="3 3" label={{ value: t('now'), fill: '#64748b', fontSize: 10, position: 'insideTopRight' }} />
+                  <ReferenceLine x={now} stroke="#9aa0a8" strokeDasharray="3 3" label={{ value: t('now'), fill: '#6b7079', fontSize: 10, position: 'insideTopRight' }} />
                   <Line dataKey="observed" stroke={COLOR.observed} strokeWidth={2} dot={loneDot(forecastRows, 'observed', COLOR.observed)} isAnimationActive={false} connectNulls={false} />
                   {shown.map((m) => (
                     <Line key={m} dataKey={m} stroke={COLOR[m]} strokeWidth={BASELINES.includes(m) ? 1.5 : 2}
@@ -658,30 +658,30 @@ export default function WeatherDashboard() {
           <div className="grid gap-2 md:grid-cols-3">
             <ChartCard title={t('charts.wind')} card={`${box} md:col-span-3`}>
               <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#1a2540" vertical={false} />
-                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} />
+                <CartesianGrid stroke="#e7e5df" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#8a8f98" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} />
                 <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="m/s" />} />
-                <Line dataKey="gust" name={t('series.gust')} stroke="#38bdf8" strokeOpacity={0.45} dot={loneDot(history, 'gust', '#38bdf880')} isAnimationActive={false} connectNulls={false} />
-                <Line dataKey="wind" name={t('series.wind')} stroke="#38bdf8" strokeWidth={2} dot={loneDot(history, 'wind', '#38bdf8')} isAnimationActive={false} connectNulls={false} />
+                <Line dataKey="gust" name={t('series.gust')} stroke="#134997" strokeOpacity={0.45} dot={loneDot(history, 'gust', '#13499780')} isAnimationActive={false} connectNulls={false} />
+                <Line dataKey="wind" name={t('series.wind')} stroke="#134997" strokeWidth={2} dot={loneDot(history, 'wind', '#134997')} isAnimationActive={false} connectNulls={false} />
               </LineChart>
             </ChartCard>
             <ChartCard title={t('charts.temp')} card={`${box} md:col-span-2`} height={170}>
               <LineChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#1a2540" vertical={false} />
-                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} domain={['auto', 'auto']} />
+                <CartesianGrid stroke="#e7e5df" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#8a8f98" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} domain={['auto', 'auto']} />
                 <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="°C" />} />
-                <Line dataKey="temp" name={t('series.temp')} stroke="#fb923c" strokeWidth={2} dot={loneDot(history, 'temp', '#fb923c')} isAnimationActive={false} connectNulls={false} />
+                <Line dataKey="temp" name={t('series.temp')} stroke="#c2410c" strokeWidth={2} dot={loneDot(history, 'temp', '#c2410c')} isAnimationActive={false} connectNulls={false} />
               </LineChart>
             </ChartCard>
             <ChartCard title={t('charts.rain')} card={box} height={170}>
               <BarChart data={history} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#1a2540" vertical={false} />
-                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#475569" fontSize={11} minTickGap={40} />
-                <YAxis stroke="#475569" fontSize={11} tickFormatter={axisNum} allowDecimals />
+                <CartesianGrid stroke="#e7e5df" vertical={false} />
+                <XAxis dataKey="t" type="number" domain={['dataMin', 'dataMax']} scale="time" tickFormatter={tick} stroke="#8a8f98" fontSize={11} minTickGap={40} />
+                <YAxis stroke="#8a8f98" fontSize={11} tickFormatter={axisNum} allowDecimals />
                 <Tooltip content={<Tip fmtTime={(v) => dayFmt.format(v)} unit="mm" />} />
-                <Bar dataKey="rain" name={t('series.rain')} fill="#38bdf8" isAnimationActive={false} />
+                <Bar dataKey="rain" name={t('series.rain')} fill="#134997" isAnimationActive={false} />
               </BarChart>
             </ChartCard>
           </div>
@@ -694,7 +694,7 @@ export default function WeatherDashboard() {
         <h2 id="weights-heading" className={h2}>{t('weightsTitle')}</h2>
         <p className={para}>{t('weightsText')}</p>
         {weights.length === 0 ? (
-          <p className="text-sm text-slate-500">{t('noWeightsYet')}</p>
+          <p className="text-sm text-ink-muted">{t('noWeightsYet')}</p>
         ) : (
           <figure className="m-0">
             <div className={`${box} p-4 space-y-4`}>
@@ -702,15 +702,15 @@ export default function WeatherDashboard() {
                 const ws = weights.filter((w) => w.horizon_h === h).sort((a, b) => b.weight - a.weight);
                 return (
                   <div key={h} className="grid sm:grid-cols-[110px_1fr] gap-2 items-center">
-                    <div className="text-xs text-slate-500">{t('ahead', { hours: h })}</div>
+                    <div className="text-xs text-ink-muted">{t('ahead', { hours: h })}</div>
                     <div>
-                      <div className="flex h-2.5 rounded-sm overflow-hidden bg-[#1a2540]">
+                      <div className="flex h-2.5 rounded-sm overflow-hidden bg-line">
                         {ws.map((w) => (
-                          <div key={w.method} style={{ width: `${w.weight * 100}%`, background: COLOR[w.method] ?? '#94a3b8' }}
+                          <div key={w.method} style={{ width: `${w.weight * 100}%`, background: COLOR[w.method] ?? '#9aa0a8' }}
                             title={`${t(`methods.${w.method}` as any)} ${Math.round(w.weight * 100)}%`} />
                         ))}
                       </div>
-                      <div className="flex flex-wrap gap-x-3 mt-1 text-[11px] text-slate-400">
+                      <div className="flex flex-wrap gap-x-3 mt-1 text-[11px] text-ink-soft">
                         {ws.filter((w) => w.weight >= 0.05).map((w) => (
                           <span key={w.method}>{t(`methods.${w.method}` as any)} {Math.round(w.weight * 100)}%</span>
                         ))}
@@ -740,7 +740,7 @@ export default function WeatherDashboard() {
           <div className={`${box} p-4`}>
             <div className="flex flex-wrap gap-x-4 gap-y-1 mb-2 text-xs">
               {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
-                <span key={m} className="inline-flex items-center gap-1.5 text-slate-400">
+                <span key={m} className="inline-flex items-center gap-1.5 text-ink-soft">
                   <span className="inline-block w-3 h-3 rounded-sm" style={{ background: COLOR[m] }} aria-hidden="true" />
                   {t(`methods.${m}` as any)}
                 </span>
@@ -750,10 +750,10 @@ export default function WeatherDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={([1, 6, 24] as const).map((h) => ({ h: t('ahead', { hours: h }), ...TEST_SCORES[testVar][h] }))}
                   margin={{ top: 18, right: 8, bottom: 0, left: -12 }} barCategoryGap="22%">
-                  <CartesianGrid stroke="#1a2540" vertical={false} />
-                  <XAxis dataKey="h" stroke="#475569" fontSize={11} />
-                  <YAxis stroke="#475569" fontSize={11} domain={[-60, 70]} allowDataOverflow tickFormatter={(v) => `${v}%`} ticks={[-60, -30, 0, 30, 60]} />
-                  <ReferenceLine y={0} stroke="#64748b" />
+                  <CartesianGrid stroke="#e7e5df" vertical={false} />
+                  <XAxis dataKey="h" stroke="#8a8f98" fontSize={11} />
+                  <YAxis stroke="#8a8f98" fontSize={11} domain={[-60, 70]} allowDataOverflow tickFormatter={(v) => `${v}%`} ticks={[-60, -30, 0, 30, 60]} />
+                  <ReferenceLine y={0} stroke="#8a8f98" />
                   {(['hybrid-lgbm', 'single-lgbm', 'nwp'] as const).map((m) => (
                     <Bar key={m} dataKey={m} fill={COLOR[m]} isAnimationActive={false} radius={[2, 2, 0, 0]}>
                       <LabelList dataKey={m} content={SkillLabel} />
@@ -773,9 +773,9 @@ export default function WeatherDashboard() {
 function StripRow({ label, cells }: { label: string; cells: { k: number; v: string; bg: string }[] }) {
   return (
     <tr>
-      <th className="sticky left-0 z-10 bg-[#0a0f1e] text-left font-normal text-slate-500 px-3 py-2 whitespace-nowrap">{label}</th>
+      <th className="sticky left-0 z-10 bg-white text-left font-normal text-ink-muted px-3 py-2 whitespace-nowrap">{label}</th>
       {cells.map((c) => (
-        <td key={c.k} className="text-center py-2 text-slate-100" style={{ background: c.bg }}>{c.v}</td>
+        <td key={c.k} className="text-center py-2 text-ink" style={{ background: c.bg }}>{c.v}</td>
       ))}
     </tr>
   );
@@ -784,7 +784,7 @@ function StripRow({ label, cells }: { label: string; cells: { k: number; v: stri
 function ChartCard({ title, card, height = 200, children }: { title: string; card: string; height?: number; children: React.ReactElement }) {
   return (
     <div className={`${card} p-4`}>
-      <div className="text-xs text-slate-500 mb-2">{title}</div>
+      <div className="text-xs text-ink-muted mb-2">{title}</div>
       <div style={{ height }}>
         <ResponsiveContainer width="100%" height="100%">
           {children}
@@ -796,7 +796,7 @@ function ChartCard({ title, card, height = 200, children }: { title: string; car
 
 function Legend({ color, label, dashed = false, muted = false, title }: { color: string; label: string; dashed?: boolean; muted?: boolean; title?: string }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 ${muted ? 'text-slate-600' : 'text-slate-400'}`} title={title}>
+    <span className={`inline-flex items-center gap-1.5 ${muted ? 'text-ink-muted' : 'text-ink-soft'}`} title={title}>
       <span className="inline-block w-4 h-0 border-t-2" style={{ borderColor: color, borderStyle: dashed ? 'dashed' : 'solid', opacity: muted ? 0.4 : 1 }} aria-hidden="true" />
       {label}
     </span>
@@ -817,10 +817,10 @@ function Tip({ active, label, payload, fmtTime, unit, names }: TipProps) {
   const rows = payload.filter((p) => p.value !== null && p.value !== undefined);
   if (!rows.length) return null;
   return (
-    <div className="rounded-md border border-[#1a2540] bg-[#020409]/95 px-3 py-2 text-xs shadow-lg">
-      <div className="text-[10px] text-slate-500 mb-1">{fmtTime(label)}</div>
+    <div className="rounded-md border border-line bg-white px-3 py-2 text-xs shadow-md">
+      <div className="text-[10px] text-ink-muted mb-1">{fmtTime(label)}</div>
       {rows.map((p) => (
-        <div key={p.dataKey} className="flex justify-between gap-4 text-slate-300">
+        <div key={p.dataKey} className="flex justify-between gap-4 text-ink-soft">
           <span style={{ color: p.stroke ?? p.color }}>{names ? names(p.dataKey) : p.name ?? p.dataKey}</span>
           <span className="tabular-nums">{Number(p.value).toFixed(unit === '°' || unit === '%' ? 0 : 1)} {unit}</span>
         </div>
@@ -835,10 +835,10 @@ function MeteoTip({ active, label, payload, fmtTime, names }: {
 }) {
   if (!active || !payload?.length || label === undefined) return null;
   return (
-    <div className="rounded-md border border-[#1a2540] bg-[#020409]/95 px-3 py-2 text-xs shadow-lg">
-      <div className="text-[10px] text-slate-500 mb-1">{fmtTime(label)}</div>
+    <div className="rounded-md border border-line bg-white px-3 py-2 text-xs shadow-md">
+      <div className="text-[10px] text-ink-muted mb-1">{fmtTime(label)}</div>
       {payload.filter((p) => p.value !== null && p.value !== undefined).map((p) => (
-        <div key={p.dataKey} className="flex justify-between gap-4 text-slate-300">
+        <div key={p.dataKey} className="flex justify-between gap-4 text-ink-soft">
           <span>{names[p.dataKey] ?? p.dataKey}</span>
           <span className="tabular-nums">{p.dataKey === 'rain' ? `${p.value}%` : `${Number(p.value).toFixed(1)} m/s`}</span>
         </div>
@@ -854,7 +854,7 @@ function SkillLabel(props: { x?: number | string; y?: number | string; width?: n
   const y = Math.min(Number(props.y ?? 0), Number(props.y ?? 0) + Number(props.height ?? 0)); // top edge of the bar
   const text = `${v > 0 ? '+' : ''}${Math.round(v)}%`;
   const hgt = Math.abs(Number(props.height ?? 0));
-  if (v >= 0) return <text x={x + w / 2} y={y - 5} textAnchor="middle" fontSize={10} fill="#cbd5e1">{text}</text>;
-  if (hgt < 18) return <text x={x + w / 2} y={y + hgt + 12} textAnchor="middle" fontSize={10} fill="#cbd5e1">{text}</text>;
-  return <text x={x + w / 2} y={y + 13} textAnchor="middle" fontSize={10} fontWeight={600} fill="#0b1220">{text}</text>;
+  if (v >= 0) return <text x={x + w / 2} y={y - 5} textAnchor="middle" fontSize={10} fill="#45484f">{text}</text>;
+  if (hgt < 18) return <text x={x + w / 2} y={y + hgt + 12} textAnchor="middle" fontSize={10} fill="#45484f">{text}</text>;
+  return <text x={x + w / 2} y={y + 13} textAnchor="middle" fontSize={10} fontWeight={600} fill="#ffffff">{text}</text>;
 }

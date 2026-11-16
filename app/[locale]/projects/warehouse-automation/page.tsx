@@ -4,7 +4,6 @@ import { getAlternates } from '@/lib/metadata';
 import { Link } from '@/i18n/navigation';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { getDemoUrl } from '@/lib/demo';
-import SectionLabel from '@/components/common/SectionLabel';
 import StatusBadge from '@/components/common/StatusBadge';
 import TechTag from '@/components/common/TechTag';
 import ProjectCover from '@/components/projects/ProjectCover';
@@ -30,24 +29,22 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
   const demoUrl = getDemoUrl('warehouse-automation');
 
   return (
-    <article className="min-h-screen bg-[#020409]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 sm:pb-24">
+    <article>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-20">
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors duration-200 mb-10 font-mono"
+          className="inline-flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink mb-8"
         >
           <ArrowLeft size={14} aria-hidden="true" />
           {tCommon('backToProjects')}
         </Link>
 
         <header className="mb-12">
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="font-mono text-[11px] tracking-widest text-sky-500/50 uppercase">{t('prjId')}</span>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
             <StatusBadge status={project.status} />
           </div>
-          <SectionLabel label={t('sectionLabel')} className="mb-4" />
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight mb-3">{t('title')}</h1>
-          <p className="text-base sm:text-lg text-slate-400 leading-relaxed mb-6">{t('subtitle')}</p>
+          <h1 className="mb-3">{t('title')}</h1>
+          <p className="text-lg text-ink-soft mb-5">{t('subtitle')}</p>
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <TechTag key={tag} tag={tag} />
@@ -63,26 +60,26 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
           </div>
         </header>
 
-        <div className="h-px bg-[#1a2540] mb-12" aria-hidden="true" />
+        <div className="h-px bg-line mb-10" aria-hidden="true" />
 
         <section className="mb-12" aria-labelledby="overview-heading">
-          <h2 id="overview-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('overviewTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('overviewText')}</p>
+          <h2 id="overview-heading" className="text-[1.35rem] mb-3">{t('overviewTitle')}</h2>
+          <p className="text-[17px] leading-[1.75]">{t('overviewText')}</p>
         </section>
 
         <section className="mb-12" aria-labelledby="approach-heading">
-          <h2 id="approach-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('approachTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('approachText')}</p>
+          <h2 id="approach-heading" className="text-[1.35rem] mb-3">{t('approachTitle')}</h2>
+          <p className="text-[17px] leading-[1.75]">{t('approachText')}</p>
         </section>
 
         <section className="mb-12" aria-labelledby="environment-heading">
-          <h2 id="environment-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('environmentTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed text-sm sm:text-base">{t('environmentText')}</p>
+          <h2 id="environment-heading" className="text-[1.35rem] mb-3">{t('environmentTitle')}</h2>
+          <p className="text-[17px] leading-[1.75]">{t('environmentText')}</p>
         </section>
 
         <section className="mb-12" aria-labelledby="platform-heading">
-          <h2 id="platform-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('platformTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed mb-6 text-sm sm:text-base">{t('platformText')}</p>
+          <h2 id="platform-heading" className="text-[1.35rem] mb-3">{t('platformTitle')}</h2>
+          <p className="text-[17px] leading-[1.75] mb-6">{t('platformText')}</p>
           <SectionFigure
             src="/images/projects/warehouse_simulation_ui.jpg"
             alt={t('platformFigureAlt')}
@@ -91,8 +88,8 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
         </section>
 
         <section className="mb-12" aria-labelledby="workflow-heading">
-          <h2 id="workflow-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('workflowTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed mb-6 text-sm sm:text-base">{t('workflowText')}</p>
+          <h2 id="workflow-heading" className="text-[1.35rem] mb-3">{t('workflowTitle')}</h2>
+          <p className="text-[17px] leading-[1.75] mb-6">{t('workflowText')}</p>
           <div className="space-y-8">
             <SectionFigure
               src="/images/projects/warehouse_firma_panel.jpg"
@@ -108,24 +105,21 @@ export default async function WarehouseAutomationPage({ params }: { params: { lo
         </section>
 
         <section aria-labelledby="status-heading">
-          <div className="h-px bg-[#1a2540] mb-8" aria-hidden="true" />
-          <h2 id="status-heading" className="text-xl font-semibold text-slate-100 mb-4">{t('statusTitle')}</h2>
-          <p className="text-slate-400 leading-relaxed mb-6 text-sm sm:text-base">{t('statusText')}</p>
+          <div className="h-px bg-line mb-10" aria-hidden="true" />
+          <h2 id="status-heading" className="text-[1.35rem] mb-3">{t('statusTitle')}</h2>
+          <p className="text-[17px] leading-[1.75] mb-6">{t('statusText')}</p>
           {demoUrl ? (
             <a
               href={demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm bg-sky-500 text-[#020409] text-sm font-semibold hover:bg-sky-400 transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-brand text-white text-[15px] font-medium hover:bg-brand-dark transition-colors"
             >
               {t('demoCta')}
               <ExternalLink size={14} aria-hidden="true" />
             </a>
           ) : (
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-sky-500/50">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 pulse-dot" aria-hidden="true" />
-              {t('demoNote')}
-            </div>
+            <p className="text-[15px] text-ink-muted">{t('demoNote')}</p>
           )}
         </section>
       </div>

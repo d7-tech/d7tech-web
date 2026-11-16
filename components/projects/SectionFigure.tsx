@@ -11,11 +11,10 @@ export default function SectionFigure({
 }) {
   return (
     <figure className="m-0">
-      <div className="relative w-full aspect-video rounded-sm bg-[#0a0f1e] border border-[#1a2540] overflow-hidden">
-        <Image src={src} alt={alt} fill className="object-contain" sizes="(max-width: 896px) 100vw, 896px" />
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#020409]/50 via-transparent to-transparent" aria-hidden="true" />
+      <div className="relative w-full aspect-video rounded-md bg-white border border-line overflow-hidden">
+        <Image src={src} alt={alt} fill className="object-contain" sizes="(max-width: 768px) 100vw, 768px" />
       </div>
-      <figcaption className="mt-3 text-xs text-slate-600 text-center sm:text-left">{caption}</figcaption>
+      <figcaption className="mt-2.5 text-sm text-ink-muted">{caption}</figcaption>
     </figure>
   );
 }

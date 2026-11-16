@@ -20,9 +20,7 @@ export default function ProjectCover({
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
 }: ProjectCoverProps) {
   return (
-    <div
-      className={`relative w-full aspect-video rounded-sm bg-[#020409] border border-[#1a2540] overflow-hidden ${className}`}
-    >
+    <div className={`relative w-full aspect-video rounded-md bg-surface border border-line overflow-hidden ${className}`}>
       <Image
         src={src}
         alt={alt}
@@ -31,10 +29,6 @@ export default function ProjectCover({
         sizes={sizes}
         quality={90}
         priority={priority}
-      />
-      <div
-        className="absolute inset-0 bg-gradient-to-t from-[#020409]/75 via-[#020409]/20 to-transparent pointer-events-none z-[1]"
-        aria-hidden="true"
       />
     </div>
   );

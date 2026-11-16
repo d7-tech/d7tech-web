@@ -1,6 +1,6 @@
 import '../globals.css';
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -8,17 +8,18 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { routing } from '@/i18n/routing';
 
-const inter = Inter({
-  subsets: ['latin'],
+const plexSans = IBM_Plex_Sans({
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
   display: 'swap',
+  weight: ['400', '500', '600'],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-mono',
   display: 'swap',
-  weight: ['500', '600', '700'],
+  weight: ['400', '500'],
 });
 
 export const metadata: Metadata = {
@@ -79,12 +80,12 @@ export default async function LocaleLayout({
   ]);
 
   return (
-    <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
-      <body className="font-sans antialiased bg-[#020409] text-[#f1f5f9]">
+    <html lang={locale} className={`${plexSans.variable} ${plexMono.variable}`}>
+      <body className="font-sans antialiased bg-paper text-ink-soft">
         <NextIntlClientProvider messages={messages}>
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-sky-500 focus:text-[#020409] focus:rounded focus:text-sm focus:font-semibold"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded focus:text-sm focus:font-medium"
           >
             {tCommon('skipToMainContent')}
           </a>

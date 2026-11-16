@@ -10,9 +10,9 @@
     "viewProject": "Projeyi Görüntüle"
   },
   "StatusBadge": {
-    "active": "AKTİF",
-    "completed": "TAMAMLANDI",
-    "inDevelopment": "GELİŞTİRİLİYOR"
+    "active": "Aktif",
+    "completed": "Tamamlandı",
+    "inDevelopment": "Geliştiriliyor"
   },
   "Navbar": {
     "logoAriaLabel": "D7 Technology — Ana Sayfa",
@@ -22,7 +22,8 @@
     "projects": "Projeler",
     "about": "Hakkımızda",
     "careers": "Kariyer",
-    "getInTouch": "İletişime Geç"
+    "getInTouch": "İletişime Geç",
+    "contact": "İletişim"
   },
   "Footer": {
     "tagline": "Gerçek dünya uygulamaları için akıllı otonom platformlar ve gelişmiş algılama teknolojileri tasarlıyoruz.",
@@ -342,7 +343,7 @@
     "demoTitle": "Multistatik Sistemler Demo",
     "demoText": "Aşağıdaki demo, simüle edilmiş senaryoda plot düzeyi veri füzyonu, iz başlatma ve çok hedef izleme performansı dahil multistatik radar sistemi işleme hattını göstermektedir.",
     "demoIframeTitle": "Multistatik Radar Demo",
-    "publicationsLabel": "// IEEE YAYINLARI"
+    "publicationsLabel": "IEEE yayınları"
   },
   "WearableSensorsPage": {
     "metadata": {
@@ -367,7 +368,7 @@
     "fieldText": "Sistem performansını laboratuvar dışında doğrulamak için spor ve sağlık ortamlarında gerçek dünya denemeleri yürütülmüştür. Saha deneyleri, sistemin çok yollu yayılım ve vücut tıkanmasına karşı sağlamlığını test etmiş; pratik konuşlandırmalarda güvenilir düşme tespiti göstermiştir.",
     "fieldImageAlt": "Hareket yakalama tarzı saha deneyinde ayak bileğine takılı sensörler takan kapalı alanda sporcu",
     "fieldCaption": "Saha deney kurulumu — gerçek dünya giyilebilir sensör konuşlandırması",
-    "publicationsLabel": "// IEEE YAYINLARI"
+    "publicationsLabel": "IEEE yayınları"
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -469,7 +470,7 @@
         "method": "Model"
       },
       "verifyTitle": "Tahminler ve ölçümler",
-      "verifyText": "Her renkli çizgi, bir modelin her saat için 1, 6 veya 24 saat önceden yaptığı tahmini gösterir. Beyaz çizgi istasyonun sonra ölçtüğüdür. Çizgi beyazı ne kadar yakından izlerse model o kadar iyi iş çıkarmıştır.",
+      "verifyText": "Her renkli çizgi, bir modelin her saat için 1, 6 veya 24 saat önceden yaptığı tahmini gösterir. Siyah çizgi istasyonun sonra ölçtüğüdür. Çizgi siyahı ne kadar yakından izlerse model o kadar iyi iş çıkarmıştır.",
       "madeBefore": "{hours} sa önce",
       "verifyNone": "Bu dönemde henüz kontrol edilmiş tahmin yok.",
       "verifyExample": "Örneğin {time} için {method}, {hours} sa önceden {pred} {unit} tahmin etti; istasyon {obs} {unit} ölçtü, fark {diff}.",
