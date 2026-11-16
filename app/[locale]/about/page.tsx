@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getAlternates } from '@/lib/metadata';
+import Reveal from '@/components/motion/Reveal';
 
 export async function generateMetadata({
   params,
@@ -50,10 +51,12 @@ export default async function AboutPage({ params }: { params: { locale: string }
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16">
+    <div className="wrap pt-16 sm:pt-24 pb-16">
       <header className="pb-14 sm:pb-16">
-        <h1 id="about-heading">{t('heroTitle')}</h1>
+        <Reveal>
+<h1 id="about-heading">{t('heroTitle')}</h1>
         <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('heroDescription')}</p>
+      </Reveal>
       </header>
 
       <Section id="mission-heading" title={t('missionTitle')}>

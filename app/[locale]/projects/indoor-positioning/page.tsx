@@ -25,7 +25,7 @@ export default async function IndoorPositioningPage({ params }: { params: { loca
     <ProjectLayout project={project} locale={params.locale} title={t('title')} subtitle={t('subtitle')} lead={t('overviewText')}>
       <Section title={t('videoTitle')}>
         <video
-          className="w-full aspect-video bg-night border border-line"
+          className="w-full aspect-video bg-night rounded"
           src={project.video}
           poster={project.videoPoster}
           controls
@@ -47,7 +47,7 @@ export default async function IndoorPositioningPage({ params }: { params: { loca
           <LoopVideo
             src="/videos/digital-twin.mp4"
             poster="/images/projects/digital-twin.jpg"
-            className="w-full aspect-[2.1/1] object-cover bg-night border border-line"
+            className="w-full aspect-[2.1/1] object-cover bg-night rounded"
             label={t('twinCaption')}
           />
           <figcaption className="mt-2.5 text-sm text-ink-muted">{t('twinCaption')}</figcaption>

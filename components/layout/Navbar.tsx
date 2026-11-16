@@ -14,7 +14,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const isHome = pathname === '/';
-  // On the home page the bar sits over the hero video until the user scrolls.
+  // Over the home hero photo the bar is transparent with light text.
   const overHero = isHome && !scrolled && !open;
 
   const links = [
@@ -39,12 +39,13 @@ export default function Navbar() {
   }, []);
 
   const isActive = (href: string) => pathname.startsWith(href);
+  const mono = 'font-mono text-[12px] uppercase tracking-[0.06em]';
 
   const langSwitch = (
-    <div className="flex items-center gap-2 font-mono text-xs">
+    <div className={`flex items-center gap-2 ${mono}`}>
       {(['en', 'tr'] as const).map((l, i) => (
         <span key={l} className="flex items-center gap-2">
-          {i > 0 && <span className="text-line" aria-hidden="true">/</span>}
+          {i > 0 && <span className="text-ink-muted/60" aria-hidden="true">/</span>}
           <Link
             href={pathname}
             locale={l}
@@ -52,7 +53,7 @@ export default function Navbar() {
             aria-label={l === 'tr' ? 'Türkçe' : 'English'}
             aria-current={locale === l ? 'true' : undefined}
           >
-            {l.toUpperCase()}
+            {l}
           </Link>
         </span>
       ))}
@@ -61,62 +62,60 @@ export default function Navbar() {
 
   return (
     <header
-      className={`${isHome ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-colors duration-200 ${
-        overHero ? 'bg-transparent' : 'bg-paper/90 backdrop-blur-md border-b border-line'
+      className={`${isHome ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 border-b transition-colors duration-300 ${
+        overHero ? 'on-dark !bg-transparent border-white/15' : 'bg-paper/90 backdrop-blur-md border-line'
       }`}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" aria-label={t('mainNavAriaLabel')}>
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-3" aria-label={t('logoAriaLabel')}>
-            <Image src="/images/d7-logo.png" alt="" width={32} height={32} priority />
-            <span className="font-display text-lg font-semibold uppercase tracking-wide text-ink">D7 Technology</span>
-          </Link>
+      <nav className="flex items-stretch justify-between h-14 pl-4 sm:pl-6 lg:pl-8" aria-label={t('mainNavAriaLabel')}>
+        <Link
+          href="/"
+          className={`flex items-center gap-2.5 lg:w-[280px] lg:border-r pr-6 ${overHero ? 'border-white/15' : 'border-line'}`}
+          aria-label={t('logoAriaLabel')}
+        >
+          <Image src="/images/d7-logo.png" alt="" width={26} height={26} priority />
+          <span className="text-[17px] font-medium tracking-tight text-ink">D7 Technology</span>
+        </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-[15px] transition-colors ${
-                  isActive(link.href) ? 'text-ink' : 'text-ink-soft hover:text-ink'
-                }`}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <span className="w-px h-4 bg-line" aria-hidden="true" />
-            {langSwitch}
-          </div>
-
-          <button
-            className="md:hidden -mr-2 p-2 text-ink"
-            onClick={() => setOpen(!open)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? t('closeMenu') : t('openMenu')}
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
+        <div className="hidden md:flex items-center gap-7 pr-4 sm:pr-6 lg:pr-8">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`${mono} transition-colors ${isActive(link.href) ? 'text-ink' : 'text-ink-muted hover:text-ink'}`}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <span className={`w-px h-4 ${overHero ? 'bg-white/25' : 'bg-line'}`} aria-hidden="true" />
+          {langSwitch}
         </div>
+
+        <button
+          className="md:hidden px-4 text-ink"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? t('closeMenu') : t('openMenu')}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="md:hidden border-t border-line bg-paper">
-          <div className="px-4 py-3">
+        <div id="mobile-menu" className="md:hidden border-t border-line bg-paper" data-lenis-prevent>
+          <div className="px-4 py-2">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block py-3 text-base border-b border-line last:border-0 ${
-                  isActive(link.href) ? 'text-ink font-medium' : 'text-ink-soft'
-                }`}
+                className={`block py-4 text-xl border-b border-line ${isActive(link.href) ? 'text-ink' : 'text-ink-soft'}`}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="pt-4 pb-2">{langSwitch}</div>
+            <div className="py-5">{langSwitch}</div>
           </div>
         </div>
       )}

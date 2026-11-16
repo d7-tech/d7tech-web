@@ -21,7 +21,7 @@ export default async function MicroClimatePage({ params }: { params: { locale: s
   const project = getProjectBySlug('micro-climate')!;
 
   return (
-    <ProjectLayout project={project} locale={params.locale} title={t('title')} subtitle={t('subtitle')} lead={t('overviewText')} showCover={false}>
+    <ProjectLayout project={project} locale={params.locale} title={t('title')} subtitle={t('subtitle')} lead={t('overviewText')} showCover={false} dark>
       <WeatherDashboard />
 
       <Section title={t('methodsTitle')}>

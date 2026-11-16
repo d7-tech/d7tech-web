@@ -37,7 +37,7 @@ export default async function AdvisorPage({ params }: { params: { locale: string
 
       <Section title={t('navTitle')}>
         <Body>{t('navText')}</Body>
-        <table className="w-full text-[15px] border border-line bg-surface" aria-label={t('sensorTableLabel')}>
+        <table className="w-full text-[15px] bg-surface rounded overflow-hidden" aria-label={t('sensorTableLabel')}>
           <thead>
             <tr className="text-left font-mono text-[11px] uppercase tracking-wider text-ink-muted border-b border-line">
               <th className="py-3 px-4 font-normal">{t('sensorColSensor')}</th>

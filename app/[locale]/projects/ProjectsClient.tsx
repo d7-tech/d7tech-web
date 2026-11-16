@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import ProjectTile from '@/components/projects/ProjectTile';
 import { projects, Project } from '@/lib/data/projects';
+import Reveal from '@/components/motion/Reveal';
 
 type FilterCategory = 'all' | Project['category'];
 
@@ -25,9 +26,11 @@ export default function ProjectsClient() {
   const filtered = active === 'all' ? ordered : ordered.filter((p) => p.category === active);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-24">
-      <h1 id="projects-heading">{t('title')}</h1>
+    <div className="wrap pt-16 sm:pt-24 pb-24">
+      <Reveal>
+<h1 id="projects-heading">{t('title')}</h1>
       <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('description')}</p>
+      </Reveal>
 
       <div className="mt-10 mb-10 flex gap-6 overflow-x-auto scrollbar-none border-b border-line" role="tablist" aria-label={t('title')}>
         {filters.map((f) => (
@@ -50,9 +53,11 @@ export default function ProjectsClient() {
       {filtered.length === 0 ? (
         <p className="py-16 text-ink-muted">{t('empty')}</p>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[300px]">
+        <div className="grid gap-3 sm:grid-cols-2">
           {filtered.map((project, i) => (
-            <ProjectTile key={project.id} project={project} priority={i < 3} />
+            <Reveal key={project.id} delay={(i % 2) * 0.1}>
+              <ProjectTile project={project} priority={i < 2} className="h-[380px] sm:h-[460px]" />
+            </Reveal>
           ))}
         </div>
       )}

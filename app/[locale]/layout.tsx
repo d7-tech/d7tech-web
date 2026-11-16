@@ -1,28 +1,22 @@
 import '../globals.css';
 import type { Metadata } from 'next';
-import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed, IBM_Plex_Mono } from 'next/font/google';
+import { Inter_Tight, DM_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import SmoothScroll from '@/components/motion/SmoothScroll';
 import { routing } from '@/i18n/routing';
 
-const plexSans = IBM_Plex_Sans({
+const sans = Inter_Tight({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
   display: 'swap',
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '600'],
 });
 
-const plexCondensed = IBM_Plex_Sans_Condensed({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['500', '600'],
-});
-
-const plexMono = IBM_Plex_Mono({
+const mono = DM_Mono({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-mono',
   display: 'swap',
@@ -87,7 +81,7 @@ export default async function LocaleLayout({
   ]);
 
   return (
-    <html lang={locale} className={`${plexSans.variable} ${plexCondensed.variable} ${plexMono.variable}`}>
+    <html lang={locale} className={`${sans.variable} ${mono.variable}`}>
       <body className="font-sans antialiased bg-paper text-ink-soft">
         <NextIntlClientProvider messages={messages}>
           <a
@@ -96,6 +90,7 @@ export default async function LocaleLayout({
           >
             {tCommon('skipToMainContent')}
           </a>
+          <SmoothScroll />
           <Navbar />
           <main id="main-content">{children}</main>
           <Footer />

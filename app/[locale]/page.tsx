@@ -6,7 +6,8 @@ import ExpertiseGrid from '@/components/sections/ExpertiseGrid';
 import FeaturedProjects from '@/components/sections/FeaturedProjects';
 import Credentials from '@/components/sections/Credentials';
 import ContactCta from '@/components/sections/ContactCta';
-import FeaturedVideo from '@/components/sections/FeaturedVideo';
+import FeatureCard from '@/components/sections/FeatureCard';
+import Fusion from '@/components/sections/Fusion';
 
 export async function generateMetadata({
   params,
@@ -32,8 +33,9 @@ export default function HomePage({ params }: { params: { locale: string } }) {
     <>
       <Hero />
       <Credentials />
+      <FeatureCard />
       <FeaturedProjects />
-      <FeaturedVideo />
+      <Fusion />
       <ExpertiseGrid />
       <ContactCta />
     </>

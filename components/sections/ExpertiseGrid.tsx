@@ -1,27 +1,24 @@
 import { useTranslations } from 'next-intl';
+import Reveal from '@/components/motion/Reveal';
 
-const KEYS = [
-  'autonomousVehicles',
-  'radarSonar',
-  'sensorFusion',
-  'sensorSystems',
-  'aiMl',
-  'systemIntegration',
-] as const;
+const KEYS = ['autonomousVehicles', 'radarSonar', 'sensorFusion', 'sensorSystems', 'aiMl', 'systemIntegration'] as const;
 
 export default function ExpertiseGrid() {
   const t = useTranslations('ExpertiseGrid');
 
   return (
-    <section aria-labelledby="expertise-heading">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-        <h2 id="expertise-heading" className="max-w-xl">{t('heading')}</h2>
-        <ul className="mt-12 grid gap-px bg-line border-y border-line sm:grid-cols-2 lg:grid-cols-3">
-          {KEYS.map((key) => (
-            <li key={key} className="bg-paper py-7 sm:pr-8">
-              <h3 className="text-lg">{t(`items.${key}.title`)}</h3>
+    <section className="border-t border-line" aria-labelledby="expertise-heading">
+      <div className="wrap py-20 sm:py-28 grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <Reveal>
+          <p className="label">{t('label')}</p>
+          <h2 id="expertise-heading" className="mt-4 max-w-sm">{t('heading')}</h2>
+        </Reveal>
+        <ul className="grid sm:grid-cols-2 border-t border-line">
+          {KEYS.map((key, i) => (
+            <Reveal as="li" key={key} delay={(i % 2) * 0.08} className="border-b border-line py-6 sm:pr-10">
+              <h3>{t(`items.${key}.title`)}</h3>
               <p className="mt-1.5 text-ink-muted">{t(`items.${key}.description`)}</p>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>

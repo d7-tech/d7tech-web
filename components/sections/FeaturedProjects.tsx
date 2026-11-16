@@ -2,32 +2,45 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import ProjectTile from '@/components/projects/ProjectTile';
+import Reveal from '@/components/motion/Reveal';
 import { getProjectBySlug } from '@/lib/data/projects';
 
-const SLUGS = ['advisor', 'indoor-positioning', 'micro-climate', 'multistatic', 'wearable-sensors', 'warehouse-automation'];
+const get = (s: string) => getProjectBySlug(s)!;
 
-/** Project grid: the lead project large, the rest as tiles. */
 export default function FeaturedProjects() {
   const t = useTranslations('FeaturedProjects');
-  const [lead, ...rest] = SLUGS.map((s) => getProjectBySlug(s)!);
 
   return (
-    <section aria-labelledby="featured-projects-heading">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-        <div className="flex items-end justify-between gap-4 mb-10">
-          <h2 id="featured-projects-heading">{t('heading')}</h2>
-          <Link href="/projects" className="inline-flex items-center gap-1.5 text-[15px] font-medium text-brand-light hover:text-ink whitespace-nowrap">
+    <section className="py-16 sm:py-24" aria-labelledby="featured-projects-heading">
+      <div className="wrap">
+        <Reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+          <div>
+            <p className="label">{t('label')}</p>
+            <h2 id="featured-projects-heading" className="mt-4">{t('heading')}</h2>
+            <p className="mt-4 text-lg max-w-lg">{t('text')}</p>
+          </div>
+          <Link href="/projects" className="btn btn-primary self-start lg:self-auto">
             {t('allProjects')}
-            <ArrowRight size={15} aria-hidden="true" />
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
-        </div>
+        </Reveal>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[300px] lg:auto-rows-[290px]">
-          <ProjectTile project={lead} large priority className="sm:col-span-2 lg:row-span-2" />
-          {rest.map((p) => (
-            <ProjectTile key={p.slug} project={p} />
-          ))}
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Reveal><ProjectTile project={get('micro-climate')} className="h-[420px] sm:h-[520px]" /></Reveal>
+          <Reveal delay={0.12}><ProjectTile project={get('multistatic')} className="h-[420px] sm:h-[520px]" /></Reveal>
         </div>
+      </div>
+
+      <div className="wrap mt-3">
+        <ProjectTile project={get('advisor')} wide className="h-[70svh] min-h-[440px] max-h-[760px]" />
+      </div>
+
+      <div className="wrap mt-3 grid gap-3 sm:grid-cols-3">
+        {['wearable-sensors', 'warehouse-automation', 'underwater-gliders'].map((s, i) => (
+          <Reveal key={s} delay={i * 0.1}>
+            <ProjectTile project={get(s)} className="h-[380px] sm:h-[440px]" />
+          </Reveal>
+        ))}
       </div>
     </section>
   );

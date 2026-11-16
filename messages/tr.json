@@ -45,7 +45,8 @@
     "subtext": "İstanbul'da otonom deniz araçları, radar ve sensör sistemleri geliştiriyoruz.",
     "viewProjects": "Projelerimiz",
     "contactUs": "Bize ulaşın",
-    "photoCaption": "ADVISOR otonom yüzey aracı"
+    "photoCaption": "ADVISOR otonom yüzey aracı",
+    "kicker": "Araştırma ve mühendislik · İstanbul"
   },
   "ExpertiseGrid": {
     "heading": "Çalışma alanlarımız",
@@ -74,11 +75,15 @@
         "title": "Prototipleme ve test",
         "description": "Simülasyondan saha testlerine."
       }
-    }
+    },
+    "label": "Yetkinlikler"
   },
   "FeaturedProjects": {
-    "heading": "Projeler",
-    "allProjects": "Tüm projeler"
+    "heading": "Prototipten saha testine",
+    "allProjects": "Tüm projeler",
+    "label": "Projeler",
+    "text": "Otonom deniz araçları, radar, giyilebilir algılama ve tahmin; ekibimiz tarafından geliştirildi ve test edildi.",
+    "details": "Ayrıntılar"
   },
   "ProjectData": {
     "wearable-sensors": {
@@ -549,7 +554,8 @@
   },
   "FeaturedVideo": {
     "label": "Öne çıkan proje",
-    "cta": "Devamını okuyun"
+    "cta": "Devamını okuyun",
+    "watch": "Videoyu izleyin"
   },
   "Live": {
     "label": "Canlı · İstanbul",
@@ -568,5 +574,34 @@
     "marker": "ArUco işareti",
     "camera": "Kamera görüşü",
     "caption": "İç mekân konumlandırma sistemimiz bir gemi modelini nasıl izler"
+  },
+  "Fusion": {
+    "label": "İç mekân konumlandırma",
+    "heading": "Üç sensör. Tek iz.",
+    "text": "UWB mesafe ölçümü, optik işaretler ve ataletsel veri, havuzdaki her gemi modeli koşusu için tek bir konum kestiriminde birleştirilir.",
+    "cta": "Devamını okuyun"
+  },
+  "Hotspots": {
+    "caption": "Havuzun dijital ikizi. Her parçanın ne yaptığını görmek için bir etikete tıklayın.",
+    "open": "Ayrıntıları göster",
+    "close": "Ayrıntıları gizle",
+    "items": {
+      "ship": {
+        "label": "Gemi modeli",
+        "text": "UWB etiketi, bir kamera, IMU ve sevk sensörleri taşır."
+      },
+      "anchors": {
+        "label": "UWB çapaları",
+        "text": "Havuz çevresindeki dokuz çapa, modeldeki etikete saniyede yaklaşık yedi kez mesafe ölçer."
+      },
+      "markers": {
+        "label": "ArUco işaretleri",
+        "text": "Havuzdaki basılı işaretler, model kamerasına ölçüm için sabit noktalar sağlar."
+      },
+      "track": {
+        "label": "Birleştirilmiş iz",
+        "text": "Üç sensörden tek bir konum kestirimi; canlı çizilir ve tekrar izlemek için saklanır."
+      }
+    }
   }
 }

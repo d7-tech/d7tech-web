@@ -5,46 +5,62 @@
 @layer base {
   :root {
     /* Site palette (RGB channels so Tailwind opacity modifiers work).
-       Dark theme: paper = page background, ink = text. */
-    --paper: 7 9 12;
-    --surface: 16 19 24;
-    --ink: 236 239 243;
-    --ink-soft: 188 196 206;
-    --ink-muted: 128 138 152;
-    --line: 36 42 52;
-    --brand: 19 73 151; /* logo blue #134997, for filled buttons */
-    --brand-dark: 28 96 196; /* button hover */
-    --brand-light: 122 166 240; /* links and highlights on dark */
-    --night: 3 4 6;
+       paper = background, ink = text. Light by default; `.on-dark` switches a
+       section to the slate palette and everything inside follows. */
+    --paper: 241 244 247; /* cool light grey */
+    --surface: 229 235 240;
+    --ink: 20 28 36;
+    --ink-soft: 62 73 84;
+    --ink-muted: 104 116 128;
+    --line: 213 221 228;
+    --brand: 19 73 151; /* logo blue #134997 */
+    --brand-dark: 14 56 114;
+    --brand-light: 19 73 151; /* links */
+    --signal: 46 108 224; /* button accent, a brighter D7 blue */
+    --signal-hover: 30 88 200;
+    --night: 15 21 28;
     --night-soft: 188 196 206;
     --night-line: 36 42 52;
 
     /* shadcn/ui tokens */
-    --background: 216 26% 4%;
-    --foreground: 214 20% 94%;
-    --card: 216 20% 8%;
-    --card-foreground: 214 20% 94%;
-    --popover: 216 20% 8%;
-    --popover-foreground: 214 20% 94%;
-    --primary: 215 78% 33%;
+    --background: 210 22% 96%;
+    --foreground: 210 29% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 29% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 29% 11%;
+    --primary: 219 75% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 216 16% 12%;
-    --secondary-foreground: 214 20% 94%;
-    --muted: 216 16% 12%;
-    --muted-foreground: 215 10% 55%;
-    --accent: 216 16% 12%;
-    --accent-foreground: 214 20% 94%;
-    --destructive: 0 72% 51%;
+    --secondary: 207 22% 92%;
+    --secondary-foreground: 210 29% 11%;
+    --muted: 207 22% 92%;
+    --muted-foreground: 210 10% 45%;
+    --accent: 207 22% 92%;
+    --accent-foreground: 210 29% 11%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 216 18% 17%;
-    --input: 216 18% 17%;
-    --ring: 216 78% 71%;
-    --radius: 0.375rem;
-    --chart-1: 215 78% 33%;
-    --chart-2: 27 80% 50%;
-    --chart-3: 160 60% 35%;
-    --chart-4: 43 74% 45%;
-    --chart-5: 340 60% 50%;
+    --border: 208 20% 86%;
+    --input: 208 20% 86%;
+    --ring: 219 75% 53%;
+    --radius: 0.25rem;
+  }
+
+  /* Slate sections */
+  .on-dark {
+    --paper: 50 62 74; /* slate */
+    --surface: 41 52 63;
+    --ink: 241 244 247;
+    --ink-soft: 205 214 222;
+    --ink-muted: 158 172 185;
+    --line: 74 88 102;
+    --brand-light: 150 186 246;
+    background-color: rgb(var(--paper));
+    color: rgb(var(--ink-soft));
+  }
+  .on-dark.deeper {
+    --paper: 33 42 51;
+    --surface: 27 35 43;
+    --line: 58 70 82;
   }
 }
 
@@ -56,7 +72,6 @@
   }
 
   html {
-    color-scheme: dark;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -71,35 +86,29 @@
   h3,
   h4 {
     color: rgb(var(--ink));
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  /* Display headings: condensed, uppercase */
-  h1,
-  h2 {
-    font-family: var(--font-display), var(--font-sans), sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0;
+    font-weight: 400;
+    letter-spacing: -0.02em;
   }
 
   h1 {
     font-size: clamp(2.5rem, 4.5vw + 1rem, 4.75rem);
-    line-height: 0.98;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
   }
 
   h2 {
-    font-size: clamp(1.75rem, 2vw + 1rem, 2.75rem);
-    line-height: 1.02;
+    font-size: clamp(2rem, 2.4vw + 1rem, 3.25rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
   }
 
   h3 {
-    font-size: 1.125rem;
-    line-height: 1.35;
+    font-size: 1.25rem;
+    line-height: 1.3;
   }
 
   p {
-    line-height: 1.7;
+    line-height: 1.6;
   }
 
   a {
@@ -107,7 +116,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--brand-light));
+    outline: 2px solid rgb(var(--signal));
     outline-offset: 2px;
   }
 
@@ -116,7 +125,65 @@
   }
 
   ::selection {
-    background: rgb(var(--brand-light) / 0.35);
+    background: rgb(var(--signal) / 0.25);
+  }
+}
+
+@layer components {
+  /* Page width used by every section */
+  .wrap {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 32px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .wrap {
+      padding-inline: 40px;
+    }
+  }
+
+  /* Small uppercase mono label */
+  .label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--ink-muted));
+  }
+
+  /* Buttons: mono uppercase, small, square-ish */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+    border-radius: 2px;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn-primary {
+    background: rgb(var(--signal));
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: rgb(var(--signal-hover));
+  }
+  .btn-ghost {
+    background: rgb(var(--ink) / 0.06);
+    color: rgb(var(--ink));
+  }
+  .btn-ghost:hover {
+    background: rgb(var(--ink) / 0.12);
   }
 }
 
@@ -128,6 +195,21 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {

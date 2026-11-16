@@ -11,7 +11,7 @@ import { useFrame } from './useFrame';
 const BLUE = '#7aa6f0';
 const INK = '#eceff3';
 const MUTED = '#8b95a3';
-const MARK = '#3b4553';
+const MARK = '#55636f';
 const MONO = 'var(--font-mono), ui-monospace, monospace';
 
 function UwbPanel() {
@@ -145,12 +145,12 @@ const PANELS = [UwbPanel, OpticalPanel, ImuPanel];
 
 export default function SensingLayers({ items }: { items: { name: string; text?: string }[] }) {
   return (
-    <div className="grid gap-px bg-line border border-line sm:grid-cols-3">
+    <div className="grid gap-px bg-line border border-line rounded overflow-hidden sm:grid-cols-3">
       {items.map((it, k) => {
         const Panel = PANELS[k];
         return (
           <div key={it.name} className="bg-paper">
-            <div className="border-b border-line p-4">{Panel && <Panel />}</div>
+            <div className="bg-[#0f151c] p-4">{Panel && <Panel />}</div>
             <div className="p-5">
               <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">0{k + 1}</p>
               <p className="mt-2 font-semibold text-ink">{it.name}</p>

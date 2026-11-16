@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Loader as Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Reveal from '@/components/motion/Reveal';
 
 // Base schema for TypeScript type inference
 const baseSchema = z.object({
@@ -64,13 +65,15 @@ export default function ContactClient() {
 
   const label = 'block font-mono text-[11px] uppercase tracking-wider text-ink-muted mb-2';
   const field =
-    'w-full px-3 py-2.5 bg-surface border border-line text-[15px] text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand-light focus:ring-1 focus:ring-brand-light transition-colors';
+    'w-full px-3 py-2.5 bg-white/70 border border-line rounded text-[15px] text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand-light focus:ring-1 focus:ring-brand-light transition-colors';
   const err = 'mt-1 text-sm text-red-700';
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20">
-      <h1 id="contact-heading">{t('heroTitle')}</h1>
+    <div className="wrap pt-16 sm:pt-24 pb-20">
+      <Reveal>
+<h1 id="contact-heading">{t('heroTitle')}</h1>
       <p className="mt-4 text-xl text-ink-muted max-w-xl">{t('heroDescription')}</p>
+      </Reveal>
 
       <div className="mt-12 border-t border-line pt-12 grid gap-12 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-8">
@@ -165,7 +168,7 @@ export default function ContactClient() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-ink text-paper text-[15px] font-medium hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                className="btn btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <><Loader2 size={15} className="animate-spin" aria-hidden="true" />{t('sending')}</>

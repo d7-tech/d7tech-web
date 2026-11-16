@@ -16,17 +16,17 @@ export default function Footer() {
     { label: 'YouTube', href: 'https://www.youtube.com/@stegtu3983' },
   ];
 
-  const linkClass = 'text-sm text-night-soft hover:text-white';
+  const linkClass = 'font-mono text-[12px] uppercase tracking-[0.06em] text-ink-muted hover:text-ink';
 
   return (
-    <footer className="bg-night border-t border-night-line">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+    <footer className="on-dark deeper">
+      <div className="wrap py-14 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-10">
         <div>
           <Link href="/" className="inline-flex items-center gap-2.5">
             <Image src="/images/d7-logo.png" alt="" width={28} height={28} />
-            <span className="font-semibold text-white">D7 Technology</span>
+            <span className="font-medium text-ink">D7 Technology</span>
           </Link>
-          <p className="mt-3 text-sm text-night-soft">{t('tagline')}</p>
+          <p className="mt-3 text-sm text-ink-muted">{t('tagline')}</p>
         </div>
 
         <div className="flex gap-12 sm:gap-16">
@@ -48,8 +48,8 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <p className="pt-6 border-t border-night-line text-xs text-night-soft/70">
+      <div className="wrap pb-8">
+        <p className="pt-6 border-t border-line label">
           &copy; {new Date().getFullYear()} {t('rights')}
         </p>
       </div>

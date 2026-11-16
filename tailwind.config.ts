@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
+        display: ['var(--font-sans)', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       backgroundImage: {
@@ -77,6 +77,10 @@ const config: Config = {
           DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
           dark: 'rgb(var(--brand-dark) / <alpha-value>)',
           light: 'rgb(var(--brand-light) / <alpha-value>)',
+        },
+        signal: {
+          DEFAULT: 'rgb(var(--signal) / <alpha-value>)',
+          hover: 'rgb(var(--signal-hover) / <alpha-value>)',
         },
         night: {
           DEFAULT: 'rgb(var(--night) / <alpha-value>)',

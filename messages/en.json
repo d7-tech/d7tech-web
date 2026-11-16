@@ -45,7 +45,8 @@
     "subtext": "We develop autonomous vessels, radar and sensor systems in Istanbul.",
     "viewProjects": "Our projects",
     "contactUs": "Contact us",
-    "photoCaption": "ADVISOR autonomous surface vehicle"
+    "photoCaption": "ADVISOR autonomous surface vehicle",
+    "kicker": "Research and engineering · Istanbul"
   },
   "ExpertiseGrid": {
     "heading": "What we work on",
@@ -74,11 +75,15 @@
         "title": "Prototyping and testing",
         "description": "From simulation to field trials."
       }
-    }
+    },
+    "label": "Capabilities"
   },
   "FeaturedProjects": {
-    "heading": "Projects",
-    "allProjects": "All projects"
+    "heading": "From prototype to field test",
+    "allProjects": "All projects",
+    "label": "Projects",
+    "text": "Autonomous vessels, radar, wearable sensing and forecasting, built and tested by our team.",
+    "details": "View details"
   },
   "ProjectData": {
     "wearable-sensors": {
@@ -549,7 +554,8 @@
   },
   "FeaturedVideo": {
     "label": "Featured project",
-    "cta": "Read more"
+    "cta": "Read more",
+    "watch": "Watch the video"
   },
   "Live": {
     "label": "Live · Istanbul",
@@ -568,5 +574,34 @@
     "marker": "ArUco marker",
     "camera": "Camera view",
     "caption": "How our indoor positioning system tracks a model ship"
+  },
+  "Fusion": {
+    "label": "Indoor positioning",
+    "heading": "Three sensors. One track.",
+    "text": "UWB ranging, optical markers and inertial data are fused into one position estimate for every model ship run in the pool.",
+    "cta": "Learn more"
+  },
+  "Hotspots": {
+    "caption": "The digital twin of the pool. Open a label to see what each part does.",
+    "open": "Show details",
+    "close": "Hide details",
+    "items": {
+      "ship": {
+        "label": "Model ship",
+        "text": "Carries the UWB tag, a camera, an IMU and propulsion sensors."
+      },
+      "anchors": {
+        "label": "UWB anchors",
+        "text": "Nine anchors around the pool range to the tag on the model about seven times a second."
+      },
+      "markers": {
+        "label": "ArUco markers",
+        "text": "Printed markers in the pool give the onboard camera fixed points to measure against."
+      },
+      "track": {
+        "label": "Fused track",
+        "text": "One position estimate from all three sensors, drawn live and kept for replay."
+      }
+    }
   }
 }
