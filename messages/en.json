@@ -603,5 +603,15 @@
         "text": "One position estimate from all three sensors, drawn live and kept for replay."
       }
     }
+  },
+  "Glider": {
+    "label": "In development",
+    "cta": "Learn more",
+    "dive": "DIVE",
+    "climb": "CLIMB",
+    "uplink": "UPLINK",
+    "legendDive": "Less buoyant: sinks and glides forward",
+    "legendClimb": "More buoyant: rises and glides forward",
+    "legendUplink": "At the surface: sends its data"
   }
 }

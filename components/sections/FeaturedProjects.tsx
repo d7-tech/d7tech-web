@@ -35,13 +35,6 @@ export default function FeaturedProjects() {
         <ProjectTile project={get('advisor')} wide className="h-[70svh] min-h-[440px] max-h-[760px]" />
       </div>
 
-      <div className="wrap mt-3 grid gap-3 sm:grid-cols-3">
-        {['wearable-sensors', 'warehouse-automation', 'underwater-gliders'].map((s, i) => (
-          <Reveal key={s} delay={i * 0.1}>
-            <ProjectTile project={get(s)} className="h-[380px] sm:h-[440px]" />
-          </Reveal>
-        ))}
-      </div>
     </section>
   );
 }

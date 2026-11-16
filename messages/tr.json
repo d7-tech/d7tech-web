@@ -603,5 +603,15 @@
         "text": "Üç sensörden tek bir konum kestirimi; canlı çizilir ve tekrar izlemek için saklanır."
       }
     }
+  },
+  "Glider": {
+    "label": "Geliştiriliyor",
+    "cta": "Devamını okuyun",
+    "dive": "DALIŞ",
+    "climb": "TIRMANIŞ",
+    "uplink": "VERİ GÖNDERİMİ",
+    "legendDive": "Daha az yüzer: batar ve ileri süzülür",
+    "legendClimb": "Daha çok yüzer: yükselir ve ileri süzülür",
+    "legendUplink": "Yüzeyde: verisini gönderir"
   }
 }

@@ -8,6 +8,7 @@ import Credentials from '@/components/sections/Credentials';
 import ContactCta from '@/components/sections/ContactCta';
 import FeatureCard from '@/components/sections/FeatureCard';
 import Fusion from '@/components/sections/Fusion';
+import Glider from '@/components/sections/Glider';
 
 export async function generateMetadata({
   params,
@@ -35,6 +36,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <Credentials />
       <FeatureCard />
       <FeaturedProjects />
+      <Glider />
       <Fusion />
       <ExpertiseGrid />
       <ContactCta />
