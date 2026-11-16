@@ -4,7 +4,8 @@ import { getAlternates } from '@/lib/metadata';
 import Hero from '@/components/sections/Hero';
 import ExpertiseGrid from '@/components/sections/ExpertiseGrid';
 import FeaturedProjects from '@/components/sections/FeaturedProjects';
-import Newsletter from '@/components/sections/Newsletter';
+import Credentials from '@/components/sections/Credentials';
+import ContactCta from '@/components/sections/ContactCta';
 
 export async function generateMetadata({
   params,
@@ -29,9 +30,10 @@ export default function HomePage({ params }: { params: { locale: string } }) {
   return (
     <>
       <Hero />
+      <Credentials />
       <ExpertiseGrid />
       <FeaturedProjects />
-      <Newsletter />
+      <ContactCta />
     </>
   );
 }

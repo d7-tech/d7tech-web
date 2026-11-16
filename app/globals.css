@@ -5,17 +5,20 @@
 @layer base {
   :root {
     /* Site palette (RGB channels so Tailwind opacity modifiers work) */
-    --paper: 250 250 247;
-    --surface: 242 241 236;
-    --ink: 26 28 32;
-    --ink-soft: 61 65 72;
-    --ink-muted: 107 112 121;
-    --line: 225 223 216;
+    --paper: 255 255 255;
+    --surface: 244 245 247;
+    --ink: 13 17 23;
+    --ink-soft: 55 62 72;
+    --ink-muted: 102 110 122;
+    --line: 228 231 235;
     --brand: 19 73 151; /* logo blue #134997 */
     --brand-dark: 14 56 114;
+    --night: 10 14 20; /* dark sections */
+    --night-soft: 160 170 184;
+    --night-line: 36 44 56;
 
     /* shadcn/ui tokens */
-    --background: 60 20% 97%;
+    --background: 0 0% 100%;
     --foreground: 220 10% 11%;
     --card: 0 0% 100%;
     --card-foreground: 220 10% 11%;
@@ -66,17 +69,19 @@
   h4 {
     color: rgb(var(--ink));
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   h1 {
-    font-size: clamp(1.9rem, 3vw + 1rem, 2.75rem);
-    line-height: 1.15;
+    font-size: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
   }
 
   h2 {
-    font-size: clamp(1.4rem, 1.2vw + 1rem, 1.75rem);
-    line-height: 1.25;
+    font-size: clamp(1.6rem, 1.6vw + 1rem, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
   }
 
   h3 {

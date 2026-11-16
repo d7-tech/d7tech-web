@@ -7,6 +7,10 @@ import { projects, Project } from '@/lib/data/projects';
 
 type FilterCategory = 'all' | Project['category'];
 
+// Current work first.
+const ORDER = ['advisor', 'micro-climate', 'multistatic', 'wearable-sensors', 'warehouse-automation', 'underwater-gliders'];
+const ordered = [...projects].sort((a, b) => ORDER.indexOf(a.slug) - ORDER.indexOf(b.slug));
+
 export default function ProjectsClient() {
   const t = useTranslations('ProjectsPage');
   const [active, setActive] = useState<FilterCategory>('all');
@@ -18,12 +22,12 @@ export default function ProjectsClient() {
     { label: t('filterAiMl'), value: 'ai-ml' },
   ];
 
-  const filtered = active === 'all' ? projects : projects.filter((p) => p.category === active);
+  const filtered = active === 'all' ? ordered : ordered.filter((p) => p.category === active);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-24">
       <h1 id="projects-heading">{t('title')}</h1>
-      <p className="mt-3 text-lg text-ink-soft max-w-2xl">{t('description')}</p>
+      <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('description')}</p>
 
       <div className="mt-10 mb-10 flex gap-6 overflow-x-auto scrollbar-none border-b border-line" role="tablist" aria-label={t('title')}>
         {filters.map((f) => (
@@ -44,11 +48,11 @@ export default function ProjectsClient() {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="py-16 text-ink-muted">{t('empty').replace(/^\/\/\s*/, '')}</p>
+        <p className="py-16 text-ink-muted">{t('empty')}</p>
       ) : (
-        <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2">
           {filtered.map((project, i) => (
-            <ProjectCard key={project.id} project={project} priority={i < 3} />
+            <ProjectCard key={project.id} project={project} priority={i < 2} />
           ))}
         </div>
       )}

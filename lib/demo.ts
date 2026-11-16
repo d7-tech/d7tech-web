@@ -13,10 +13,10 @@
  * NEXT_PUBLIC_ vars are inlined at build time, so changing it needs a redeploy.
  */
 
-/** Live and TLS-verified since 2026-08-18. The env var overrides it, so the
- *  URL can be changed or the button removed from the Vercel dashboard without
- *  a code change — set NEXT_PUBLIC_WAREHOUSE_DEMO_URL to 'off' to hide it. */
-const WAREHOUSE_DEMO_DEFAULT = 'https://warehouse.d7tech.net';
+/** Empty while the demo is offline (warehouse.d7tech.net stopped 2026-11-04),
+ *  so no dead button is shown. Set NEXT_PUBLIC_WAREHOUSE_DEMO_URL in Vercel,
+ *  or put the URL back here, when it runs again. */
+const WAREHOUSE_DEMO_DEFAULT = '';
 
 const DEMO_URLS: Record<string, string | undefined> = {
   'warehouse-automation':

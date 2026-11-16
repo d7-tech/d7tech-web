@@ -76,6 +76,11 @@ const config: Config = {
           DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
           dark: 'rgb(var(--brand-dark) / <alpha-value>)',
         },
+        night: {
+          DEFAULT: 'rgb(var(--night) / <alpha-value>)',
+          soft: 'rgb(var(--night-soft) / <alpha-value>)',
+          line: 'rgb(var(--night-line) / <alpha-value>)',
+        },
       },
       spacing: {
         '18': '4.5rem',

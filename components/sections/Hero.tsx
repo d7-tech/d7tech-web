@@ -3,49 +3,49 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 
+/** Split hero: text on the dark panel, the (portrait) ADVISOR photo beside it. */
 export default function Hero() {
   const t = useTranslations('Hero');
-  const tAbout = useTranslations('AboutPage');
-  const tProject = useTranslations('ProjectData');
 
   return (
-    <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 sm:pb-20">
-      <div className="grid gap-10 lg:gap-16 lg:grid-cols-[1.25fr_1fr] items-center">
-        <div>
-          <h1 className="font-medium text-[1.9rem] sm:text-[2.4rem] lg:text-[2.75rem] leading-[1.18] max-w-[22ch] lg:max-w-none">
-            {t('headline')}
-          </h1>
-          <p className="mt-6 text-lg text-ink-soft max-w-xl">{tAbout('missionP2')}</p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-brand text-white text-[15px] font-medium hover:bg-brand-dark transition-colors"
-            >
-              {t('viewProjects')}
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
-            <Link href="/contact" className="text-[15px] font-medium text-brand hover:underline">
-              {t('contactUs')}
-            </Link>
+    <section className="bg-night">
+      <div className="grid lg:grid-cols-2 lg:h-[88svh] lg:min-h-[600px] lg:max-h-[860px]">
+        <div className="order-2 lg:order-1 flex items-end">
+          <div className="w-full lg:max-w-[576px] lg:ml-auto px-4 sm:px-6 lg:px-8 lg:pr-12 pt-10 pb-14 sm:pb-20">
+            <h1 className="text-white text-[2.5rem] sm:text-6xl lg:text-[3.75rem] leading-[1.03]">
+              {t('headline')}
+            </h1>
+            <p className="mt-5 text-lg sm:text-xl text-night-soft">{t('subtext')}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-white text-ink text-[15px] font-medium hover:bg-white/90 transition-colors"
+              >
+                {t('viewProjects')}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center px-5 py-3 rounded-md border border-white/30 text-white text-[15px] font-medium hover:bg-white/10 transition-colors"
+              >
+                {t('contactUs')}
+              </Link>
+            </div>
           </div>
         </div>
 
-        <figure className="m-0">
-          <Link href="/projects/advisor" className="block relative aspect-[4/5] max-h-[560px] w-full rounded-md overflow-hidden bg-surface">
-            <Image
-              src="/images/projects/advisor.jpg"
-              alt={tProject('advisor.title')}
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 480px"
-            />
-          </Link>
-          <figcaption className="mt-3 text-sm text-ink-muted">
-            <Link href="/projects/advisor" className="hover:text-ink hover:underline">
-              {tProject('advisor.title')}
-            </Link>
-          </figcaption>
+        <figure className="order-1 lg:order-2 relative m-0 aspect-[4/5] sm:aspect-[16/10] lg:aspect-auto">
+          <Image
+            src="/images/projects/advisor.jpg"
+            alt={t('photoCaption')}
+            fill
+            priority
+            className="object-cover object-[50%_40%]"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+          {/* Keeps the navigation readable over the bright sky */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-night/70 to-transparent" aria-hidden="true" />
+          <figcaption className="absolute bottom-4 right-4 sm:right-6 text-xs text-white/70">{t('photoCaption')}</figcaption>
         </figure>
       </div>
     </section>

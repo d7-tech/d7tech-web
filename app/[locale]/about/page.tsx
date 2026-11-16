@@ -36,13 +36,6 @@ export default async function AboutPage({ params }: { params: { locale: string }
     { name: t('team.yusuf.name'), role: t('team.yusuf.role'), initials: 'YE', linkedin: 'https://www.linkedin.com/' }
   ];
 
-  const values = [
-    { id: '01', title: t('values.innovation.title'), desc: t('values.innovation.desc') },
-    { id: '02', title: t('values.rigor.title'), desc: t('values.rigor.desc') },
-    { id: '03', title: t('values.impact.title'), desc: t('values.impact.desc') },
-    { id: '04', title: t('values.openScience.title'), desc: t('values.openScience.desc') },
-  ];
-
   const timeline = [
     { year: t('timeline.year2025Label'), events: [t('timeline.year2025e1'), t('timeline.year2025e2')] },
     { year: t('timeline.yearJan2026Label'), events: [t('timeline.yearJan2026e1')] },
@@ -50,7 +43,7 @@ export default async function AboutPage({ params }: { params: { locale: string }
   ];
 
   const Section = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
-    <section className="border-t border-line py-14 sm:py-16 grid gap-8 lg:grid-cols-[1fr_2fr]" aria-labelledby={id}>
+    <section className="border-t border-line py-14 sm:py-20 grid gap-8 lg:grid-cols-[1fr_2fr]" aria-labelledby={id}>
       <h2 id={id}>{title}</h2>
       <div>{children}</div>
     </section>
@@ -60,15 +53,11 @@ export default async function AboutPage({ params }: { params: { locale: string }
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-12">
       <header className="pb-14 sm:pb-16">
         <h1 id="about-heading">{t('heroTitle')}</h1>
-        <p className="mt-4 text-lg text-ink-soft max-w-2xl">{t('heroDescription')}</p>
+        <p className="mt-4 text-xl text-ink-muted max-w-2xl">{t('heroDescription')}</p>
       </header>
 
       <Section id="mission-heading" title={t('missionTitle')}>
-        <div className="space-y-4 max-w-2xl">
-          <p>{t('missionP1')}</p>
-          <p>{t('missionP2')}</p>
-          <p>{t('missionP3')}</p>
-        </div>
+        <p className="text-lg max-w-2xl">{t('missionText')}</p>
       </Section>
 
       <Section id="team-heading" title={t('teamTitle')}>
@@ -104,16 +93,6 @@ export default async function AboutPage({ params }: { params: { locale: string }
         </dl>
       </Section>
 
-      <Section id="values-heading" title={t('valuesTitle')}>
-        <dl className="grid gap-x-12 gap-y-8 sm:grid-cols-2">
-          {values.map((v) => (
-            <div key={v.id}>
-              <dt className="font-semibold text-ink">{v.title}</dt>
-              <dd className="mt-1.5 text-[15px] leading-relaxed">{v.desc}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
     </div>
   );
 }

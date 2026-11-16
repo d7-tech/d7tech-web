@@ -60,7 +60,7 @@ export const projects: Project[] = [
     coverImageAlt: 'Surface vessel on open water — maritime autonomous systems',
     description:
       'ADVISOR is an escort-type Autonomous Surface Vehicle (ASV) developed under the EU ITEA program, focusing on autonomous guidance and cooperative navigation in constrained maritime environments including harbors and near-shore areas. The project emphasizes supervised autonomy, sensor fusion, and field validation.',
-    startDate: 'January 2026',
+    startDate: '2026-01',
   },
   {
     id: 'prj-003',

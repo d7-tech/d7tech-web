@@ -7,7 +7,12 @@
     "contactUs": "Bize Ulaşın",
     "overview": "Genel Bakış",
     "backToProjects": "Tüm Projeler",
-    "viewProject": "Projeyi Görüntüle"
+    "viewProject": "Projeyi Görüntüle",
+    "factStatus": "Durum",
+    "factStart": "Başlangıç",
+    "factArea": "Alan",
+    "factTech": "Teknolojiler",
+    "publications": "Yayınlar"
   },
   "StatusBadge": {
     "active": "Aktif",
@@ -21,118 +26,82 @@
     "closeMenu": "Menüyü kapat",
     "projects": "Projeler",
     "about": "Hakkımızda",
-    "careers": "Kariyer",
-    "getInTouch": "İletişime Geç",
     "contact": "İletişim"
   },
   "Footer": {
-    "tagline": "Gerçek dünya uygulamaları için akıllı otonom platformlar ve gelişmiş algılama teknolojileri tasarlıyoruz.",
-    "status": "// SYS:ONLINE",
-    "company": "Şirket",
-    "projects": "Projeler",
-    "connect": "Bağlantı",
+    "tagline": "Otonom sistemler ve algılama. İstanbul, Türkiye.",
     "rights": "D7 Technology. Tüm hakları saklıdır.",
     "links": {
       "about": "Hakkımızda",
       "projects": "Projeler",
       "careers": "Kariyer",
       "contact": "İletişim"
-    },
-    "projectLinks": {
-      "wearableSensors": "Giyilebilir Sensörler",
-      "advisorAsv": "ADVISOR ASV",
-      "multiStaticRadar": "Multistatik Radar",
-      "underwaterGliders": "Su Altı Planörleri",
-      "warehouseAutomation": "Warehouse Automation",
-      "microClimate": "Mikro-İklim Tahmini"
     }
   },
   "Hero": {
-    "label": "// Otonom Sistemler & Algılama",
-    "headline": "D7 Technology, gerçek dünya uygulamaları için akıllı otonom platformlar ve gelişmiş algılama teknolojileri tasarlar.",
-    "subtext": "Araştırmadan saha konuşlandırmasına — gerçek dünya için inşa edilmiş otonom platformlar ve algılama sistemleri.",
-    "viewProjects": "Projeleri Gör",
-    "contactUs": "Bize Ulaşın",
-    "scroll": "Kaydır",
-    "ticker": {
-      "sensorFusion": "SENSÖR FÜZYONU",
-      "autonomousVehicles": "OTONOM ARAÇLAR",
-      "radarSonar": "RADAR & SONAR",
-      "aiMl": "YZ / ML",
-      "wearableSensors": "GİYİLEBİLİR SENSÖRLER",
-      "systemIntegration": "SİSTEM ENTEGRASYONU",
-      "perceptionSystems": "ALGILAMA SİSTEMLERİ",
-      "deepTechRd": "DERİN TEKNOLOJİ Ar-Ge"
-    }
+    "headline": "Sahada sınanmış otonom sistemler ve algılama teknolojileri.",
+    "subtext": "İstanbul'da otonom deniz araçları, radar ve sensör sistemleri geliştiriyoruz.",
+    "viewProjects": "Projelerimiz",
+    "contactUs": "Bize ulaşın",
+    "photoCaption": "ADVISOR otonom yüzey aracı"
   },
   "ExpertiseGrid": {
-    "sectionLabel": "// 01 — YETKİNLİKLER",
-    "heading": "Uzmanlık Alanları",
-    "description": "Sinyal işlemeden otonom navigasyona — yetkinliklerimiz, gelişmiş algılama ve akıllı sistemlerin tüm yığınını kapsar.",
+    "heading": "Çalışma alanlarımız",
     "items": {
       "sensorSystems": {
-        "title": "Sensör Sistemleri & IoT",
-        "description": "Gerçek zamanlı veri toplama ve izleme için dağıtık sensör ağları, uç cihazlar ve IoT mimarilerinin tasarımı ve konuşlandırılması."
+        "title": "Sensör ağları ve IoT",
+        "description": "Saha cihazları, uç bilişim ve canlı veri."
       },
       "autonomousVehicles": {
-        "title": "Otonom Araçlar",
-        "description": "Algılama, navigasyon ve karar vermeyi kapsayan kara, yüzey ve deniz araçları dahil otonom platformların geliştirilmesi."
+        "title": "Otonom araçlar",
+        "description": "Su üstü ve su altı platformları: algılama, navigasyon, kontrol."
       },
       "radarSonar": {
-        "title": "Radar & Sonar Sistemleri",
-        "description": "Karmaşık ve kalabalık ortamlarda radar ve sonar tabanlı algılama için sinyal işleme, tespit ve takip algoritmaları."
+        "title": "Radar ve sonar",
+        "description": "Karmaşık ortamlarda tespit ve takip."
       },
       "sensorFusion": {
-        "title": "Sensör Füzyonu & Hedef Takibi",
-        "description": "Güçlü durumsal farkındalık için olasılıksal filtreleme ve YZ tabanlı yaklaşımlar kullanan çok sensörlü veri füzyonu ve hedef takip çözümleri."
+        "title": "Sensör füzyonu ve takip",
+        "description": "Birden çok sensörden tek ve güvenilir bir resim."
       },
       "aiMl": {
-        "title": "YZ & Makine Öğrenmesi",
-        "description": "Algılama, anomali tespiti, tahmin ve akıllı karar desteği için makine öğrenmesi ve YZ yöntemlerinin uygulanması."
+        "title": "Yapay zekâ ve makine öğrenmesi",
+        "description": "Tahmin, sınıflandırma ve karar desteği."
       },
       "systemIntegration": {
-        "title": "Sistem Entegrasyonu & Prototipleme",
-        "description": "Sensörler, algoritmalar ve platformların uçtan uca entegrasyonu — simülasyondan gerçek dünya prototipleme ve saha testine."
+        "title": "Prototipleme ve test",
+        "description": "Simülasyondan saha testlerine."
       }
     }
   },
   "FeaturedProjects": {
-    "sectionLabel": "// 02 — PROJELER",
-    "heading": "Seçili Çalışmalar",
-    "description": "Otonom sistemler, algılama ve yapay zekayı kapsayan araştırma ve mühendislik projeleri.",
-    "allProjects": "Tüm Projeler"
-  },
-  "Newsletter": {
-    "sectionLabel": "// ÇALIŞMALARIMIZI TAKİP EDİN",
-    "heading": "Gelişmelerden Haberdar Olun",
-    "description": "Çalışmalarımız ilerledikçe otonom sistemler, algılama araştırmaları ve saha sonuçları hakkında güncellemeler paylaşıyoruz. Takip etmek için en iyi yer LinkedIn.",
-    "followLinkedin": "LinkedIn'de Takip Et",
-    "getInTouch": "İletişime Geç"
+    "heading": "Projeler",
+    "allProjects": "Tüm projeler"
   },
   "ProjectData": {
     "wearable-sensors": {
       "title": "Giyilebilir Sensörler & Performans Analizi",
-      "subtitle": "UWB ve IMU tabanlı insan hareketi takibi ve performans analizi"
+      "subtitle": "UWB ve IMU ile hareket takibi ve düşme tespiti"
     },
     "advisor": {
       "title": "ADVISOR: Rehberlik için Otonom Yüzey Gemisi",
-      "subtitle": "AB ITEA Programı — Eskort Tipi Otonom Yüzey Aracı"
+      "subtitle": "Eskort tipi otonom yüzey aracı, AB ITEA programı"
     },
     "multistatic": {
       "title": "Multistatik Radar Sistemleri",
-      "subtitle": "Çok hedef takibi ve uzamsal çeşitlilik için uzamsal dağılımlı radar"
+      "subtitle": "Çoklu hedef takibi için dağıtık radar"
     },
     "underwater-gliders": {
       "title": "Otonom Su Altı Planörleri",
-      "subtitle": "Su altı keşfi ve algılama için uzun süreli otonom platformlar"
+      "subtitle": "Su altı algılama için uzun menzilli platformlar"
     },
     "warehouse-automation": {
-      "title": "Warehouse Automation & Order Picking",
-      "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking"
+      "title": "Depo Otomasyonu ve Sipariş Toplama",
+      "subtitle": "Çok araçlı sipariş toplama için pekiştirmeli öğrenme"
     },
     "micro-climate": {
       "title": "Mikro-İklim Tahmini: Yağmur ve Rüzgâr",
-      "subtitle": "1, 6 ve 24 saat için Tekil, Hibrit ve Çevrimiçi tahminli canlı hava istasyonu"
+      "subtitle": "Kendi hava istasyonumuz ve saatlik yağış ve rüzgâr tahminleri"
     }
   },
   "HomePage": {
@@ -146,48 +115,20 @@
       "title": "D7 Technology Hakkında",
       "description": "D7 Technology, otonom araçlar, radar/sonar, YZ/ML, sensör füzyonu ve giyilebilir sensörler alanında uzmanlaşmış derin teknoloji Ar-Ge şirketidir. İstanbul, Türkiye merkezli."
     },
-    "heroLabel": "// HAKKIMIZDA",
-    "heroTitle": "D7 Technology Hakkında",
-    "heroDescription": "Yeni nesil akıllı sistemleri tanımlayacak algılama ve özerklik teknolojileri geliştiren derin teknoloji araştırma ve mühendislik şirketiyiz.",
-    "missionLabel": "// MİSYON",
-    "missionTitle": "Fiziksel dünyaya zeka kazandırmak",
-    "missionP1": "D7 Technology, ileri araştırma ile gerçek dünya sistemleri arasındaki boşluğu kapatmak için var. Zorlayıcı ortamlarda güvenilir biçimde çalışan platformlar inşa etmek için titiz sinyal işleme, modern makine öğrenmesi ve mühendislik disiplinini bir araya getiriyoruz.",
-    "missionP2": "Çalışmalarımız otonom yüzey gemilerini, multistatik radar takibini, giyilebilir sensör sistemlerini ve YZ tabanlı algılamayı kapsıyor; tümü hakemli araştırmalara dayalı ve sahada test edilmiş.",
-    "missionP3": "Derin teknolojinin sınırında faaliyet gösteriyor ve araştırmanın konuşlandırmayla buluştuğu standartta inşa ediyoruz.",
-    "teamLabel": "// EKİP",
-    "teamTitle": "D7'nin Arkasındaki İnsanlar",
-    "teamLinkedIn": "LinkedIn ↗",
-    "historyLabel": "// TARİHÇE",
-    "historyTitle": "Kilometre Taşları",
-    "valuesLabel": "// DEĞERLERİMİZ",
-    "valuesTitle": "Değer Verdiğimiz Şeyler",
-    "values": {
-      "innovation": {
-        "title": "İnovasyon",
-        "desc": "Titiz Ar-Ge ve yeni algoritmik yaklaşımlar aracılığıyla algılama ve özerkliğin sınırlarını zorlamak."
-      },
-      "rigor": {
-        "title": "Titizlik",
-        "desc": "Araştırma metodolojisinde titiz standartlar — matematiksel modellemeden deneysel saha doğrulamasına."
-      },
-      "impact": {
-        "title": "Gerçek Dünya Etkisi",
-        "desc": "Her proje pratik konuşlandırmayı hedefler — laboratuvar dışında da çalışan şeyler inşa ediyoruz."
-      },
-      "openScience": {
-        "title": "Açık Bilim",
-        "desc": "Hakemli yayınlar ve açık iş birliği aracılığıyla küresel araştırma topluluğuna katkıda bulunmak."
-      }
-    },
+    "heroTitle": "Hakkımızda",
+    "heroDescription": "D7 Technology, İstanbul'da otonom sistemler ve algılama üzerine çalışan bir Ar-Ge şirketidir.",
+    "missionTitle": "Ne yapıyoruz",
+    "teamTitle": "Ekip",
+    "historyTitle": "Kilometre taşları",
     "timeline": {
       "year2025Label": "2025",
-      "year2025e1": "IEEE yayını: UWB Verisiyle Düşme Tespiti (SIU 2025)",
-      "year2025e2": "IEEE yayını: Multistatik Çok-Hedef Takibi (RadarConf25, Krakow)",
+      "year2025e1": "IEEE SIU 2025: UWB Verisiyle Düşme Tespiti",
+      "year2025e2": "IEEE RadarConf25, Krakov: çok statik çoklu hedef takibi",
       "yearJan2026Label": "Oca 2026",
-      "yearJan2026e1": "ADVISOR AB ITEA projesi başlatıldı — otonom yüzey gemisi programı",
+      "yearJan2026e1": "ADVISOR projesi başladı (AB ITEA)",
       "year2026Label": "2026",
-      "year2026e1": "D7 Technology kuruldu — İstanbul, Türkiye",
-      "year2026e2": "Algılama, otonom sistemler ve YZ/ML alanlarında süregelen Ar-Ge"
+      "year2026e1": "D7 Technology İstanbul'da kuruldu",
+      "year2026e2": "Algılama, otonomi ve yapay zekâda süren Ar-Ge"
     },
     "team": {
       "ahmet": {
@@ -214,40 +155,29 @@
         "name": "Yusuf Erkoç",
         "role": "Makine Mühendisliği Öğrencisi"
       }
-    }
+    },
+    "missionText": "Sinyal işleme ve makine öğrenmesi araştırmalarını laboratuvar dışında çalışan sistemlere dönüştürüyoruz: otonom deniz araçları, radar takibi, giyilebilir sensörler ve yerel hava tahmini. Sonuçlarımızı IEEE konferanslarında yayımlıyor ve sahada test ediyoruz."
   },
   "CareersPage": {
     "metadata": {
       "title": "D7 Technology'de Kariyer",
       "description": "Şu an açık pozisyon bulunmuyor — ancak her zaman istisnai mühendisler ve araştırmacılarla ilgileniyoruz. Bize ulaşın."
     },
-    "heroLabel": "// EKİBE KATIL",
     "heroTitle": "Kariyer",
-    "heroDescription": "Ciddi mühendislik inşa ediyoruz — ve ciddi mühendislere ihtiyacımız var. Önemli otonom sistemler, algılama ve YZ problemleri üzerinde çalışın.",
-    "statusLabel": "// DURUM",
-    "noPositions": "Açık pozisyon yok",
-    "rolesTitle": "Yeni pozisyonlar burada duyurulacak.",
-    "rolesDescription": "Şu anda aktif olarak işe almıyoruz; ancak projelerimiz büyüdükçe bu değişiyor. Takipte kalın — ya da ilan açmadan önce bize ulaşın.",
-    "ctaLabel": "// AÇIK BAŞVURU",
-    "ctaTitle": "İstisnai mühendisler beklemez.",
-    "ctaDescription": "Otonom sistemler, algılama veya sensör füzyonu alanında üst düzey çalışıyorsanız — sizi tanımak isteriz. CV'nizi veya LinkedIn profilinizin linkini içeren bir mesaj gönderin.",
-    "ctaButton": "İletişime Geç"
+    "heroDescription": "Şu anda açık pozisyonumuz yok. Otonomi, algılama ya da sensör füzyonu üzerine çalışıyorsanız yine de özgeçmişinizi gönderin.",
+    "ctaButton": "Bize yazın"
   },
   "ContactPage": {
     "metadata": {
       "title": "D7 Technology ile İletişim",
       "description": "Soru, iş birliği, araştırma ortaklığı veya kariyer fırsatları için D7 Technology ile iletişime geçin."
     },
-    "heroLabel": "// İLETİŞİME GEÇ",
     "heroTitle": "İletişim",
-    "heroDescription": "Sorular, iş birlikleri, araştırma ortaklıkları veya sadece merhaba demek için.",
-    "reachOut": "Bize Ulaşın",
-    "websiteLabel": "Web Sitesi",
+    "heroDescription": "Sorular, iş birlikleri ya da araştırma ortaklıkları için.",
     "locationLabel": "Konum",
     "locationValue": "İstanbul, Türkiye",
     "followUs": "Bizi Takip Edin",
-    "responseTimeLabel": "// Yanıt Süresi",
-    "responseTimeText": "Genellikle 1–2 iş günü içinde yanıt veriyoruz. Acil durumlar için LinkedIn üzerinden ulaşın.",
+    "responseTimeText": "Genellikle iki iş günü içinde yanıt veriyoruz.",
     "nameLabel": "Ad Soyad",
     "emailLabel": "E-posta",
     "subjectLabel": "Konu",
@@ -268,7 +198,6 @@
     "validationMessageMin": "Mesaj en az 20 karakter olmalıdır",
     "successTitle": "Mesaj Gönderildi",
     "successDescription": "Bize ulaştığınız için teşekkürler. En kısa sürede geri döneceğiz.",
-    "successLabel": "// MESAJ ALINDI",
     "sendAnother": "Başka mesaj gönder"
   },
   "ProjectsPage": {
@@ -276,14 +205,13 @@
       "title": "Projeler",
       "description": "D7 Technology'nin otonom sistemler, algılama ve YZ alanlarındaki araştırma ve mühendislik projelerini keşfedin."
     },
-    "sectionLabel": "// ARAŞTIRMA & MÜHENDİSLİK",
     "title": "Projeler",
-    "description": "Otonom sistemler, algılama ve YZ alanlarında araştırma ve mühendislik — erken aşama prototipten saha konuşlandırmasına.",
+    "description": "Otonom sistemler, algılama ve yapay zekâ; prototipten saha testine.",
     "filterAll": "Tümü",
     "filterAutonomous": "Otonom Sistemler",
     "filterSensing": "Algılama",
     "filterAiMl": "YZ / ML",
-    "empty": "// Bu kategoride henüz proje yok."
+    "empty": "Bu kategoride henüz proje yok."
   },
   "AdvisorPage": {
     "metadata": {
@@ -291,18 +219,14 @@
       "description": "AB ITEA Programı — Kısıtlı deniz ortamlarında kooperatif navigasyon için eskort tipi Otonom Yüzey Aracı."
     },
     "title": "ADVISOR: Rehberlik için Otonom Yüzey Gemisi",
-    "subtitle": "AB ITEA Programı — Eskort Tipi Otonom Yüzey Aracı",
-    "prjId": "PRJ-002",
-    "sectionLabel": "// OTONOM SİSTEMLER · AB ITEA",
-    "present": "Günümüz",
-    "overviewTitle": "Genel Bakış",
-    "overviewText": "ADVISOR, AB ITEA programı kapsamında geliştirilen eskort tipi bir Otonom Yüzey Aracıdır (ASV); limanlar ve kıyı yakın alanlar dahil kısıtlı deniz ortamlarında otonom rehberlik ve kooperatif navigasyona odaklanmaktadır. Proje, dinamik ve kalabalık su yollarında güvenli operasyon sağlamak için insan gözetiminin otomatik karar alma ile bir arada var olduğu denetimli özerkliği ön plana çıkarmaktadır.",
-    "fieldTrialTitle": "Saha Denemesi Kurulumu",
-    "fieldTrialText": "Saha denemeleri, navigasyon algoritmalarını, sensör füzyonu performansını ve gerçek koşullar altında otonom karar almayı doğrulamak için temsili deniz ortamlarında yürütülmektedir. ASV, konvoy operasyonları, engel kaçınma ve üsse geri dönüş manevraları dahil yapılandırılmış test senaryolarından geçmektedir.",
-    "fieldTrialCaption": "ADVISOR saha denemesi — liman ortamında otonom yüzey gemisi",
+    "subtitle": "Eskort tipi otonom yüzey aracı, AB ITEA programı",
+    "overviewText": "ADVISOR, AB ITEA programı kapsamında geliştirilen eskort tipi bir otonom yüzey aracıdır. Limanlarda ve kıyıya yakın sularda, insan gözetiminde gemilere rehberlik eder ve eşlik eder.",
+    "fieldTrialTitle": "Saha testleri",
+    "fieldTrialText": "Navigasyon, sensör füzyonu ve karar verme gerçek liman koşullarında test edilir: konvoy seyri, engelden kaçınma ve üsse dönüş.",
+    "fieldTrialCaption": "Liman ortamında saha testi düzeni",
     "fieldTrialImageAlt": "Otonom yüzey aracı — liman ve eskort denemeleri için Maritime Robotics platformu",
-    "navTitle": "Dinamik Ortamlarda Navigasyon",
-    "navText": "ADVISOR platformu, karmaşık deniz ortamlarında güçlü durumsal farkındalık sağlamak için kapsamlı çok modlu sensör paketi entegre etmektedir. Sensör verileri, engel tespiti, yol planlama ve adaptif navigasyonu desteklemek için gerçek zamanlı olarak füzyon edilmektedir.",
+    "navTitle": "Sensörler",
+    "navText": "Engel tespiti ve rota planlaması için altı sensör türü gerçek zamanlı olarak birleştirilir.",
     "sensorTableLabel": "Sensör paketi özellikleri",
     "sensorColSensor": "Sensör",
     "sensorColSystem": "Sistem",
@@ -319,9 +243,8 @@
     "radarDesc": "Her hava koşulunda engel tespiti",
     "metFull": "Meteoroloji Sensörleri",
     "metDesc": "Rüzgar hızı, yönü, sıcaklık, basınç",
-    "bathyTitle": "Batimetri Haritalama ve Çevresel Veri Toplama",
-    "bathyText1": "ADVISOR, navigasyona ek olarak operasyonlar sırasında çevresel ve oşinografik veri toplamaktadır. Gemideki meteoroloji sensörleri rüzgar hızını, yönünü, hava sıcaklığını ve basıncı sürekli izleyerek rota planlamasını destekleyen bağlamsal veriler sağlamaktadır.",
-    "bathyText2": "Batimetrik haritalama yetenekleri liman araştırmasını ve sığ su navigasyonunu destekleyerek ASV'nin daha zengin çevre modeliyle karar almasına katkıda bulunmaktadır.",
+    "bathyTitle": "Çevresel veri",
+    "bathyText1": "Araç, operasyon sırasında rota planlaması ve liman haritalaması için rüzgâr, hava sıcaklığı, basınç ve su derinliğini de kaydeder.",
     "bathyCaption": "Saha operasyonları sırasında batimetri ve çevresel veri toplama",
     "bathyImageAlt": "Ekranda 3D batimetrik harita: operasyonlar sırasında araştırma katmanlarıyla renk kodlu deniz tabanı derinlikleri"
   },
@@ -331,19 +254,15 @@
       "description": "Çok hedef takibi ve uzamsal çeşitlilik için uzamsal dağılımlı radar — D7 Technology'nin IEEE RadarConf25 araştırması."
     },
     "title": "Multistatik Radar Sistemleri",
-    "subtitle": "Çok hedef takibi ve uzamsal çeşitlilik için uzamsal dağılımlı radar",
-    "prjId": "PRJ-003",
-    "sectionLabel": "// ALGILAMA · HEDEF TAKİBİ",
-    "overviewTitle": "Genel Bakış",
-    "overviewText": "Multistatik radar, hedefleri birden fazla açıdan gözlemlemek için ayrılmış verici ve alıcılar kullanır; düşük-RKS hedefleri için tespit sağlamlığını artırır ve clutter ile parazite karşı duyarlılığı azaltır. Uzamsal çeşitlilikten yararlanarak monostatik radarın temel sınırlamalarını aşar ve hedef takibi ile sınıflandırma için daha zengin ölçüm geometrisi sağlar.",
-    "simulationTitle": "Simülasyon Haritası",
-    "simulationText": "Simülasyon ortamları, radar düğümlerinin geometrik dağılımını, hedef yörüngelerini ve ölçüm belirsizliğini modellemektedir. Çeşitli hedef senaryolarında Monte Carlo denemeleri, plot füzyon algoritmalarını doğrulamak ve tespit olasılığı ile konum doğruluğu dahil izleme performans metriklerini değerlendirmek için kullanılmaktadır.",
-    "simulationCaption": "Multistatik radar simülasyon haritası — düğüm dağılımı ve hedef izleme senaryosu",
+    "subtitle": "Çoklu hedef takibi için dağıtık radar",
+    "overviewText": "Çok statik radar, verici ve alıcıları farklı noktalara yerleştirir; böylece her hedef birkaç açıdan görülür. Küçük, düşük radar kesit alanlı hedefler daha kolay tespit edilir ve sistem kargaşa ile girişime karşı daha az hassas olur.",
+    "simulationTitle": "Simülasyon",
+    "simulationText": "Plot füzyonu algoritmaları Monte Carlo koşularında test edilir; tespit oranı, yanlış alarm ve konum hatası ölçülür.",
+    "simulationCaption": "Simülasyon haritası: radar düğümleri ve hedef izleri",
     "simulationImageAlt": "Çok panelli simülasyon haritaları: kilometre cinsinden mesafe üzerinde atmosferik ve polarimetrik radar alanları",
-    "demoTitle": "Multistatik Sistemler Demo",
-    "demoText": "Aşağıdaki demo, simüle edilmiş senaryoda plot düzeyi veri füzyonu, iz başlatma ve çok hedef izleme performansı dahil multistatik radar sistemi işleme hattını göstermektedir.",
-    "demoIframeTitle": "Multistatik Radar Demo",
-    "publicationsLabel": "IEEE yayınları"
+    "demoTitle": "Demo",
+    "demoText": "Simüle bir senaryoda plot füzyonu, iz başlatma ve çoklu hedef takibi.",
+    "demoIframeTitle": "Multistatik Radar Demo"
   },
   "WearableSensorsPage": {
     "metadata": {
@@ -351,24 +270,20 @@
       "description": "D7 Technology'nin UWB ve IMU tabanlı insan hareketi takibi ve performans analizi araştırması. IEEE SIU 2025 yayını."
     },
     "title": "Giyilebilir Sensörler & Performans Analizi",
-    "subtitle": "UWB ve IMU tabanlı insan hareketi takibi ve performans analizi",
-    "prjId": "PRJ-001",
-    "sectionLabel": "// ALGILAMA · SAĞLIK & SPOR",
-    "overviewTitle": "Genel Bakış",
-    "overviewText": "UWB (Ultra-Geniş Bant) ve IMU (Atalet Ölçüm Birimi) teknolojilerini birleştiren giyilebilir sensör sistemleri üzerine araştırma — kesin insan hareketi takibi, düşme tespiti ve spor performans analizi. Bu proje, kontrollü laboratuvar ortamları ve gerçek dünya saha deneylerini kapsar.",
-    "localizationTitle": "Kontrollü Yerelleştirme Test Kurulumu",
-    "localizationText": "Kontrollü koşullar altında UWB tabanlı yerelleştirme doğruluğunu doğrulamak için yapılandırılmış kapalı alan test ortamı oluşturulmuştur. Birden fazla çapa düğümü kalibre edilmiş ızgaraya yerleştirilmiş, desimetrenin altında konum doğruluğu sağlanmıştır. IMU verileri tamamlayıcı atalet ölçümleri için senkronize edilmiştir.",
+    "subtitle": "UWB ve IMU ile hareket takibi ve düşme tespiti",
+    "overviewText": "İnsan hareketini izleyen, düşmeleri tespit eden ve sportif performansı ölçen giyilebilir UWB ve IMU sensörleri.",
+    "localizationTitle": "Laboratuvar testleri",
+    "localizationText": "Kalibre edilmiş bir iç mekân ızgarasındaki UWB çapaları desimetre altı konum doğruluğu sağlar; senkronize IMU verisi hareket ayrıntısını ekler.",
     "localizationImageAlt": "Kontrollü kapalı alan testlerinde kullanılan hassas yerelleştirme arayüzünü gösteren iş istasyonu ekranı",
-    "localizationCaption": "UWB çapa yerleşimi ile kontrollü yerelleştirme test ortamı",
-    "motionTitle": "Veriye Dayalı Hareket Değerlendirmesi",
-    "motionText": "Toplanan sensör verileri, hareket durumlarını sınıflandırmak ve düşme gibi anomalileri tespit etmek için makine öğrenmesi hatları aracılığıyla işlenmiştir. UWB konum verileri ve IMU okumalarının füzyonu, yüksek duyarlılıkla düşme olaylarını tespit etmektedir.",
+    "localizationCaption": "UWB çapalarıyla iç mekân test düzeni",
+    "motionTitle": "Hareket analizi",
+    "motionText": "Birleştirilmiş UWB ve IMU verisi üzerinde makine öğrenmesi hareketi sınıflandırır ve düşmeleri normal aktiviteden ayırır.",
     "motionImageAlt": "Analiz hatları için büyük ölçekli hareket ve sensörden türetilen verileri temsil eden soyut görselleştirme",
-    "motionCaption": "Hareket değerlendirme hattı — sensör füzyonu ve ML sınıflandırma sonuçları",
-    "fieldTitle": "Saha Deneyleri",
-    "fieldText": "Sistem performansını laboratuvar dışında doğrulamak için spor ve sağlık ortamlarında gerçek dünya denemeleri yürütülmüştür. Saha deneyleri, sistemin çok yollu yayılım ve vücut tıkanmasına karşı sağlamlığını test etmiş; pratik konuşlandırmalarda güvenilir düşme tespiti göstermiştir.",
+    "motionCaption": "Hareket sınıflandırma sonuçları",
+    "fieldTitle": "Saha testleri",
+    "fieldText": "Spor ve sağlık ortamlarındaki denemeler sistemi çok yollu yayılım, vücut engeli ve değişen koşullara karşı sınadı.",
     "fieldImageAlt": "Hareket yakalama tarzı saha deneyinde ayak bileğine takılı sensörler takan kapalı alanda sporcu",
-    "fieldCaption": "Saha deney kurulumu — gerçek dünya giyilebilir sensör konuşlandırması",
-    "publicationsLabel": "IEEE yayınları"
+    "fieldCaption": "Ayak bileğine takılı sensörlerle saha testi"
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -376,42 +291,33 @@
       "description": "Su altı keşfi ve algılama için uzun süreli otonom platformlar — D7 Technology'nin yaklaşan araştırması."
     },
     "title": "Otonom Su Altı Planörleri",
-    "subtitle": "Su altı keşfi ve algılama için uzun süreli otonom platformlar",
-    "description": "Uzun süreli okyanus izleme, çevresel veri toplama ve denizaltı algılama için otonom su altı planörü platformlarının geliştirilmesi. Enerji verimli itki, dinamik su altı ortamlarında navigasyon ve gerçek zamanlı veri iletimi üzerine odaklanılmaktadır.",
-    "prjId": "PRJ-004",
-    "sectionLabel": "// OTONOM SİSTEMLER · SU ALTI",
-    "statusLabel": "// DURUM: GELİŞTİRMEDE",
-    "researchTitle": "Araştırma Devam Ediyor",
-    "updatesComingSoon": "Güncellemeler yakında"
+    "subtitle": "Su altı algılama için uzun menzilli platformlar",
+    "description": "Uzun süreli okyanus izleme ve su altı algılama için, düşük güçlü itki ve navigasyona sahip su altı planörleri.",
+    "researchTitle": "Geliştiriliyor",
+    "updatesComingSoon": "Ayrıntılar yakında."
   },
   "WarehouseAutomationPage": {
     "metadata": {
-      "title": "Warehouse Automation & Order Picking",
+      "title": "Depo Otomasyonu ve Sipariş Toplama",
       "description": "Reinforcement learning and swarm optimization for multi-agent order picking in steel warehouses — research and simulation platform by D7 Technology."
     },
-    "title": "Warehouse Automation & Order Picking",
-    "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking",
-    "prjId": "PRJ-005",
-    "sectionLabel": "// AI & MACHINE LEARNING · LOGISTICS",
-    "overviewTitle": "Overview",
-    "overviewText": "Order picking is the single most time-consuming operation in warehouse logistics. This project treats it as a multi-agent sequential decision problem: given a warehouse layout, a product catalog and a set of customer orders, several picking vehicles must be routed to collect every item and return to the exit in the shortest total time, without colliding in shared aisles. The work targets steel warehouses, where products are long profiles stored across multiple slots and a single order may span dozens of locations.",
-    "approachTitle": "Learning and Optimization Approaches",
-    "approachText": "Two families of algorithms are implemented against a common simulation environment so their results can be compared directly on the same layouts and order sets. The first is swarm-based: a time-dependent Ant Colony Optimization planner that builds a pheromone matrix over the warehouse grid and resolves collisions by treating occupancy as a function of time rather than space alone. The second is deep reinforcement learning — DQN, Dueling DQN, Double Dueling DQN and PPO agents, implemented in PyTorch, which learn a picking policy through repeated episodes instead of planning each route from scratch.",
-    "environmentTitle": "Simulation Environment",
-    "environmentText": "Warehouses are described as JSON grid maps defining dimensions, aisles, loading zones, entrances, exits and item locations. The reference layout models a real steel warehouse: a 30 × 28 grid holding 289 distinct product types, each stored across several slots and linked to live order identifiers. A smaller 12 × 7 layout is used for rapid iteration during training. The environment exposes a standard step-and-reward interface, so agents and classical planners can be swapped without changing the warehouse model.",
-    "platformTitle": "Simulation Platform",
-    "platformText": "The research code is wrapped in a browser-based platform that makes experiments repeatable without touching Python. Operators upload a warehouse map, choose a planning algorithm, set training hyperparameters — episode count, learning rate, discount factor, epsilon schedule, batch size — and either train a fresh policy or run an existing one. Simulation runs are rendered back as video for inspection.",
+    "title": "Depo Otomasyonu ve Sipariş Toplama",
+    "subtitle": "Çok araçlı sipariş toplama için pekiştirmeli öğrenme",
+    "overviewText": "Sipariş toplama, bir depodaki en yavaş iştir. Birden çok toplama aracını bir çelik deposunda yönlendirerek her siparişin en kısa toplam sürede ve ortak koridorlarda çarpışma olmadan toplanmasını sağlıyoruz.",
+    "approachTitle": "Algoritmalar",
+    "approachText": "Zamana duyarlı bir Karınca Kolonisi Optimizasyonu planlayıcısı ile derin pekiştirmeli öğrenme ajanları (DQN türevleri ve PyTorch'ta PPO) aynı yerleşim ve siparişler üzerinde çalışır; böylece doğrudan karşılaştırılabilirler.",
+    "environmentTitle": "Simülasyon",
+    "environmentText": "Depolar JSON ızgara haritalarıdır. Ana yerleşim gerçek bir çelik deposunu modeller: 289 ürün tipli 30 × 28'lik bir ızgara.",
+    "platformTitle": "Web platformu",
+    "platformText": "Tarayıcı uygulaması deneyleri kod yazmadan çalıştırır: harita yükleyin, algoritma seçin, eğitim parametrelerini ayarlayın ve koşuyu video olarak izleyin.",
     "platformFigureAlt": "Warehouse automation platform: map selection table and algorithm choice between ACO, RL and PPO",
-    "platformFigureCaption": "Map selection and algorithm choice. Uploaded layouts are listed with their grid dimensions and product counts; ACO, RL and PPO can each be run against the same warehouse.",
-    "workflowTitle": "Two-Sided Workflow",
-    "workflowText": "The platform separates the people who define a warehouse from the people who order from it. On the operator side, warehouse maps and product catalogs are uploaded and managed directly or pulled from an existing endpoint. On the ordering side, a guided flow walks through selecting a warehouse, building an order from the catalog, choosing an algorithm and watching the resulting simulation.",
+    "platformFigureCaption": "Harita ve algoritma seçimi",
     "workflowFigureAlt": "Operator panel listing uploaded warehouse maps with dimensions, product counts and status",
-    "workflowFigureCaption": "Operator panel. Warehouse layouts are uploaded as JSON and exposed to the ordering side, with product-type counts and last-updated timestamps.",
+    "workflowFigureCaption": "Yüklenen depo haritalarıyla operatör paneli",
     "catalogFigureAlt": "Product catalog view showing steel profile product codes with per-item order quantities",
-    "catalogFigureCaption": "Order construction against the 289-product steel catalog. Items carry their source order identifiers, and per-item quantities feed the picking problem handed to the planner.",
-    "statusTitle": "Current Status",
-    "statusText": "The ACO planner runs against production-scale layouts, and the reinforcement learning agents train and execute on the same environment. Work continues on comparative benchmarking across layouts and order profiles, and on packaging the platform for a public demonstration deployment.",
-    "demoNote": "A public demonstration of the simulation platform is being prepared.",
+    "catalogFigureCaption": "289 ürünlük katalogdan sipariş oluşturma",
+    "statusTitle": "Durum",
+    "statusText": "ACO planlayıcısı tam boyutlu yerleşimlerde çalışıyor, RL ajanları da aynı ortamda eğitiliyor. Herkese açık bir demo hazırlanıyor.",
     "demoCta": "Try the Live Demo"
   },
   "MicroClimatePage": {
@@ -419,27 +325,19 @@
       "title": "Mikro-İklim Tahmini: Yağmur ve Rüzgâr",
       "description": "Canlı hava istasyonu verileri ve önümüzdeki 1, 6 ve 24 saat için yağmur ve rüzgâr tahminleri — Tekil, Hibrit ve Çevrimiçi modeller yan yana, D7 Technology."
     },
-    "prjId": "PRJ-006",
-    "sectionLabel": "// YAPAY ZEKÂ & MAKİNE ÖĞRENMESİ · IOT ALGILAMA",
     "title": "Mikro-İklim Tahmini: Yağmur ve Rüzgâr",
-    "subtitle": "İstanbul'daki ofis penceremizde bir hava istasyonu ve tam bu nokta için önümüzdeki 24 saatin rüzgâr ve yağış tahminleri.",
-    "overviewTitle": "Genel bakış",
-    "overviewText": "Kasım 2026'da İstanbul'daki ofisimizin penceresine küçük bir hava istasyonu taktık ve kendi sunucumuza bağladık. Amaç, bir hava servisinin kapsadığı birkaç kilometrelik ızgara hücresi yerine tam bu nokta için rüzgâr ve yağış tahmin etmek. Sunucu her saat birkaç modelle yeni tahminler yapıyor ve her tahmini saklıyor; saat geçince istasyonun ölçtüğüyle karşılaştırılabiliyor. Bu sayfada ölçümler, en son tahmin ve her modelin şimdiye kadar ne sıklıkla doğru çıktığı yer alıyor.",
-    "methodsTitle": "Tahminler nasıl yapılıyor",
-    "methodsSingle": "Tekil modeller yalnızca istasyonun kendi ölçümlerini kullanır: son saatlerin rüzgârı, hamlesi ve yağışı, basınç eğilimi ve günün saati. LightGBM (gradyan artırmalı karar ağaçları) ve SARIMA (günlük döngülü klasik zaman serisi modeli) çalıştırıyoruz. Bir iki saat sonrası için iyidirler ama henüz gelmemiş havayı göremezler.",
-    "methodsHybrid": "Hibrit modeller hava servisinin tahmininden (Open-Meteo'daki üç küresel modelin ortalaması) başlar ve bu noktanın ondan nasıl farklı olduğunu öğrenir; örneğin binanın rüzgârı ne kadar kestiğini. Tahmini ek girdi olarak alan LightGBM ve SARIMAX çalıştırıyoruz. Genellikle 6–24 saat ilerisi için en iyisidirler.",
-    "methodsOnline": "Çevrimiçi modeller günde bir kez değil, her saatten sonra güncellenir. River modeli her yeni ölçümden öğrenir; Çevrimiçi karışım ise yukarıdaki tüm tahminleri ve Weather.com günlük tahminini karıştırır, son dönemde en yakın çıkana daha fazla ağırlık verir.",
-    "methodsTraining": "İki LightGBM modeli ilk günden tahmin yapabilsin diye önce yakındaki 13 Weather Underground istasyonunun 11 yıllık verisiyle eğitildi. İstasyonun bir haftalık kendi verisi olunca her gece bu veriyle ince ayar yapılır.",
-    "stationTitle": "İstasyon ve veri yolu",
-    "stationText": "İstasyon bir ESP32 üzerinde çalışır; kepçeli anemometre, rüzgâr yönü göstergesi, devrilen kovalı yağış ölçer ve sıcaklık, nem ve basınç için BME280 sensörü vardır. Her ölçümü gizli bir anahtarla imzalar ve USB ile bir Raspberry Pi'ye gönderir; Pi de AWS'deki sunucumuza iletir. Sunucu ölçümleri PostgreSQL'de saklar, her saat hava servisi tahminlerini indirir ve modelleri çalıştırır.",
+    "subtitle": "Kendi hava istasyonumuz ve önümüzdeki 24 saat için saatlik yağış ve rüzgâr tahminleri.",
+    "overviewText": "İstanbul'daki ofis penceremizde duran hava istasyonu ölçümlerini sunucumuza gönderiyor. Her saat birkaç model tam bu nokta için rüzgâr ve yağış tahmini yapıyor; her tahmin daha sonra istasyonun ölçtüğüyle karşılaştırılıyor.",
+    "methodsTitle": "Modeller",
+    "stationTitle": "İstasyon",
     "issuesTitle": "Bilinen sınırlamalar",
-    "issuesText": "Şimdilik istasyon ofis penceresinde duruyor ve bu, ölçebildiklerini sınırlıyor. Bina anemometreyi rüzgârdan koruduğu için rüzgâr ve hamleler açık alandakinin çok altında ölçülüyor; sıcaklık sensörü doğrudan güneşte ısınıyor; yağış ölçer de yakındaki istasyonların kaydettiği yağışı kaçırdı. Modeller istasyonun ölçtüğünü öğrenir, yani puanları bu noktayı olduğu gibi anlatır. Sensörleri bir direğe taşımak ve sıcaklık sensörüne radyasyon siperi takmak bunların çoğunu çözer.",
+    "issuesText": "İstasyon bir pencerede duruyor: bina rüzgârı kesiyor, güneş sıcaklık sensörünü ısıtıyor ve yağmur ölçer bazı yağışları kaçırdı. Bir direk ve radyasyon kalkanı bunların çoğunu çözer.",
     "dashboard": {
       "loading": "yükleniyor…",
       "noData": "henüz veri yok",
       "nowTitle": "Şu anki durum",
       "minutesAgo": "{minutes} dk önce",
-      "nowCaption": "İstasyon ölçümleri, her dakika yenilenir. Sensörler binaya yakın; bu yüzden rüzgâr açık alandakinden düşük, sıcaklık doğrudan güneşte yüksek ölçülür.",
+      "nowCaption": "Her dakika güncellenir. Sensörler binanın yanında olduğu için rüzgâr düşük, sıcaklık yüksek ölçülür.",
       "tiles": {
         "temp": "Sıcaklık",
         "wind": "Rüzgâr",
@@ -451,32 +349,32 @@
         "updated": "Son ölçüm"
       },
       "hourlyTitle": "Önümüzdeki 24 saatin tahmini",
-      "hourlyText": "Düz çizgi beklenen rüzgârı, kesikli çizgi hamleleri, çubuklar her saatteki yağış olasılığını gösterir. Tablo aynı tahmini saat saat verir. Varsayılan olarak Çevrimiçi karışımı gösterir; düğmelerle tek bir modele geçebilirsiniz.",
-      "hourlyCaption": "{time} saatinde {method} tarafından yayımlandı. Rüzgâr ve hamle m/s; oklar rüzgârın estiği yönü gösterir.",
+      "hourlyText": "Çizgi: rüzgâr. Kesikli: hamle. Çubuklar: yağış olasılığı. Bir model seçmezseniz Çevrimiçi karışım gösterilir.",
+      "hourlyCaption": "{time} itibarıyla {method} tahmini. Rüzgâr ve hamle m/s cinsinden; oklar rüzgârın estiği yönü gösterir.",
       "sourceLabel": "Tahmin",
       "variableLabel": "Değişken",
       "successTitle": "Tahminler ne sıklıkla doğru çıkıyor",
-      "successText": "Her tahmin yapıldığı anda saklanır ve saati geçince istasyonun ölçümüyle karşılaştırılır. Rüzgâr tahmini, ölçülen saatlik ortalamaya 1 m/s yakınsa, hamle tahmini 2 m/s yakınsa, yağış tahmini de yağış olup olmayacağını doğru bildiyse doğru sayılır. Hedefimiz her model ve her süre için %85–90: yeşil hedefte, sarı yakın, kırmızı altında.",
+      "successText": "Rüzgâr 1 m/s, hamle 2 m/s içinde kalırsa ya da yağış olup olmayacağı doğru bilinirse tahmin doğru sayılır. Hedef: %85–90. Yeşil hedefte, sarı yakın, kırmızı altında.",
       "bands": {
         "1": "1 sa ileri",
         "2-6": "2–6 sa ileri",
         "7-24": "7–24 sa ileri"
       },
       "reference": "referans",
-      "successCaption": "Son {days} gün, {hours} ölçülmüş saat. Her hücre doğru tahminlerin oranını ve sayısını verir; doğru, ±{tol} m/s içinde demektir. Gri satırlar bizim modellerimiz değil, referanstır: “Değişim yok” son saati tekrarlar, iki hava servisi bu bölge için ham tahminleridir.",
-      "successCaptionRain": "Son {days} gün, {hours} ölçülmüş saat; yağış ölçerimize göre {wet} tanesi yağışlı. Yağış ölçer yakındaki istasyonların kaydettiği yağışı kaçırdı; bu yüzden düzeltilene kadar bu yağış puanları güvenilir değil.",
+      "successCaption": "Son {days} gün, kontrol edilen {hours} saat; doğru, ±{tol} m/s içinde demektir. Gri satırlar referanstır: “Değişim yok” son saati tekrarlar, hava servisleri ham tahminleridir.",
+      "successCaptionRain": "Son {days} gün, kontrol edilen {hours} saat, bunların {wet} tanesi yağışlı. Yağmur ölçer bazı yağışları kaçırdı; bu skorlar henüz güvenilir değil.",
       "noScoresYet": "Henüz kontrol edilmiş tahmin yok.",
       "table": {
         "method": "Model"
       },
       "verifyTitle": "Tahminler ve ölçümler",
-      "verifyText": "Her renkli çizgi, bir modelin her saat için 1, 6 veya 24 saat önceden yaptığı tahmini gösterir. Siyah çizgi istasyonun sonra ölçtüğüdür. Çizgi siyahı ne kadar yakından izlerse model o kadar iyi iş çıkarmıştır.",
+      "verifyText": "Renkli çizgiler tahminler, siyah çizgi istasyonun ölçtüğüdür.",
       "madeBefore": "{hours} sa önce",
       "verifyNone": "Bu dönemde henüz kontrol edilmiş tahmin yok.",
       "verifyExample": "Örneğin {time} için {method}, {hours} sa önceden {pred} {unit} tahmin etti; istasyon {obs} {unit} ölçtü, fark {diff}.",
       "verifyCaption": "{hours} sa önceden yapılan tahminler, son 48 saat.",
       "compareTitle": "Her modelin en son tahmini",
-      "compareText": "Tüm modellerin en son tahmini yan yana. Kesikli çizginin solu son günün ölçümü, sağı tahmindir. Çizgilerin uyuştuğu yerde tahmin daha kesindir.",
+      "compareText": "Kesikli çizginin solu son günün ölçümü, sağı tahmindir.",
       "groups": {
         "single": "Tekil",
         "hybrid": "Hibrit",
@@ -493,7 +391,7 @@
         "none": "henüz tahmin yok"
       },
       "historyTitle": "Ölçülen veriler",
-      "historyCaption": "Rüzgâr 10 dakikalık ortalama, hamle her 10 dakikadaki en güçlü 3 saniyelik hamledir. Boşluklar ölçüm gelmediği anlamına gelir.",
+      "historyCaption": "Rüzgâr 10 dakikalık ortalama, hamle en güçlü 3 saniyelik hamledir. Boşluklar veri olmadığını gösterir.",
       "range": {
         "24": "24 sa",
         "168": "7 gün",
@@ -537,13 +435,13 @@
         "online": "Çevrimiçi · Karışım"
       },
       "weightsTitle": "Çevrimiçi karışım modelleri nasıl tartıyor",
-      "weightsText": "Çevrimiçi karışım, her modele son günlerde ne kadar yakın çıktığına göre bir pay verir; her süre için ayrı ayrı. Bu korunaklı noktada ham hava servisi gibi çok sapan bir model neredeyse hiç söz hakkı alamaz.",
+      "weightsText": "Her modelin Çevrimiçi karışımdaki payı; her süre için son dönemdeki isabetine göre.",
       "weightsCaption": "{variable} tahmini için şu anki paylar.",
       "noWeightsYet": "Henüz geçmiş yok.",
       "ahead": "{hours} sa ileri",
       "testedTitle": "Yayına almadan önce test",
-      "testedText": "LightGBM modellerini yayına almadan önce, eğitimde görmedikleri son altı aylık yakın istasyon verisiyle test ettik. Çubuklar, hatalarının hiçbir şeyin değişmeyeceğini varsaymaya göre ne kadar küçük olduğunu gösterir.",
-      "testedCaption": "Test dönemi Ocak–Temmuz 2026, 12–13 istasyon. Çubuklar −%60'ta kesildi; ham hava servisi kısa vadede çok sapar, çünkü tek bir noktayı değil bir ızgara hücresini tahmin eder.",
+      "testedText": "LightGBM, görmediği altı aylık yakın istasyon verisiyle test edildi: hatası, değişim olmadığını varsaymaya göre ne kadar küçük.",
+      "testedCaption": "Ocak–Temmuz 2026, 12–13 istasyon. Çubuklar −%60’ta kesilir.",
       "wind": {
         "calm": "Sakin",
         "lightAir": "Neredeyse sakin",
@@ -554,6 +452,63 @@
         "strongBreeze": "Kuvvetli rüzgâr",
         "gale": "Fırtına"
       }
+    },
+    "models": {
+      "single": {
+        "name": "Tekil",
+        "text": "İstasyonun kendi verisiyle LightGBM ve SARIMA. Bir iki saat sonrası için en iyisi."
+      },
+      "hybrid": {
+        "name": "Hibrit",
+        "text": "Open-Meteo tahmininden başlar ve bu noktanın ondan farkını öğrenir. 6–24 saat ilerisi için en iyisi."
+      },
+      "online": {
+        "name": "Çevrimiçi",
+        "text": "Her saat öğrenen bir River modeli ve son dönemde en isabetli modele ağırlık veren bir karışım."
+      },
+      "training": {
+        "name": "Eğitim",
+        "text": "LightGBM, yakındaki 13 istasyonun 11 yıllık verisiyle önceden eğitildi; her gece kendi verimizle ince ayar yapılıyor."
+      }
+    },
+    "station": {
+      "board": {
+        "label": "Kart",
+        "value": "ESP32"
+      },
+      "wind": {
+        "label": "Rüzgâr",
+        "value": "Kepçeli anemometre ve rüzgâr yön göstergesi"
+      },
+      "rain": {
+        "label": "Yağış",
+        "value": "Devrilen kovalı yağmur ölçer"
+      },
+      "air": {
+        "label": "Hava",
+        "value": "BME280: sıcaklık, nem, basınç"
+      },
+      "link": {
+        "label": "Veri bağlantısı",
+        "value": "İmzalı ölçümler USB ile Raspberry Pi'ye"
+      },
+      "server": {
+        "label": "Sunucu",
+        "value": "PostgreSQL ile AWS, saatlik tahmin"
+      }
     }
+  },
+  "Credentials": {
+    "label": "Programlar ve yayınlar",
+    "itea": "AB ITEA",
+    "iteaNote": "ADVISOR programı",
+    "radarconf": "IEEE RadarConf 2025",
+    "radarconfNote": "Çok statik takip, Krakov",
+    "siu": "IEEE SIU 2025",
+    "siuNote": "UWB ile düşme tespiti"
+  },
+  "ContactCta": {
+    "heading": "Otonomi ya da algılama üzerine mi çalışıyorsunuz? Konuşalım.",
+    "button": "Bize ulaşın"
   }
 }

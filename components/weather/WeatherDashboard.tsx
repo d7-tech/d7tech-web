@@ -388,8 +388,8 @@ export default function WeatherDashboard() {
       active ? 'border-brand bg-brand text-white' : 'border-line bg-white text-ink-soft hover:border-ink-muted hover:text-ink'
     }`;
   const box = 'rounded-md border border-line bg-white';
-  const h2 = 'text-[1.35rem] mb-3';
-  const para = 'text-[17px] leading-[1.75] mb-5';
+  const h2 = 'text-2xl sm:text-[1.75rem] mb-3';
+  const para = 'text-lg text-ink-soft max-w-2xl mb-5';
   const cap = 'mt-2.5 text-sm text-ink-muted leading-relaxed';
 
   return (

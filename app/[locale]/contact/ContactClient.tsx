@@ -70,7 +70,7 @@ export default function ContactClient() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
       <h1 id="contact-heading">{t('heroTitle')}</h1>
-      <p className="mt-4 text-lg text-ink-soft max-w-xl">{t('heroDescription')}</p>
+      <p className="mt-4 text-xl text-ink-muted max-w-xl">{t('heroDescription')}</p>
 
       <div className="mt-12 border-t border-line pt-12 grid gap-12 lg:grid-cols-[1fr_1.6fr]">
         <div className="space-y-8">

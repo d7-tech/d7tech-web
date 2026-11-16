@@ -7,7 +7,12 @@
     "contactUs": "Contact Us",
     "overview": "Overview",
     "backToProjects": "All Projects",
-    "viewProject": "View Project"
+    "viewProject": "View Project",
+    "factStatus": "Status",
+    "factStart": "Started",
+    "factArea": "Area",
+    "factTech": "Technologies",
+    "publications": "Publications"
   },
   "StatusBadge": {
     "active": "Active",
@@ -21,118 +26,82 @@
     "closeMenu": "Close menu",
     "projects": "Projects",
     "about": "About",
-    "careers": "Careers",
-    "getInTouch": "Get in Touch",
     "contact": "Contact"
   },
   "Footer": {
-    "tagline": "Designing intelligent autonomous platforms and advanced sensing technologies for real-world applications.",
-    "status": "// SYS:ONLINE",
-    "company": "Company",
-    "projects": "Projects",
-    "connect": "Connect",
+    "tagline": "Autonomous systems and sensing. Istanbul, Türkiye.",
     "rights": "D7 Technology. All rights reserved.",
     "links": {
       "about": "About",
       "projects": "Projects",
       "careers": "Careers",
       "contact": "Contact"
-    },
-    "projectLinks": {
-      "wearableSensors": "Wearable Sensors",
-      "advisorAsv": "ADVISOR ASV",
-      "multiStaticRadar": "Multi-Static Radar",
-      "underwaterGliders": "Underwater Gliders",
-      "warehouseAutomation": "Warehouse Automation",
-      "microClimate": "Micro-Climate Forecasting"
     }
   },
   "Hero": {
-    "label": "// Autonomous Systems & Sensing",
-    "headline": "D7 Technology designs intelligent autonomous platforms and advanced sensing technologies for real world applications.",
-    "subtext": "From research to field deployment — autonomous platforms and sensing systems built for the real world.",
-    "viewProjects": "View Projects",
-    "contactUs": "Contact Us",
-    "scroll": "Scroll",
-    "ticker": {
-      "sensorFusion": "SENSOR FUSION",
-      "autonomousVehicles": "AUTONOMOUS VEHICLES",
-      "radarSonar": "RADAR & SONAR",
-      "aiMl": "AI / ML",
-      "wearableSensors": "WEARABLE SENSORS",
-      "systemIntegration": "SYSTEM INTEGRATION",
-      "perceptionSystems": "PERCEPTION SYSTEMS",
-      "deepTechRd": "DEEP-TECH R&D"
-    }
+    "headline": "Autonomous systems and sensing, tested in the field.",
+    "subtext": "We develop autonomous vessels, radar and sensor systems in Istanbul.",
+    "viewProjects": "Our projects",
+    "contactUs": "Contact us",
+    "photoCaption": "ADVISOR autonomous surface vehicle"
   },
   "ExpertiseGrid": {
-    "sectionLabel": "// 01 — CAPABILITIES",
-    "heading": "Areas of Expertise",
-    "description": "From signal processing to autonomous navigation — our capabilities span the full stack of advanced sensing and intelligent systems.",
+    "heading": "What we work on",
     "items": {
       "sensorSystems": {
-        "title": "Sensor Systems & IoT",
-        "description": "Design and deployment of distributed sensor networks, edge devices, and IoT architectures for real-time data acquisition and monitoring."
+        "title": "Sensor networks and IoT",
+        "description": "Field devices, edge computing and live data."
       },
       "autonomousVehicles": {
-        "title": "Autonomous Vehicles",
-        "description": "Development of autonomous platforms including ground, surface, and maritime vehicles, covering perception, navigation, and decision making."
+        "title": "Autonomous vehicles",
+        "description": "Surface and underwater platforms: perception, navigation, control."
       },
       "radarSonar": {
-        "title": "Radar & Sonar Systems",
-        "description": "Signal processing, detection, and tracking algorithms for radar and sonar-based sensing in complex and cluttered environments."
+        "title": "Radar and sonar",
+        "description": "Detection and tracking in cluttered environments."
       },
       "sensorFusion": {
-        "title": "Sensor Fusion & Target Tracking",
-        "description": "Multi-sensor data fusion and target tracking solutions using probabilistic filtering and AI-based approaches for robust situational awareness."
+        "title": "Sensor fusion and tracking",
+        "description": "Many sensors combined into one reliable picture."
       },
       "aiMl": {
-        "title": "AI & Machine Learning",
-        "description": "Application of machine learning and AI methods for perception, anomaly detection, prediction, and intelligent decision support."
+        "title": "AI and machine learning",
+        "description": "Forecasting, classification and decision support."
       },
       "systemIntegration": {
-        "title": "System Integration & Prototyping",
-        "description": "End-to-end integration of sensors, algorithms, and platforms — from simulation to real-world prototyping and field testing."
+        "title": "Prototyping and testing",
+        "description": "From simulation to field trials."
       }
     }
   },
   "FeaturedProjects": {
-    "sectionLabel": "// 02 — PROJECTS",
-    "heading": "Selected Work",
-    "description": "Research and engineering projects spanning autonomous systems, sensing, and AI.",
-    "allProjects": "All Projects"
-  },
-  "Newsletter": {
-    "sectionLabel": "// FOLLOW OUR WORK",
-    "heading": "Stay in the loop",
-    "description": "We share updates on autonomous systems, sensing research, and field results as our work progresses. LinkedIn is the best place to follow along.",
-    "followLinkedin": "Follow on LinkedIn",
-    "getInTouch": "Get in Touch"
+    "heading": "Projects",
+    "allProjects": "All projects"
   },
   "ProjectData": {
     "wearable-sensors": {
       "title": "Wearable Sensors & Performance Analysis",
-      "subtitle": "UWB and IMU-based human motion tracking and performance analysis"
+      "subtitle": "UWB and IMU motion tracking and fall detection"
     },
     "advisor": {
       "title": "ADVISOR: Autonomous Surface Ship for Guidance",
-      "subtitle": "EU ITEA Program — Escort-type Autonomous Surface Vehicle"
+      "subtitle": "Escort-type autonomous surface vehicle, EU ITEA programme"
     },
     "multistatic": {
       "title": "Multi-Static Radar Systems",
-      "subtitle": "Spatially distributed radar for multi-target tracking and spatial diversity"
+      "subtitle": "Distributed radar for multi-target tracking"
     },
     "underwater-gliders": {
       "title": "Autonomous Underwater Gliders",
-      "subtitle": "Long-endurance autonomous platforms for underwater exploration and sensing"
+      "subtitle": "Long-endurance platforms for underwater sensing"
     },
     "warehouse-automation": {
       "title": "Warehouse Automation & Order Picking",
-      "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking"
+      "subtitle": "Reinforcement learning for multi-vehicle order picking"
     },
     "micro-climate": {
       "title": "Micro-Climate Forecasting: Rain & Wind",
-      "subtitle": "A live weather station with Single, Hybrid and Online forecasts for 1, 6 and 24 hours"
+      "subtitle": "Our own weather station and hourly rain and wind forecasts"
     }
   },
   "HomePage": {
@@ -146,48 +115,20 @@
       "title": "About D7 Technology",
       "description": "D7 Technology is a deep-tech R&D company specializing in autonomous vehicles, radar/sonar, AI/ML, sensor fusion, and wearable sensors. Based in Istanbul, Turkiye."
     },
-    "heroLabel": "// ABOUT US",
-    "heroTitle": "About D7 Technology",
-    "heroDescription": "We are a deep-tech research and engineering company building the sensing and autonomy technologies that will define the next generation of intelligent systems.",
-    "missionLabel": "// MISSION",
-    "missionTitle": "Engineering intelligence into the physical world",
-    "missionP1": "D7 Technology exists to close the gap between advanced research and real-world systems. We combine rigorous signal processing, modern machine learning, and engineering discipline to build platforms that operate reliably in demanding environments.",
-    "missionP2": "Our work spans autonomous surface vessels, multi-static radar tracking, wearable sensor systems, and AI-driven perception — all grounded in peer-reviewed research and tested in the field.",
-    "missionP3": "We operate at the frontier of deep technology — and we build to the standard where research meets deployment.",
-    "teamLabel": "// TEAM",
-    "teamTitle": "The People Behind D7",
-    "teamLinkedIn": "LinkedIn ↗",
-    "historyLabel": "// HISTORY",
+    "heroTitle": "About us",
+    "heroDescription": "D7 Technology is an R&D company in Istanbul working on autonomous systems and sensing.",
+    "missionTitle": "What we do",
+    "teamTitle": "Team",
     "historyTitle": "Milestones",
-    "valuesLabel": "// VALUES",
-    "valuesTitle": "What We Stand For",
-    "values": {
-      "innovation": {
-        "title": "Innovation",
-        "desc": "Pushing boundaries in sensing and autonomy through rigorous R&D and novel algorithmic approaches."
-      },
-      "rigor": {
-        "title": "Rigor",
-        "desc": "Rigorous standards in research methodology — from mathematical modeling to empirical field validation."
-      },
-      "impact": {
-        "title": "Real-World Impact",
-        "desc": "Every project targets practical deployment — we build things that work outside the lab."
-      },
-      "openScience": {
-        "title": "Open Science",
-        "desc": "Contributing to the global research community through peer-reviewed publications and open collaboration."
-      }
-    },
     "timeline": {
       "year2025Label": "2025",
-      "year2025e1": "IEEE publication: Fall Detection Using UWB Data (SIU 2025)",
-      "year2025e2": "IEEE publication: Multi-Static Multi-Target Tracking (RadarConf25, Krakow)",
+      "year2025e1": "IEEE SIU 2025: Fall Detection Using UWB Data",
+      "year2025e2": "IEEE RadarConf25, Kraków: multi-static multi-target tracking",
       "yearJan2026Label": "Jan 2026",
-      "yearJan2026e1": "ADVISOR EU ITEA project initiated — autonomous surface vessel program",
+      "yearJan2026e1": "ADVISOR project starts (EU ITEA)",
       "year2026Label": "2026",
-      "year2026e1": "D7 Technology founded — Istanbul, Turkiye",
-      "year2026e2": "Ongoing R&D across sensing, autonomous systems, and AI/ML"
+      "year2026e1": "D7 Technology founded in Istanbul",
+      "year2026e2": "Ongoing R&D in sensing, autonomy and AI"
     },
     "team": {
       "ahmet": {
@@ -214,40 +155,29 @@
         "name": "Yusuf Erkoç",
         "role": "Undergraduate Mechanical Engineer"
       }
-    }
+    },
+    "missionText": "We turn research in signal processing and machine learning into systems that work outside the lab: autonomous vessels, radar tracking, wearable sensors and local weather forecasting. Our results are published at IEEE conferences and tested in the field."
   },
   "CareersPage": {
     "metadata": {
       "title": "Careers at D7 Technology",
       "description": "No open positions at the moment — but we are always interested in exceptional engineers and researchers. Reach out."
     },
-    "heroLabel": "// JOIN THE TEAM",
     "heroTitle": "Careers",
-    "heroDescription": "We are building serious engineering — and we need serious engineers. Work on autonomous systems, sensing, and AI problems that matter.",
-    "statusLabel": "// STATUS",
-    "noPositions": "No open positions",
-    "rolesTitle": "New roles will be announced here.",
-    "rolesDescription": "We are not actively hiring right now, but that changes as our projects scale. Check back — or better yet, reach out before we post.",
-    "ctaLabel": "// OPEN APPLICATION",
-    "ctaTitle": "Exceptional engineers don't wait.",
-    "ctaDescription": "If you work on autonomous systems, perception, or sensor fusion at a high level — we want to hear from you. Drop us a message and include a link to your CV or LinkedIn.",
-    "ctaButton": "Get in Touch"
+    "heroDescription": "We have no open positions right now. If you work on autonomy, perception or sensor fusion, send us your CV anyway.",
+    "ctaButton": "Get in touch"
   },
   "ContactPage": {
     "metadata": {
       "title": "Contact D7 Technology",
       "description": "Get in touch with D7 Technology for inquiries, collaborations, research partnerships, or career opportunities."
     },
-    "heroLabel": "// GET IN TOUCH",
     "heroTitle": "Contact",
-    "heroDescription": "Inquiries, collaborations, research partnerships, or just to say hello.",
-    "reachOut": "Reach Out",
-    "websiteLabel": "Website",
+    "heroDescription": "Questions, collaborations or research partnerships.",
     "locationLabel": "Location",
-    "locationValue": "Istanbul, Turkiye",
+    "locationValue": "Istanbul, Türkiye",
     "followUs": "Follow Us",
-    "responseTimeLabel": "// Response Time",
-    "responseTimeText": "We typically respond within 1–2 business days. For urgent matters, reach out via LinkedIn.",
+    "responseTimeText": "We usually reply within two working days.",
     "nameLabel": "Name",
     "emailLabel": "Email",
     "subjectLabel": "Subject",
@@ -268,7 +198,6 @@
     "validationMessageMin": "Message must be at least 20 characters",
     "successTitle": "Message Sent",
     "successDescription": "Thank you for reaching out. We will get back to you shortly.",
-    "successLabel": "// MESSAGE RECEIVED",
     "sendAnother": "Send another message"
   },
   "ProjectsPage": {
@@ -276,14 +205,13 @@
       "title": "Projects",
       "description": "Explore D7 Technology's research and engineering projects in autonomous systems, sensing, and AI."
     },
-    "sectionLabel": "// RESEARCH & ENGINEERING",
     "title": "Projects",
-    "description": "Research and engineering across autonomous systems, sensing, and AI — from early-stage prototype to field deployment.",
+    "description": "Autonomous systems, sensing and AI, from prototype to field test.",
     "filterAll": "All",
     "filterAutonomous": "Autonomous Systems",
     "filterSensing": "Sensing",
     "filterAiMl": "AI / ML",
-    "empty": "// No projects in this category yet."
+    "empty": "No projects in this category yet."
   },
   "AdvisorPage": {
     "metadata": {
@@ -291,18 +219,14 @@
       "description": "EU ITEA Program — Escort-type Autonomous Surface Vehicle for cooperative navigation in constrained maritime environments."
     },
     "title": "ADVISOR: Autonomous Surface Ship for Guidance",
-    "subtitle": "EU ITEA Program — Escort-type Autonomous Surface Vehicle",
-    "prjId": "PRJ-002",
-    "sectionLabel": "// AUTONOMOUS SYSTEMS · EU ITEA",
-    "present": "Present",
-    "overviewTitle": "Overview",
-    "overviewText": "ADVISOR is an escort-type Autonomous Surface Vehicle (ASV) developed under the EU ITEA program, focusing on autonomous guidance and cooperative navigation in constrained maritime environments including harbors and near-shore areas. The project emphasizes supervised autonomy — where human oversight coexists with automated decision-making — to enable safe, reliable operation in dynamic and cluttered waterways. Field validation is a central component of the program.",
-    "fieldTrialTitle": "Field Trial Setup",
-    "fieldTrialText": "Field trials are conducted in representative maritime environments to validate navigation algorithms, sensor fusion performance, and autonomous decision-making under real operational conditions. The ASV undergoes structured test scenarios including convoy operations, obstacle avoidance, and return-to-base maneuvers.",
-    "fieldTrialCaption": "ADVISOR field trial — autonomous surface vessel in harbor environment",
+    "subtitle": "Escort-type autonomous surface vehicle, EU ITEA programme",
+    "overviewText": "ADVISOR is an escort-type autonomous surface vehicle developed in the EU ITEA programme. It guides and escorts vessels in harbours and near-shore waters, with a human supervising.",
+    "fieldTrialTitle": "Field trials",
+    "fieldTrialText": "Navigation, sensor fusion and decision-making are tested in real harbour conditions: convoy runs, obstacle avoidance and return to base.",
+    "fieldTrialCaption": "Field trial setup in a harbour",
     "fieldTrialImageAlt": "Autonomous surface vehicle — Maritime Robotics platform for harbor and escort trials",
-    "navTitle": "Navigation in Dynamic Environments",
-    "navText": "The ADVISOR platform integrates a comprehensive multi-modal sensor suite to achieve robust situational awareness in complex, dynamic maritime environments. Sensor data is fused in real time to support obstacle detection, path planning, and adaptive navigation.",
+    "navTitle": "Sensors",
+    "navText": "Six sensor types are fused in real time for obstacle detection and path planning.",
     "sensorTableLabel": "Sensor suite specifications",
     "sensorColSensor": "Sensor",
     "sensorColSystem": "System",
@@ -319,9 +243,8 @@
     "radarDesc": "All-weather obstacle detection",
     "metFull": "Meteorological Sensors",
     "metDesc": "Wind speed, direction, temperature, pressure",
-    "bathyTitle": "Bathymetry Mapping & Environmental Data Collection",
-    "bathyText1": "In addition to navigation, ADVISOR collects environmental and oceanographic data during operations. Onboard meteorological sensors continuously monitor wind speed, wind direction, air temperature, and atmospheric pressure — providing contextual data that informs route planning and maneuverability analysis.",
-    "bathyText2": "Bathymetric mapping capabilities support harbor surveying and shallow-water navigation, contributing to a richer environmental model that enhances the ASV's autonomous decision-making.",
+    "bathyTitle": "Environmental data",
+    "bathyText1": "During operations the vessel also logs wind, air temperature, pressure and water depth for route planning and harbour surveys.",
     "bathyCaption": "Bathymetry and environmental data collection during field operations",
     "bathyImageAlt": "3D bathymetric map on a display: color-coded seafloor depths with survey overlays during operations"
   },
@@ -331,19 +254,15 @@
       "description": "Spatially distributed radar for multi-target tracking and spatial diversity — IEEE RadarConf25 research by D7 Technology."
     },
     "title": "Multi-Static Radar Systems",
-    "subtitle": "Spatially distributed radar for multi-target tracking and spatial diversity",
-    "prjId": "PRJ-003",
-    "sectionLabel": "// SENSING · TARGET TRACKING",
-    "overviewTitle": "Overview",
-    "overviewText": "Multi-static radar uses separated transmitters and receivers to observe targets from multiple aspect angles, improving detection robustness for low-RCS (Radar Cross Section) targets and reducing sensitivity to clutter, interference, and stealth shaping. By exploiting spatial diversity, multi-static configurations overcome fundamental limitations of monostatic radar and provide richer measurement geometry for target tracking and classification.",
-    "simulationTitle": "Simulation Map",
-    "simulationText": "Simulation environments model the geometric distribution of radar nodes, target trajectories, and measurement uncertainty. Monte Carlo trials across diverse target scenarios are used to validate plot fusion algorithms and assess tracking performance metrics including detection probability, false alarm rate, and positional accuracy.",
-    "simulationCaption": "Multi-static radar simulation map — node distribution and target tracking scenario",
+    "subtitle": "Distributed radar for multi-target tracking",
+    "overviewText": "Multi-static radar places transmitters and receivers at different sites, so each target is seen from several angles. Small, low-RCS targets become easier to detect, and the system is less sensitive to clutter and interference.",
+    "simulationTitle": "Simulation",
+    "simulationText": "Plot-fusion algorithms are tested in Monte Carlo runs, measuring detection rate, false alarms and position error.",
+    "simulationCaption": "Simulation map: radar nodes and target tracks",
     "simulationImageAlt": "Multi-panel simulation maps: atmospheric and polarimetric radar fields over west-east and south-north distance in kilometers",
-    "demoTitle": "Multi-Static Systems Demo",
-    "demoText": "The following demonstration illustrates the multi-static radar system processing pipeline, including plot-level data fusion, track initiation, and multi-target tracking performance in a simulated scenario.",
-    "demoIframeTitle": "Multi-Static Radar Demo",
-    "publicationsLabel": "IEEE publications"
+    "demoTitle": "Demo",
+    "demoText": "Plot fusion, track initiation and multi-target tracking in a simulated scenario.",
+    "demoIframeTitle": "Multi-Static Radar Demo"
   },
   "WearableSensorsPage": {
     "metadata": {
@@ -351,24 +270,20 @@
       "description": "UWB and IMU-based human motion tracking and performance analysis research by D7 Technology. IEEE SIU 2025 publication."
     },
     "title": "Wearable Sensors & Performance Analysis",
-    "subtitle": "UWB and IMU-based human motion tracking and performance analysis",
-    "prjId": "PRJ-001",
-    "sectionLabel": "// SENSING · HEALTH & SPORTS",
-    "overviewTitle": "Overview",
-    "overviewText": "Research into wearable sensor systems combining UWB (Ultra-Wideband) and IMU (Inertial Measurement Unit) technologies for precise human motion tracking, fall detection, and sports performance analysis. This project spans controlled lab environments and real-world field experiments.",
-    "localizationTitle": "Controlled Localization Test Setup",
-    "localizationText": "A structured indoor test environment was established to validate UWB-based localization accuracy under controlled conditions. Multiple anchor nodes were positioned in a calibrated grid, enabling sub-decimeter positional accuracy measurements. IMU data was synchronized to provide complementary inertial measurements for motion state classification.",
+    "subtitle": "UWB and IMU motion tracking and fall detection",
+    "overviewText": "Wearable UWB and IMU sensors that track human motion, detect falls and measure athletic performance.",
+    "localizationTitle": "Lab tests",
+    "localizationText": "UWB anchors on a calibrated indoor grid give sub-decimetre position accuracy, with synchronised IMU data for motion detail.",
     "localizationImageAlt": "Workstation display showing a precision localization and tracking interface used in controlled indoor tests",
-    "localizationCaption": "Controlled localization test environment with UWB anchor placement",
-    "motionTitle": "Data Driven Motion Evaluation",
-    "motionText": "Collected sensor data was processed through machine learning pipelines to classify motion states, detect anomalies such as falls, and evaluate athletic performance metrics. The fusion of UWB positional data and IMU acceleration/gyroscope readings enables robust discrimination between normal activity and fall events with high sensitivity and specificity.",
+    "localizationCaption": "Indoor test setup with UWB anchors",
+    "motionTitle": "Motion analysis",
+    "motionText": "Machine learning on the fused UWB and IMU data classifies movement and separates falls from normal activity.",
     "motionImageAlt": "Abstract visualization representing large-scale motion and sensor-derived data for analysis pipelines",
-    "motionCaption": "Motion evaluation pipeline — sensor fusion and ML classification results",
-    "fieldTitle": "Field Experiments",
-    "fieldText": "Real-world trials were conducted in sports and healthcare settings to validate system performance outside controlled laboratory conditions. Field experiments tested the system's robustness to multipath propagation, body occlusion, and varying environmental conditions, demonstrating reliable fall detection and performance analysis in practical deployments.",
+    "motionCaption": "Motion classification results",
+    "fieldTitle": "Field tests",
+    "fieldText": "Trials in sports and healthcare settings tested the system against multipath, body blocking and changing conditions.",
     "fieldImageAlt": "Athlete on an indoor court wearing ankle-mounted sensors during a motion capture style field experiment",
-    "fieldCaption": "Field experiment setup — real-world wearable sensor deployment",
-    "publicationsLabel": "IEEE publications"
+    "fieldCaption": "Field test with ankle-mounted sensors"
   },
   "UnderwaterGlidersPage": {
     "metadata": {
@@ -376,13 +291,10 @@
       "description": "Long-endurance autonomous platforms for underwater exploration and sensing — upcoming research by D7 Technology."
     },
     "title": "Autonomous Underwater Gliders",
-    "subtitle": "Long-endurance autonomous platforms for underwater exploration and sensing",
-    "description": "Development of autonomous underwater glider platforms for long-endurance ocean monitoring, environmental data collection, and subsea sensing. Focuses on energy-efficient propulsion, navigation in dynamic underwater environments, and real-time data transmission.",
-    "prjId": "PRJ-004",
-    "sectionLabel": "// AUTONOMOUS SYSTEMS · UNDERWATER",
-    "statusLabel": "// STATUS: IN DEVELOPMENT",
-    "researchTitle": "Research In Progress",
-    "updatesComingSoon": "Updates coming soon"
+    "subtitle": "Long-endurance platforms for underwater sensing",
+    "description": "Underwater gliders for long-term ocean monitoring and subsea sensing, with low-power propulsion and navigation.",
+    "researchTitle": "In development",
+    "updatesComingSoon": "More details soon."
   },
   "WarehouseAutomationPage": {
     "metadata": {
@@ -390,28 +302,22 @@
       "description": "Reinforcement learning and swarm optimization for multi-agent order picking in steel warehouses — research and simulation platform by D7 Technology."
     },
     "title": "Warehouse Automation & Order Picking",
-    "subtitle": "Reinforcement learning and swarm optimization for multi-agent order picking",
-    "prjId": "PRJ-005",
-    "sectionLabel": "// AI & MACHINE LEARNING · LOGISTICS",
-    "overviewTitle": "Overview",
-    "overviewText": "Order picking is the single most time-consuming operation in warehouse logistics. This project treats it as a multi-agent sequential decision problem: given a warehouse layout, a product catalog and a set of customer orders, several picking vehicles must be routed to collect every item and return to the exit in the shortest total time, without colliding in shared aisles. The work targets steel warehouses, where products are long profiles stored across multiple slots and a single order may span dozens of locations.",
-    "approachTitle": "Learning and Optimization Approaches",
-    "approachText": "Two families of algorithms are implemented against a common simulation environment so their results can be compared directly on the same layouts and order sets. The first is swarm-based: a time-dependent Ant Colony Optimization planner that builds a pheromone matrix over the warehouse grid and resolves collisions by treating occupancy as a function of time rather than space alone. The second is deep reinforcement learning — DQN, Dueling DQN, Double Dueling DQN and PPO agents, implemented in PyTorch, which learn a picking policy through repeated episodes instead of planning each route from scratch.",
-    "environmentTitle": "Simulation Environment",
-    "environmentText": "Warehouses are described as JSON grid maps defining dimensions, aisles, loading zones, entrances, exits and item locations. The reference layout models a real steel warehouse: a 30 × 28 grid holding 289 distinct product types, each stored across several slots and linked to live order identifiers. A smaller 12 × 7 layout is used for rapid iteration during training. The environment exposes a standard step-and-reward interface, so agents and classical planners can be swapped without changing the warehouse model.",
-    "platformTitle": "Simulation Platform",
-    "platformText": "The research code is wrapped in a browser-based platform that makes experiments repeatable without touching Python. Operators upload a warehouse map, choose a planning algorithm, set training hyperparameters — episode count, learning rate, discount factor, epsilon schedule, batch size — and either train a fresh policy or run an existing one. Simulation runs are rendered back as video for inspection.",
+    "subtitle": "Reinforcement learning for multi-vehicle order picking",
+    "overviewText": "Order picking is the slowest job in a warehouse. We route several picking vehicles through a steel warehouse so every order is collected in the shortest total time, without collisions in shared aisles.",
+    "approachTitle": "Algorithms",
+    "approachText": "A time-aware Ant Colony Optimization planner and deep reinforcement learning agents (DQN variants and PPO in PyTorch) run on the same layouts and orders, so they can be compared directly.",
+    "environmentTitle": "Simulation",
+    "environmentText": "Warehouses are JSON grid maps. The main layout models a real steel warehouse: a 30 × 28 grid with 289 product types.",
+    "platformTitle": "Web platform",
+    "platformText": "A browser app runs experiments without code: upload a map, choose an algorithm, set training parameters and watch the run as video.",
     "platformFigureAlt": "Warehouse automation platform: map selection table and algorithm choice between ACO, RL and PPO",
-    "platformFigureCaption": "Map selection and algorithm choice. Uploaded layouts are listed with their grid dimensions and product counts; ACO, RL and PPO can each be run against the same warehouse.",
-    "workflowTitle": "Two-Sided Workflow",
-    "workflowText": "The platform separates the people who define a warehouse from the people who order from it. On the operator side, warehouse maps and product catalogs are uploaded and managed directly or pulled from an existing endpoint. On the ordering side, a guided flow walks through selecting a warehouse, building an order from the catalog, choosing an algorithm and watching the resulting simulation.",
+    "platformFigureCaption": "Choosing a map and an algorithm",
     "workflowFigureAlt": "Operator panel listing uploaded warehouse maps with dimensions, product counts and status",
-    "workflowFigureCaption": "Operator panel. Warehouse layouts are uploaded as JSON and exposed to the ordering side, with product-type counts and last-updated timestamps.",
+    "workflowFigureCaption": "Operator panel with uploaded warehouse maps",
     "catalogFigureAlt": "Product catalog view showing steel profile product codes with per-item order quantities",
-    "catalogFigureCaption": "Order construction against the 289-product steel catalog. Items carry their source order identifiers, and per-item quantities feed the picking problem handed to the planner.",
-    "statusTitle": "Current Status",
-    "statusText": "The ACO planner runs against production-scale layouts, and the reinforcement learning agents train and execute on the same environment. Work continues on comparative benchmarking across layouts and order profiles, and on packaging the platform for a public demonstration deployment.",
-    "demoNote": "A public demonstration of the simulation platform is being prepared.",
+    "catalogFigureCaption": "Building an order from the 289-product catalog",
+    "statusTitle": "Status",
+    "statusText": "The ACO planner runs on full-size layouts and the RL agents train on the same environment. A public demo is in preparation.",
     "demoCta": "Try the Live Demo"
   },
   "MicroClimatePage": {
@@ -419,27 +325,19 @@
       "title": "Micro-Climate Forecasting: Rain & Wind",
       "description": "Live weather station data and rain and wind forecasts for the next 1, 6 and 24 hours — Single, Hybrid and Online models compared side by side, by D7 Technology."
     },
-    "prjId": "PRJ-006",
-    "sectionLabel": "// AI & MACHINE LEARNING · IOT SENSING",
     "title": "Micro-Climate Forecasting: Rain & Wind",
-    "subtitle": "A weather station on our office window in Istanbul, and wind and rain forecasts for that one spot for the next 24 hours.",
-    "overviewTitle": "Overview",
-    "overviewText": "In November 2026 we put a small weather station on the window of our office in Istanbul and connected it to our own server. The aim is to forecast wind and rain for this one spot, rather than for the several-kilometre grid cell a weather service covers. Every hour the server makes new forecasts with several models, and each forecast is kept so it can be checked against what the station measures once the hour has passed. This page shows the readings, the latest forecast and how often each model has been right so far.",
-    "methodsTitle": "How the forecasts are made",
-    "methodsSingle": "Single models use only the station's own measurements: the last hours of wind, gust and rain, the pressure trend and the time of day. We run LightGBM (gradient-boosted decision trees) and SARIMA (a classical time-series model with a daily cycle). They are good for the next hour or two but cannot see weather that has not arrived yet.",
-    "methodsHybrid": "Hybrid models start from the weather-service forecast (the mean of three global models from Open-Meteo) and learn how this spot differs from it, for example that the building cuts the wind to a fraction. We run LightGBM with the forecast as an extra input, and SARIMAX. They are usually the best from 6 to 24 hours ahead.",
-    "methodsOnline": "Online models update after every hour instead of once a day. The River model learns from each new measurement as it arrives, and the Online blend mixes all the forecasts above, plus the Weather.com daily forecast, giving more weight to whichever has been closest lately.",
-    "methodsTraining": "Both LightGBM models were first trained on 11 years of data from 13 nearby Weather Underground stations, so they could forecast from the first day. Once the station has a week of its own data, they are fine-tuned on it every night.",
-    "stationTitle": "Station and data path",
-    "stationText": "The station runs on an ESP32 with a cup anemometer, a wind vane, a tipping-bucket rain gauge and a BME280 sensor for temperature, humidity and pressure. It signs each reading with a secret key and sends it over USB to a Raspberry Pi, which forwards it to our server on AWS. The server stores the readings in PostgreSQL, downloads weather-service forecasts every hour and runs the models.",
+    "subtitle": "Our own weather station and hourly rain and wind forecasts for the next 24 hours.",
+    "overviewText": "A weather station on our office window in Istanbul sends its readings to our server. Every hour, several models forecast wind and rain for this exact spot, and each forecast is later checked against what the station measured.",
+    "methodsTitle": "Models",
+    "stationTitle": "The station",
     "issuesTitle": "Known limitations",
-    "issuesText": "For now the station sits on the office window, which limits what it can measure. The building shelters the anemometer, so wind and gusts read far below open-air values; the temperature sensor heats up in direct sun; and the rain gauge has missed rain that nearby stations recorded. The models learn what the station measures, so their scores describe this spot as it is. Moving the sensors onto a mast, with a radiation shield for the temperature sensor, would fix most of this.",
+    "issuesText": "The station sits on a window: the building blocks the wind, the sun heats the temperature sensor, and the rain gauge has missed some rain. A mast and a radiation shield would fix most of this.",
     "dashboard": {
       "loading": "loading…",
       "noData": "no data yet",
       "nowTitle": "Current conditions",
       "minutesAgo": "{minutes} min ago",
-      "nowCaption": "Station readings, refreshed every minute. The sensors sit close to the building, so wind reads lower than in open ground and the temperature rises in direct sun.",
+      "nowCaption": "Updated every minute. Wind reads low and temperature high because the sensors are next to the building.",
       "tiles": {
         "temp": "Temperature",
         "wind": "Wind",
@@ -451,32 +349,32 @@
         "updated": "Last reading"
       },
       "hourlyTitle": "Forecast for the next 24 hours",
-      "hourlyText": "The solid line is the expected wind, the dashed line the gusts and the bars the chance of rain in each hour. The table gives the same forecast hour by hour. It shows the Online blend by default; the buttons switch to a single model.",
-      "hourlyCaption": "Issued at {time} by {method}. Wind and gust in m/s; the arrows point the way the wind is blowing.",
+      "hourlyText": "Line: wind. Dashed: gusts. Bars: chance of rain. Shows the Online blend unless you pick a model.",
+      "hourlyCaption": "Issued at {time} by {method}. Wind and gust in m/s; arrows show where the wind blows.",
       "sourceLabel": "Forecast",
       "variableLabel": "Variable",
       "successTitle": "How often the forecasts are right",
-      "successText": "Every forecast is stored when it is made and compared with the station's measurement once its hour is over. A wind forecast counts as correct when it is within 1 m/s of the measured hourly mean, a gust forecast within 2 m/s, and a rain forecast when it called rain or no rain correctly. Our target is 85 to 90 % for every model at every horizon: green is on target, amber close, red below.",
+      "successText": "A forecast counts as right when wind is within 1 m/s, gusts within 2 m/s, or rain/no rain is called correctly. Target: 85–90 %. Green is on target, amber close, red below.",
       "bands": {
         "1": "1 h ahead",
         "2-6": "2–6 h ahead",
         "7-24": "7–24 h ahead"
       },
       "reference": "reference",
-      "successCaption": "Last {days} days, {hours} measured hours. Each cell gives the share of correct forecasts and the count; correct means within ±{tol} m/s. Grey rows are references, not our models: “No change” repeats the last hour, the two weather services are their raw forecasts for this area.",
-      "successCaptionRain": "Last {days} days, {hours} measured hours, {wet} of them wet according to our rain gauge. The gauge has missed rain that nearby stations recorded, so these rain scores are not reliable until it is fixed.",
+      "successCaption": "Last {days} days, {hours} hours checked; correct means within ±{tol} m/s. Grey rows are references: “No change” repeats the last hour, the weather services are their raw forecasts.",
+      "successCaptionRain": "Last {days} days, {hours} hours checked, {wet} of them wet. The rain gauge has missed some rain, so these scores are not reliable yet.",
       "noScoresYet": "No checked forecasts yet.",
       "table": {
         "method": "Model"
       },
       "verifyTitle": "Forecasts against measurements",
-      "verifyText": "Each coloured line shows what a model forecast for each hour, made 1, 6 or 24 hours before. The black line is what the station then measured. The closer a line follows the black one, the better that model did.",
+      "verifyText": "Coloured lines are forecasts, the black line is what the station measured.",
       "madeBefore": "{hours} h before",
       "verifyNone": "No checked forecasts in this period yet.",
       "verifyExample": "For example, for {time} {method} forecast {pred} {unit}, {hours} h in advance; the station measured {obs} {unit}, a difference of {diff}.",
       "verifyCaption": "Forecasts made {hours} h in advance, last 48 hours.",
       "compareTitle": "Latest forecast from each model",
-      "compareText": "Every model's latest forecast side by side. Left of the dashed line is the past day's measurement, right of it the forecast. Where the lines agree, the forecast is more certain.",
+      "compareText": "Left of the dashed line is the past day's measurement, right of it the forecast.",
       "groups": {
         "single": "Single",
         "hybrid": "Hybrid",
@@ -493,7 +391,7 @@
         "none": "no forecast yet"
       },
       "historyTitle": "Measured data",
-      "historyCaption": "Wind is the 10-minute mean, gust the strongest 3-second gust in each 10 minutes. Gaps mean no readings arrived.",
+      "historyCaption": "Wind is the 10-minute mean, gust the strongest 3-second gust. Gaps mean no data.",
       "range": {
         "24": "24 h",
         "168": "7 days",
@@ -537,13 +435,13 @@
         "online": "Online · Blend"
       },
       "weightsTitle": "How the Online blend weighs the models",
-      "weightsText": "The Online blend gives each model a share based on how close it has been over the last days, separately for each horizon. A model that has been far off, like the raw weather service at this sheltered spot, ends up with almost no say.",
+      "weightsText": "Each model's share in the Online blend, based on its recent accuracy at each horizon.",
       "weightsCaption": "Current shares for the {variable} forecast.",
       "noWeightsYet": "No record yet.",
       "ahead": "{hours} h ahead",
       "testedTitle": "Testing before going live",
-      "testedText": "Before the LightGBM models went live we tested them on the last six months of the nearby stations' data, which they had not seen in training. The bars show how much smaller their error was than assuming nothing changes.",
-      "testedCaption": "Test period January to July 2026, 12–13 stations. Bars are cut at −60 %; the raw weather service is far off at short range because it forecasts for a grid cell, not a single spot.",
+      "testedText": "LightGBM tested on six months of nearby-station data it had not seen: how much smaller its error was than assuming no change.",
+      "testedCaption": "January to July 2026, 12–13 stations. Bars are cut at −60 %.",
       "wind": {
         "calm": "Calm",
         "lightAir": "Almost calm",
@@ -554,6 +452,63 @@
         "strongBreeze": "Strong wind",
         "gale": "Gale"
       }
+    },
+    "models": {
+      "single": {
+        "name": "Single",
+        "text": "LightGBM and SARIMA on the station's own data. Best for the next hour or two."
+      },
+      "hybrid": {
+        "name": "Hybrid",
+        "text": "Start from the Open-Meteo forecast and learn how this spot differs. Best 6 to 24 hours ahead."
+      },
+      "online": {
+        "name": "Online",
+        "text": "A River model that learns every hour, and a blend that favours whichever model has been closest lately."
+      },
+      "training": {
+        "name": "Training",
+        "text": "LightGBM was pre-trained on 11 years of data from 13 nearby stations and is fine-tuned nightly on ours."
+      }
+    },
+    "station": {
+      "board": {
+        "label": "Board",
+        "value": "ESP32"
+      },
+      "wind": {
+        "label": "Wind",
+        "value": "Cup anemometer and wind vane"
+      },
+      "rain": {
+        "label": "Rain",
+        "value": "Tipping-bucket gauge"
+      },
+      "air": {
+        "label": "Air",
+        "value": "BME280: temperature, humidity, pressure"
+      },
+      "link": {
+        "label": "Data link",
+        "value": "Signed readings over USB to a Raspberry Pi"
+      },
+      "server": {
+        "label": "Server",
+        "value": "AWS with PostgreSQL, forecasts every hour"
+      }
     }
+  },
+  "Credentials": {
+    "label": "Programmes and publications",
+    "itea": "EU ITEA",
+    "iteaNote": "ADVISOR programme",
+    "radarconf": "IEEE RadarConf 2025",
+    "radarconfNote": "Multi-static tracking, Kraków",
+    "siu": "IEEE SIU 2025",
+    "siuNote": "Fall detection with UWB"
+  },
+  "ContactCta": {
+    "heading": "Working on autonomy or sensing? Let's talk.",
+    "button": "Contact us"
   }
 }
