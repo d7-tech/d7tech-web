@@ -20,8 +20,8 @@ export async function generateMetadata({
 interface TeamMember {
   name: string;
   role: string;
-  initials: string;
-  linkedin: string;
+  /** omitted when we have no profile link */
+  linkedin?: string;
 }
 
 export default async function AboutPage({ params }: { params: { locale: string } }) {
@@ -29,12 +29,12 @@ export default async function AboutPage({ params }: { params: { locale: string }
   const t = await getTranslations({ locale: params.locale, namespace: 'AboutPage' });
 
   const team: TeamMember[] = [
-    { name: t('team.ahmet.name'), role: t('team.ahmet.role'), initials: 'AG', linkedin: 'https://www.linkedin.com/in/ahmet-g%C3%BCne%C5%9F-phd-mba/' },
-    { name: t('team.bilal.name'), role: t('team.bilal.role'), initials: 'BB', linkedin: 'https://www.linkedin.com/in/bilal-bayram-6175a5307/' },
-    { name: t('team.berkant.name'), role: t('team.berkant.role'), initials: 'BK', linkedin: 'https://www.linkedin.com/in/berkant-kirikkanat-7a1934227/' },
-    { name: t('team.fehim.name'), role: t('team.fehim.role'), initials: 'FK', linkedin: 'https://www.linkedin.com/in/fehim-ku%C5%9F-a19006131/' },
-    { name: t('team.yigit.name'), role: t('team.yigit.role'), initials: 'YT', linkedin: 'https://www.linkedin.com/in/yigittilaver/' },
-    { name: t('team.yusuf.name'), role: t('team.yusuf.role'), initials: 'YE', linkedin: 'https://www.linkedin.com/' }
+    { name: t('team.ahmet.name'), role: t('team.ahmet.role'), linkedin: 'https://www.linkedin.com/in/ahmet-g%C3%BCne%C5%9F-phd-mba/' },
+    { name: t('team.bilal.name'), role: t('team.bilal.role'), linkedin: 'https://www.linkedin.com/in/bilal-bayram-6175a5307/' },
+    { name: t('team.fehim.name'), role: t('team.fehim.role'), linkedin: 'https://www.linkedin.com/in/fehim-ku%C5%9F-a19006131/' },
+    { name: t('team.zain.name'), role: t('team.zain.role') },
+    { name: t('team.zeynep.name'), role: t('team.zeynep.role') },
+    { name: t('team.ceyda.name'), role: t('team.ceyda.role') },
   ];
 
   const timeline = [
@@ -67,14 +67,18 @@ export default async function AboutPage({ params }: { params: { locale: string }
         <ul className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {team.map((member) => (
             <li key={member.name} className="bg-paper p-5">
-              <a
-                href={member.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-ink hover:text-brand-light"
-              >
-                {member.name}
-              </a>
+              {member.linkedin ? (
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-ink hover:text-brand-light"
+                >
+                  {member.name}
+                </a>
+              ) : (
+                <p className="font-medium text-ink">{member.name}</p>
+              )}
               <p className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-muted">{member.role}</p>
             </li>
           ))}

@@ -150,21 +150,21 @@
         "name": "Bilal Bayram",
         "role": "Elektronik Mühendisi"
       },
-      "berkant": {
-        "name": "Berkant Kırıkkant",
-        "role": "Sistem Mühendisi"
-      },
       "fehim": {
         "name": "Fehim Kuş",
         "role": "Mekatronik Mühendisi"
       },
-      "yigit": {
-        "name": "Yiğit Tilaver",
-        "role": "Yazılım Mühendisi"
+      "zain": {
+        "name": "Muhammad Zain Mian",
+        "role": "Bilgisayar Mühendisi"
       },
-      "yusuf": {
-        "name": "Yusuf Erkoç",
-        "role": "Makine Mühendisliği Öğrencisi"
+      "zeynep": {
+        "name": "Zeynep Çelik",
+        "role": "Makine Mühendisi"
+      },
+      "ceyda": {
+        "name": "Ceyda",
+        "role": "Kontrol ve Otomasyon Mühendisi"
       }
     },
     "missionText": "Sinyal işleme ve makine öğrenmesi araştırmalarını laboratuvar dışında çalışan sistemlere dönüştürüyoruz: otonom deniz araçları, radar takibi, giyilebilir sensörler ve yerel hava tahmini. Sonuçlarımızı IEEE konferanslarında yayımlıyor ve sahada test ediyoruz."

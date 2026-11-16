@@ -150,21 +150,21 @@
         "name": "Bilal Bayram",
         "role": "Electronics Engineer"
       },
-      "berkant": {
-        "name": "Berkant Kırıkkant",
-        "role": "Systems Engineer"
-      },
       "fehim": {
         "name": "Fehim Kuş",
         "role": "Mechatronics Engineer"
       },
-      "yigit": {
-        "name": "Yiğit Tilaver",
-        "role": "Software Engineer"
+      "zain": {
+        "name": "Muhammad Zain Mian",
+        "role": "Computer Engineer"
       },
-      "yusuf": {
-        "name": "Yusuf Erkoç",
-        "role": "Undergraduate Mechanical Engineer"
+      "zeynep": {
+        "name": "Zeynep Çelik",
+        "role": "Mechanical Engineer"
+      },
+      "ceyda": {
+        "name": "Ceyda",
+        "role": "Control and Automation Engineer"
       }
     },
     "missionText": "We turn research in signal processing and machine learning into systems that work outside the lab: autonomous vessels, radar tracking, wearable sensors and local weather forecasting. Our results are published at IEEE conferences and tested in the field."
